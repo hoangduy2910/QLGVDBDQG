@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Leagues</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/icons" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+    <!-- Line icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Slick slider -->
+    <link href="{{ url_for('static', filename='css/slick.css') }}" rel="stylesheet">
+    <!-- Gallery Lightbox -->
+    <link href="{{ url_for('static', filename='css/magnific-popup.css') }}" rel="stylesheet">
+    <!-- Theme color -->
+    <link id="switcher" href="{{ url_for('static', filename='css/theme-color/green-theme.css') }}" rel="stylesheet">
+
+    <!-- Main Style -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+    <!-- Fonts -->
+
+    <!-- Open Sans for body font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800" rel="stylesheet">
+    <!-- Montserrat for Title -->
+  	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+	{% block header %}
+  	<!-- Start Header -->
+	<header id="mu-header" role="banner" {% block style_header %}{% endblock %}>
+		<div class="container">
+			<nav class="navbar navbar-default mu-navbar">
+			  <div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+
+				  <!-- Text Logo -->
+				  <a class="navbar-brand" href="{{ url_for('index') }}">Leagues</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav mu-menu navbar-right">
+						<li><a href="{{ url_for('index') }}">TRANG CHỦ</a></li>
+						<li><a href="{{ url_for('create_league') }}">TẠO GIẢI ĐẤU</a></li>
+						<li><a href="{{ url_for('find_league') }}">TÌM GIẢI ĐẤU</a></li>
+						<li><a href="{{ url_for('find_team') }}">TÌM ĐỘI</a></li>
+						<li><a href="{{ url_for('sign_in') }}">ĐĂNG NHẬP</a></li>
+						<li><a href="{{ url_for('sign_up') }}">ĐĂNG KÝ</a></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
+		</div>
+	</header>
+	<!-- End Header -->
+	{% endblock %}
+
+	{% block slider %}
+	<!-- Start Featured Slider -->
+	<section id="mu-featured-slider">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="mu-featured-slide">
+
+					<!-- Start Single slide -->
+					<div class="mu-featured-slider-single">
+						<img src="{{ url_for('static', filename='images/football_theme_1.png') }}">
+						<div class="mu-featured-slider-content">
+							<h1>CHÀO MỪNG ĐẾN VỚI LEAGUES</h1>
+							<a href="#" class="mu-primary-btn">ĐĂNG KÝ NGAY TẠI ĐÂY</a>
+						</div>
+					</div>
+					<!-- End Single slide -->
+
+					<!-- Start Single slide -->
+					<div class="mu-featured-slider-single">
+						<img src="{{ url_for('static', filename='images/football_theme_2.jpg') }}">
+						<div class="mu-featured-slider-content">
+							<h1>HÃY TẠO ĐỘI BÓNG CỦA RIÊNG BẠN</h1>
+							<a href="#" class="mu-primary-btn">TẠO ĐỘI NGAY BÂY GIỜ</a>
+						</div>
+					</div>
+					<!-- End Single slide -->
+
+					<!-- Start Single slide -->
+					<div class="mu-featured-slider-single">
+						<img src="{{ url_for('static', filename='images/football_theme_3.jpg') }}">
+						<div class="mu-featured-slider-content">
+							<h1>TẠO GIẢI ĐẤU ĐỂ MỌI NGƯỜI CÙNG CHƠI</h1>
+							<a href="#" class="mu-primary-btn">TẠO GIẢI ĐẤU TẠI ĐÂY</a>
+						</div>
+					</div>
+					<!-- End Single slide -->
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Featured Slider -->
+	{% endblock %}
+
+	{% block main %}
+	<!-- Start main content -->
+	<main role="main">
+		<!-- Start Create League -->
+		<section id="mu-create-league">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mu-create-league-area">
+
+							<div class="mu-create-league-header">
+								<h2 class="mu-heading-title"><span>Hỗ trợ nhiều thể thức đấu loại cho giải đấu</span></h2>
+								<span class="mu-header-dot"></span>
+								<p>Chia sẻ những giải đấu của bạn trên internet. Dễ dàng bình luận và thảo luận với những người theo dõi tại trang thông tin chung của giải</p>
+							</div>
+
+							<!-- Start Create League Content -->
+							<div class="mu-create-league-content">
+								<div class="row">
+
+									<!-- Create League Single Content -->
+									<div class="col-md-4 col-sm-6">
+										<div class="mu-create-league-content-single">
+											<span class="mu-create-league-icon-box">
+												<i class="icon-user-unfollow"></i>
+											</span>
+											<h4>Đấu loại trực tiếp</h4>
+											<p>Loại trực tiếp hoặc knockout là loại giải đấu mà đội bóng thua ở mỗi trận đấu sẽ bị loại ngay khỏi giải</p>
+										</div>
+									</div>
+									<!-- / Create League Single Content -->
+
+									<!-- Create League Single Content -->
+									<div class="col-md-4 col-sm-6">
+										<div class="mu-create-league-content-single">
+											<span class="mu-create-league-icon-box">
+												<i class="icon-reload"></i>
+											</span>
+											<h4>Đấu vòng tròn</h4>
+											<p>Mỗi đội bóng sẽ thi đấu với tất cả các đội bóng khác. Cho phép tuỳ chỉnh điều lệ xếp hạng</p>
+										</div>
+									</div>
+									<!-- / Create League Single Content -->
+
+									<!-- Create League Single Content -->
+									<div class="col-md-4 col-sm-6">
+										<div class="mu-create-league-content-single">
+											<span class="mu-create-league-icon-box">
+												<i class="icon-shuffle"></i>
+											</span>
+											<h4>Đấu tổng hợp</h4>
+											<p>Kết hợp 2 giai đoạn vào một giải đấu bao gồm giai đoạn 1 đấu vòng tròn và giai đoạn 2 loại trực tiếp</p>
+										</div>
+									</div>
+									<!-- / Create League Single Content -->
+								</div>
+							</div>
+							<!-- End Create League Content -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Create League -->
+
+		<!-- Start Counter -->
+		<section id="mu-counter">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mu-counter-area">
+							<div class="mu-counter-block">
+								<div class="row">
+
+									<!-- Start Single Counter -->
+									<div class="col-md-3 col-sm-6">
+										<div class="mu-single-counter">
+											<i class="icon-trophy"></i>
+											<div class="counter-value" data-count="132">0</div>
+											<h5 class="mu-counter-name">Giải đấu</h5>
+										</div>
+									</div>
+									<!-- / Single Counter -->
+
+									<!-- Start Single Counter -->
+									<div class="col-md-3 col-sm-6">
+										<div class="mu-single-counter">
+											<i class="icon-screen-tablet"></i>
+											<div class="counter-value" data-count="20">0</div>
+											<h5 class="mu-counter-name">Đội bóng</h5>
+										</div>
+									</div>
+									<!-- / Single Counter -->
+
+									<!-- Start Single Counter -->
+									<div class="col-md-3 col-sm-6">
+										<div class="mu-single-counter">
+											<i class="icon-user"></i>
+											<div class="counter-value" data-count="300">0</div>
+											<h5 class="mu-counter-name">Cầu thủ</h5>
+										</div>
+									</div>
+									<!-- / Single Counter -->
+
+									<!-- Start Single Counter -->
+									<div class="col-md-3 col-sm-6">
+										<div class="mu-single-counter">
+											<i class="icon-trophy"></i>
+											<div class="counter-value" data-count="11234">0</div>
+											<h5 class="mu-counter-name">Lượt xem</h5>
+										</div>
+									</div>
+									<!-- / Single Counter -->
+
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Counter -->
+
+		<!-- Start Tutorial -->
+		<section id="mu-tutorial">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mu-tutorial-area">
+
+							<div class="mu-tutorial-header">
+								<h2 class="mu-heading-title"><span>Hướng dẫn</span></h2>
+								<span class="mu-header-dot"></span>
+								<p>Có 3 giai đoạn để điều hành một giải đấu</p>
+							</div>
+
+							<!-- Start Tutorial Content -->
+							<div class="mu-tutorial-content">
+								<div class="row">
+									<!-- Tutorial Single Content -->
+									<div class="col-md-4 col-sm-6">
+										<div class="mu-tutorial-content-single">
+											<div class="mu-tutorial-icon-box">
+												<span>
+													<i class="icon-list"></i>
+												</span>
+												<h4>Tạo giải đấu</h4>
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Loại trực tiếp
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Đấu vòng tròn
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Hai giai đoạn
+											</div>
+										</div>
+									</div>
+									<!-- / Tutorial Single Content -->
+
+									<!-- Tutorial Single Content -->
+									<div class="col-md-4 col-sm-6">
+										<div class="mu-tutorial-content-single">
+											<div class="mu-tutorial-icon-box">
+												<span>
+													<i class="icon-settings"></i>
+												</span>
+												<h4>Tùy chỉnh giải đấu</h4>
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Nhập điều lệ, hình và đia điểm
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Nhập thông tin của đội/cầu thủ
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Mời người tham gia
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Lập lịch đấu
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Tùy chỉnh giai đoạn
+											</div>
+										</div>
+									</div>
+									<!-- / Tutorial Single Content -->
+
+									<!-- Tutorial Single Content -->
+									<div class="col-md-4 col-sm-6">
+										<div class="mu-tutorial-content-single">
+											<div class="mu-tutorial-icon-box">
+												<span>
+													<i class="icon-note"></i>
+												</span>
+												<h4>Điều hành giải đấu</h4>
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Nhập tỷ số
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Xem thống kê
+											</div>
+											<div class="mu-tutorial-sub-icon">
+												<span><i class="icon-pencil"></i></span>
+												Chia sẻ với bạn bè
+											</div>
+										</div>
+									</div>
+									<!-- / Tutorial Single Content -->
+								</div>
+							</div>
+							<!-- End Tutorial Content -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Tutorial -->
+	</main>
+	<!-- End main content -->
+	{% endblock %}
+
+	{% block footer %}
+	<!-- Start footer -->
+	<footer id="mu-footer" role="contentinfo">
+		<div class="container">
+			<div class="mu-footer-area">
+				<p>&copy; Copyright 2020. All right reserved.</p>
+			</div>
+		</div>
+	</footer>
+	<!-- End footer -->
+	{% endblock %}
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Bootstrap -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<!-- Slick slider -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+    <!-- Counter js -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/counter.js') }}"></script>
+    <!-- Custom js -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  </body>
+</html>
