@@ -17,6 +17,7 @@ Version: 1.0
 #COUNTER
 #TUTORIAL
 #FOOTER
+#LOGIN AND REGISTER FORM
 #RESPONSIVE STYLE
 */
 
@@ -423,7 +424,7 @@ button:focus {
 
 
 /*--------------------*/
-/* ABOUT US */
+/* CREATE LEAGUE */
 /*--------------------*/
 
 
@@ -571,7 +572,6 @@ button:focus {
 /* TUTORIAL */
 /*--------------------*/
 
-
 #mu-tutorial {
 	display: inline;
 	float: left;
@@ -679,10 +679,77 @@ button:focus {
 	width: 100%;
 }
 
-.mu-footer-area a{
-	font-weight: 600;
+/*--------------------*/
+/* RESPONSIVE STYLE */
+/*--------------------*/
+
+#mu-login {
+	display: inline;
+	float: left;
+	width: 100%;
 }
 
+.mu-login-area {
+	display: inline;
+	float: left;
+	padding: 100px 0;
+	width: 100%;
+	margin-top: 100px;
+}
+
+.mu-login-form {
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 5px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.mu-login-form-header {
+    margin-bottom: 50px;
+}
+
+.mu-login-form-header h1 {
+    text-align: center;
+}
+
+.mu-login-form-body {
+    margin-bottom: 20px;
+}
+
+.mu-login-form-body input:focus {
+    outline: #3fc35f;
+}
+
+.mu-login-form-body-button {
+    margin-top: 30px;
+}
+
+.mu-login-form-body-button > button {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    transition: .5s;
+}
+
+.mu-login-form-body-button > button:hover {
+    background-color: #3fc35f;
+}
+
+.mu-login-form-footer {
+    margin-top: 30px;
+    padding: 10px;
+    padding-top: 20px;
+    border-top: 1px solid black;
+}
+
+.mu-login-form-footer a {
+    color: #3fc35f;
+    border-bottom: 1px solid #3fc35f;
+}
 
 /*--------------------*/
 /* RESPONSIVE STYLE */

@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+	{{ super() }}
+{% endblock %}
+
+{% block style_header %}
+	class="mu-fixed-nav" style="background-color: #3fc35f;"
+{% endblock %}
+
+{% block slider %}
+{% endblock %}
+
+{% block main %}
+<section id="mu-login">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="mu-login-area">
+					<form class="mu-login-form">
+						<div class="mu-login-form-header">
+							<h1>Đăng nhập</h1>
+						</div>
+						<div class="mu-login-form-body">
+							<div class="form-group">
+								<label>Tên đăng nhập</label>
+								<input type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Mật khẩu</label>
+								<input type="password" class="form-control" />
+							</div>
+							<div class="mu-login-form-body-button">
+								<button type="submit">Đăng nhập</button>
+							</div>
+						</div>
+						<div class="mu-login-form-footer">
+							<span>Bạn chưa có tài khoản ?</span>
+							<a href="{{ url_for('register') }}">Đăng ký ngay</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block jquery %}
+{% endblock %}

@@ -24,7 +24,6 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 
     <!-- Fonts -->
-
     <!-- Open Sans for body font -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800" rel="stylesheet">
     <!-- Montserrat for Title -->
@@ -66,8 +65,7 @@
 						<li><a href="{{ url_for('create_league') }}">TẠO GIẢI ĐẤU</a></li>
 						<li><a href="{{ url_for('find_league') }}">TÌM GIẢI ĐẤU</a></li>
 						<li><a href="{{ url_for('find_team') }}">TÌM ĐỘI</a></li>
-						<li><a href="{{ url_for('sign_in') }}">ĐĂNG NHẬP</a></li>
-						<li><a href="{{ url_for('sign_up') }}">ĐĂNG KÝ</a></li>
+						<li><a href="{{ url_for('login') }}">ĐĂNG NHẬP</a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			  </div><!-- /.container-fluid -->
@@ -120,9 +118,10 @@
 	<!-- End Featured Slider -->
 	{% endblock %}
 
-	{% block main %}
+
 	<!-- Start main content -->
 	<main role="main">
+		{% block main %}
 		<!-- Start Create League -->
 		<section id="mu-create-league">
 			<div class="container">
@@ -178,7 +177,6 @@
 								</div>
 							</div>
 							<!-- End Create League Content -->
-
 						</div>
 					</div>
 				</div>
@@ -228,17 +226,14 @@
 									<!-- Start Single Counter -->
 									<div class="col-md-3 col-sm-6">
 										<div class="mu-single-counter">
-											<i class="icon-trophy"></i>
+											<i class="icon-eye"></i>
 											<div class="counter-value" data-count="11234">0</div>
 											<h5 class="mu-counter-name">Lượt xem</h5>
 										</div>
 									</div>
 									<!-- / Single Counter -->
-
 								</div>
 							</div>
-
-
 						</div>
 					</div>
 				</div>
@@ -353,22 +348,23 @@
 			</div>
 		</section>
 		<!-- End Tutorial -->
+		{% endblock %}
 	</main>
 	<!-- End main content -->
-	{% endblock %}
 
 	{% block footer %}
 	<!-- Start footer -->
 	<footer id="mu-footer" role="contentinfo">
 		<div class="container">
 			<div class="mu-footer-area">
-				<p>&copy; Copyright 2020. All right reserved.</p>
+				<p>&copy;Copyright 2020. All right reserved.</p>
 			</div>
 		</div>
 	</footer>
 	<!-- End footer -->
 	{% endblock %}
 
+	{% block jquery %}
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -380,5 +376,6 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/counter.js') }}"></script>
     <!-- Custom js -->
 	<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+	{% endblock %}
   </body>
 </html>

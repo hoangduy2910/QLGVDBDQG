@@ -23,13 +23,13 @@ def find_team():
 
 
 @app.route("/dang-nhap")
-def sign_in():
-    return render_template("sign-in.html")
+def login():
+    return render_template("login.html")
 
 
 @app.route("/dang-ky")
-def sign_up():
-    return render_template("sign-up.html")
+def register():
+    return render_template("register.html")
 
 
 if __name__ == "__main__":
