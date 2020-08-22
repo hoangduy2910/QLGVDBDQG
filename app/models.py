@@ -1,6 +1,8 @@
 from app import db
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from flask_admin.contrib.sqla import ModelView
+from app import db, admin
 
 
 class DoiBong(db.Model):
@@ -150,6 +152,23 @@ class QuyDinh(db.Model):
 
     def __str__(self):
         return self.TenQD + " - " + self.SoQD + " - "
+
+# Tạo các trang admin
+    admin.add_view(ModelView(DoiBong, db.session))
+    admin.add_view(ModelView(HuanLuyenVien, db.session))
+    admin.add_view(ModelView(LoaiCauThu, db.session))
+    admin.add_view(ModelView(CauThu, db.session))
+    admin.add_view(ModelView(GiaiDau, db.session))
+    admin.add_view(ModelView(VongDau, db.session))
+    admin.add_view(ModelView(TranDau, db.session))
+    admin.add_view(ModelView(LoaiBanThang, db.session))
+    admin.add_view(ModelView(BanThang, db.session))
+    admin.add_view(ModelView(LoaiKetQua, db.session))
+    admin.add_view(ModelView(KetQuaTranDau, db.session))
+
+    # NameError: name
+    # 'QuyDinh' is not defined ???
+    # admin.add_view(ModelView(QuyDinh, db.session))
 
 
 if __name__ == "__main__":
