@@ -153,22 +153,72 @@ class QuyDinh(db.Model):
     def __str__(self):
         return self.TenQD + " - " + self.SoQD + " - "
 
-# Tạo các trang admin
-    admin.add_view(ModelView(DoiBong, db.session))
-    admin.add_view(ModelView(HuanLuyenVien, db.session))
-    admin.add_view(ModelView(LoaiCauThu, db.session))
-    admin.add_view(ModelView(CauThu, db.session))
-    admin.add_view(ModelView(GiaiDau, db.session))
-    admin.add_view(ModelView(VongDau, db.session))
-    admin.add_view(ModelView(TranDau, db.session))
-    admin.add_view(ModelView(LoaiBanThang, db.session))
-    admin.add_view(ModelView(BanThang, db.session))
-    admin.add_view(ModelView(LoaiKetQua, db.session))
-    admin.add_view(ModelView(KetQuaTranDau, db.session))
 
-    # NameError: name
-    # 'QuyDinh' is not defined ???
-    # admin.add_view(ModelView(QuyDinh, db.session))
+class DoiBongModelView(ModelView):
+    column_display_pk = True
+    form_columns = ('TenDB', 'SanNha', 'DiaDiem')
+    create_modal = True
+    can_view_details = True
+
+
+class HlvModelView(ModelView):
+    column_display_pk = True
+    create_modal = True
+    can_view_details = True
+
+
+class LoaiCauThuModelView(ModelView):
+    create_modal = True
+
+
+class CauThuModelView(ModelView):
+    create_modal = True
+
+
+class GiaiDauModelView(ModelView):
+    create_modal = True
+
+
+class VongDauModelView(ModelView):
+    create_modal = True
+
+
+class TranDauModelView(ModelView):
+    create_modal = True
+
+
+class LoaiBanThangModelView(ModelView):
+    create_modal = True
+
+
+class BanThangModelView(ModelView):
+    create_modal = True
+
+
+class LoaiKetQuaModelView(ModelView):
+    create_modal = True
+
+
+class KetQuaModelView(ModelView):
+    create_modal = True
+
+
+class QuyDinhModelView(ModelView):
+    create_modal = True
+
+
+admin.add_view(DoiBongModelView(DoiBong, db.session, category="Quản lý đội bóng"))
+admin.add_view(HlvModelView(HuanLuyenVien, db.session, category="Quản lý đội bóng"))
+admin.add_view(CauThuModelView(CauThu, db.session, category="Cầu thủ"))
+admin.add_view(LoaiCauThuModelView(LoaiCauThu, db.session, category="Cầu thủ"))
+admin.add_view(GiaiDauModelView(GiaiDau, db.session, category="Thông tin về giải đấu"))
+admin.add_view(VongDauModelView(VongDau, db.session, category="Thông tin về giải đấu"))
+admin.add_view(TranDauModelView(TranDau, db.session, category="Thông tin về giải đấu"))
+admin.add_view(BanThangModelView(BanThang, db.session, category="Kết quả"))
+admin.add_view(LoaiBanThangModelView(LoaiBanThang, db.session, category="Kết quả"))
+admin.add_view(LoaiKetQuaModelView(LoaiKetQua, db.session, category="Kết quả"))
+admin.add_view(KetQuaModelView(KetQuaTranDau, db.session, category="Kết quả"))
+admin.add_view(QuyDinhModelView(QuyDinh, db.session, category="Quy Định"))
 
 
 if __name__ == "__main__":
