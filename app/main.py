@@ -12,7 +12,7 @@ def index():
 
 @login.user_loader
 def user_loader(user_id):
-    return User.query.get(user_id)
+    return User.Query.get(user_id)
 
 
 @app.route("/login-admin", methods=["post", "get"])

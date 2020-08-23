@@ -717,10 +717,6 @@ button:focus {
     margin-bottom: 20px;
 }
 
-.mu-login-form-body input:focus {
-    outline: #3fc35f;
-}
-
 .mu-login-form-body-button {
     margin-top: 30px;
 }
