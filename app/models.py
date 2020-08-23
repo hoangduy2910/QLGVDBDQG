@@ -1,8 +1,10 @@
 from app import db
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from flask_admin.contrib.sqla import ModelView
 from app import db, admin
+from flask_admin import BaseView, expose
+from flask_login import UserMixin
 
 
 class DoiBong(db.Model):
@@ -165,6 +167,7 @@ class HlvModelView(ModelView):
     column_display_pk = True
     create_modal = True
     can_view_details = True
+    list_template = 'create-league.html'
 
 
 class LoaiCauThuModelView(ModelView):
@@ -219,6 +222,30 @@ admin.add_view(LoaiBanThangModelView(LoaiBanThang, db.session, category="Kết q
 admin.add_view(LoaiKetQuaModelView(LoaiKetQua, db.session, category="Kết quả"))
 admin.add_view(KetQuaModelView(KetQuaTranDau, db.session, category="Kết quả"))
 admin.add_view(QuyDinhModelView(QuyDinh, db.session, category="Quy Định"))
+
+
+class HomeAdmin(BaseView):
+    @expose('/')
+    def index (self):
+        return self.render('admin/About us.html')
+
+
+admin.add_view(HomeAdmin(name="About Us"))
+
+
+# Tạo chức năng Login cho Admin
+# Tạo bảng user
+class User(db.Model, UserMixin): # Đa kế thừa
+    __tablename__ = "User"
+
+    id = Column(Integer, primary_key=True, autoincrement=True) # autoincrement: tăng tự động
+    name = Column(String(50), nullable=False)
+    active = Column(Boolean, default=True)
+    username = Column(String(50), nullable=False)
+    password = Column(String(50), nullable=False)
+
+    def __str__(self):
+        return self.name
 
 
 if __name__ == "__main__":
