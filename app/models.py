@@ -5,170 +5,192 @@ from flask_admin.contrib.sqla import ModelView
 from app import db, admin
 
 
-class DoiBong(db.Model):
-    __tablename__ = "doibong"
+# Tạo bảng MySQL
+class Club(db.Model):
+    __tablename__ = "club"
 
-    MaDB = Column(Integer, primary_key=True, autoincrement=True)
-    TenDB = Column(String(100), nullable=False)
-    SanNha = Column(String(255), nullable=False)
-    DiaDiem = Column(String(255), nullable=False)
-    CauThu = relationship('CauThu', backref='doibong', lazy=True)
-    HuanLuyenVien = relationship('HuanLuyenVien', backref='doibong', lazy=True)
-    KetQuaTranDau = relationship('KetQuaTranDau', backref='doibong', lazy=True)
-
-    def __str__(self):
-        return self.TenDB
-
-
-class HuanLuyenVien(db.Model):
-    __tablename__ = "huanluyenvien"
-
-    MaHLV = Column(Integer, primary_key=True, autoincrement=True)
-    TenHLV = Column(String(100), nullable=False)
-    NgaySinh = Column(DateTime, nullable=False)
-    GhiChu = Column(String(255), nullable=True)
-    MaDB = Column(Integer, ForeignKey(DoiBong.MaDB), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    home = Column(String(255), nullable=False)
+    address = Column(String(255), nullable=False)
+    players = relationship('Player', backref='club', lazy=True)
+    coaches = relationship('Coach', backref='club', lazy=True)
+    results = relationship('Result', backref='club', lazy=True)
 
     def __str__(self):
-        return self.TenHLV
+        return self.name
 
 
-class LoaiCauThu(db.Model):
-    __tablename__ = "loaicauthu"
+class Coach(db.Model):
+    __tablename__ = "coach"
 
-    MaLCT = Column(Integer, primary_key=True, autoincrement=True)
-    TenLCT = Column(String(100), nullable=False)
-    CauThu = relationship('CauThu', backref='loaicauthu', lazy=True)
-
-    def __str__(self):
-        return self.TenLCT
-
-
-class CauThu(db.Model):
-    __tablename__ = "cauthu"
-
-    MaCT = Column(Integer, primary_key=True, autoincrement=True)
-    TenCT = Column(String(100), nullable=False)
-    NgaySinh = Column(DateTime, nullable=False)
-    GhiChu = Column(String(255), nullable=True)
-    MaLCT = Column(Integer, ForeignKey(LoaiCauThu.MaLCT), nullable=False)
-    MaDB = Column(Integer, ForeignKey(DoiBong.MaDB), nullable=False)
-    BanThang = relationship('BanThang', backref='cauthu', lazy=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    birthday = Column(DateTime, nullable=False)
+    description = Column(String(255), nullable=True)
+    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
 
     def __str__(self):
-        return self.TenCT
+        return self.name
 
 
-class GiaiDau(db.Model):
-    __tablename__ = "giaidau"
+class TypePlayer(db.Model):
+    __tablename__ = "type_player"
 
-    MaGD = Column(Integer, primary_key=True, autoincrement=True)
-    TenGD = Column(String(100), nullable=False)
-    VongDau = relationship('VongDau', backref='giaidau', lazy=True)
-
-    def __str__(self):
-        return self.TenGD
-
-
-class VongDau(db.Model):
-    __tablename__ = "vongdau"
-
-    MaVD = Column(Integer, primary_key=True, autoincrement=True)
-    TenVD = Column(String(100), nullable=False)
-    MaGD = Column(Integer, ForeignKey(GiaiDau.MaGD), nullable=False)
-    TranDau = relationship('TranDau', backref='vongdau', lazy=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    players = relationship('Player', backref='type_player', lazy=True)
 
     def __str__(self):
-        return self.TenVD
+        return self.name
 
 
-class TranDau(db.Model):
-    __tablename__ = "trandau"
+class Player(db.Model):
+    __tablename__ = "player"
 
-    MaTD = Column(Integer, primary_key=True, autoincrement=True)
-    MaVD = Column(Integer, ForeignKey(VongDau.MaVD), nullable=False)
-    DoiNha = Column(Integer, ForeignKey(DoiBong.MaDB), nullable=False)
-    DoiKhach = Column(Integer, ForeignKey(DoiBong.MaDB), nullable=False)
-    SanTD = Column(String(255), nullable=False)
-    NgayTD = Column(DateTime, nullable=False)
-    KetQuaTranDau = relationship('KetQuaTranDau', backref='trandau', lazy=True)
-
-    def __str__(self):
-        return self.MaVD + " - " + self.DoiNha + " - " + self.DoiKhach
-
-
-class LoaiBanThang(db.Model):
-    __tablename__ = "loaibanthang"
-
-    MaLBT = Column(Integer, primary_key=True, autoincrement=True)
-    TenLBT = Column(String(100), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    birthday = Column(DateTime, nullable=False)
+    type_player_id = Column(Integer, ForeignKey(TypePlayer.id), nullable=False)
+    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
+    goals = relationship('Goal', backref='player', lazy=True)
 
     def __str__(self):
-        return self.TenLBT
+        return self.name
 
 
-class BanThang(db.Model):
-    __tablename__ = "banthang"
+class League(db.Model):
+    __tablename__ = "league"
 
-    MaBT = Column(Integer, primary_key=True, autoincrement=True)
-    MaLBT = Column(Integer, ForeignKey(LoaiBanThang.MaLBT), nullable=False)
-    MaCT = Column(Integer, ForeignKey(CauThu.MaCT), nullable=False)
-    MaTD = Column(Integer, ForeignKey(TranDau.MaTD), nullable=False)
-    ThoiDiem = Column(DateTime, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    rounds = relationship('Round', backref='league', lazy=True)
 
     def __str__(self):
-        return self.MaLBT + " - " + self.MaCT + " - " + self.MaTD
+        return self.name
 
 
-class LoaiKetQua(db.Model):
-    __tablename__ = "loaiketqua"
+class Round(db.Model):
+    __tablename__ = "round"
 
-    MaLKQ = Column(Integer, primary_key=True, autoincrement=True)
-    TenLKQ = Column(String(100), nullable=False)
-
-    def __str__(self):
-        return self.TenLKQ
-
-
-class KetQuaTranDau(db.Model):
-    __tablename__ = "ketquatrandau"
-
-    MaKQ = Column(Integer, primary_key=True, autoincrement=True)
-    MaTD = Column(Integer, ForeignKey(TranDau.MaTD), nullable=False)
-    MaDB = Column(Integer, ForeignKey(DoiBong.MaDB), nullable=False)
-    MaLKQ = Column(Integer, ForeignKey(LoaiKetQua.MaLKQ), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
+    matches = relationship('Match', backref='round', lazy=True)
 
     def __str__(self):
-        return self.MaTD + " - " + self.MaDB + " - " + self.MaLKQ
+        return self.name
 
 
-class QuyDinh(db.Model):
-    __tablename__ = "quydinh"
+class Match(db.Model):
+    __tablename__ = "match"
 
-    MaQD = Column(Integer, primary_key=True, autoincrement=True)
-    TenQD = Column(String(100), nullable=False)
-    SoQD = Column(Integer, nullable=False)
-    GhiChu = Column(String(255), nullable=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
+    home = Column(Integer, ForeignKey(Club.id), nullable=False)
+    away = Column(Integer, ForeignKey(Club.id), nullable=False)
+    stadium = Column(String(255), nullable=False)
+    date = Column(DateTime, nullable=False)
 
     def __str__(self):
-        return self.TenQD + " - " + self.SoQD + " - "
+        return self.id + " - " + self.home + " - " + self.away
+
+
+class TypeGoal(db.Model):
+    __tablename__ = "type_goal"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Goal(db.Model):
+    __tablename__ = "goal"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    type_goal_id = Column(Integer, ForeignKey(TypeGoal.id), nullable=False)
+    player_id = Column(Integer, ForeignKey(Player.id), nullable=False)
+    match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
+
+    def __str__(self):
+        return self.id + " - " + self.player_id + " - " + self.match_id
+
+
+class TypeResult(db.Model):
+    __tablename__ = "type_result"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Result(db.Model):
+    __tablename__ = "result"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
+    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
+    type_result_id = Column(Integer, ForeignKey(TypeResult.id), nullable=False)
+
+    def __str__(self):
+        return self.id + " - " + self.match_id + " - " + self.club_id + " - " + self.type_result_id
+
+
+class Rule(db.Model):
+    __tablename__ = "rule"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    number = Column(Integer, nullable=False)
+    description = Column(String(255), nullable=True)
+
+    def __str__(self):
+        return self.name + " - " + self.number
+
+
+class User(db.Model):
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    username = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
+
+    def __str__(self):
+        return self.name + " - " + self.username
+
+
+class Administrator(db.Model):
+    __tablename__ = "administrator"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    username = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
+
+    def __str__(self):
+        return self.name + " - " + self.username
+
 
 # Tạo các trang admin
-    admin.add_view(ModelView(DoiBong, db.session))
-    admin.add_view(ModelView(HuanLuyenVien, db.session))
-    admin.add_view(ModelView(LoaiCauThu, db.session))
-    admin.add_view(ModelView(CauThu, db.session))
-    admin.add_view(ModelView(GiaiDau, db.session))
-    admin.add_view(ModelView(VongDau, db.session))
-    admin.add_view(ModelView(TranDau, db.session))
-    admin.add_view(ModelView(LoaiBanThang, db.session))
-    admin.add_view(ModelView(BanThang, db.session))
-    admin.add_view(ModelView(LoaiKetQua, db.session))
-    admin.add_view(ModelView(KetQuaTranDau, db.session))
-
-    # NameError: name
-    # 'QuyDinh' is not defined ???
-    # admin.add_view(ModelView(QuyDinh, db.session))
+admin.add_view(ModelView(Club, db.session))
+admin.add_view(ModelView(Coach, db.session))
+admin.add_view(ModelView(Player, db.session))
+admin.add_view(ModelView(League, db.session))
+admin.add_view(ModelView(Round, db.session))
+admin.add_view(ModelView(Match, db.session))
+admin.add_view(ModelView(Goal, db.session))
+admin.add_view(ModelView(Result, db.session))
+admin.add_view(ModelView(Rule, db.session))
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Administrator, db.session))
+#admin.add_view(ModelView(TypePlayer, db.session))
+#admin.add_view(ModelView(TypeGoal, db.session))
+#admin.add_view(ModelView(TypeResult, db.session))
 
 
 if __name__ == "__main__":
