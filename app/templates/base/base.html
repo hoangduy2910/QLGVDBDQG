@@ -64,7 +64,23 @@
 						<li><a href="{{ url_for('index') }}">TRANG CHỦ</a></li>
 						<li><a href="{{ url_for('league') }}">GIẢI ĐẤU</a></li>
 						<li><a href="{{ url_for('team') }}">ĐỘI</a></li>
+						{% if session.user %}
+						<li class="navigation-user">
+							<ul>
+								<li>
+									<a class="text-uppercase">{{ session.user.name }}</a>
+									<ul>
+										<li><a style="font-size: 13px;" href="#">Thông tin cá nhân</a></li>
+										<li><a style="font-size: 13px;" href="#">Quản lý đội bóng</a></li>
+										<li><a style="font-size: 13px;" href="#">Quản lý giải đấu</a></li>
+										<li><a style="font-size: 13px;" href="{{ url_for('logout') }}">Đăng xuất</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						{% else %}
 						<li><a href="{{ url_for('login') }}">ĐĂNG NHẬP</a></li>
+						{% endif %}
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			  </div><!-- /.container-fluid -->

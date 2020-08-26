@@ -4,12 +4,10 @@ from app.models import *
 
 
 def check_username(username):
-    users = User.query.all()
-    for user in users:
-        if username == user.username:
-            return True
-        else:
-            return False
+    if User.query.filter_by(username=username).first():
+        return True
+    else:
+        return False
 
 
 def check_password(password, confirm):
@@ -25,4 +23,17 @@ def add_user(name, username, password):
 
     db.session.add(user)
     db.session.commit()
+
+
+def check_login(username, password):
+    user = User.query.filter_by(username=username).first()
+
+    if user:
+        password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
+        if user.password == password:
+            return user
+        else:
+            return False
+    else:
+        return False
 

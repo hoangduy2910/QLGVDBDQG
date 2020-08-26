@@ -158,7 +158,7 @@ class User(db.Model):
     password = Column(String(255), nullable=False)
 
     def __str__(self):
-        return self.name + " - " + self.username
+        return self.username
 
 
 class Administrator(db.Model):
