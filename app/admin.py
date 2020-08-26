@@ -8,6 +8,7 @@ from app.models import *
 # admin.add_view(ModelView(TypeGoal, db.session))
 # admin.add_view(ModelView(TypeResult, db.session))
 # admin.add_view(ModelView(TypeCompetition, db.session))
+admin.add_view(ModelView(City, db.session))
 admin.add_view(ModelView(Club, db.session))
 admin.add_view(ModelView(Player, db.session))
 admin.add_view(ModelView(League, db.session))

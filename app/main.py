@@ -10,17 +10,19 @@ def index():
 
 @app.route("/tao-giai-dau")
 def create_league():
-    return render_template("create-league.html")
+    return render_template("create-leagues.html")
 
 
 @app.route("/giai-dau")
 def league():
-    return render_template("league.html")
+    cities = dao.read_city()
+    type_competition = dao.read_type_competition()
+    return render_template("leagues.html", cities=cities, type_competition=type_competition)
 
 
 @app.route("/doi")
 def team():
-    return render_template("team.html")
+    return render_template("teams.html")
 
 
 @app.route("/dang-nhap", methods=["get", "post"])
@@ -31,13 +33,13 @@ def login():
         password = request.form.get("password")
 
         user = dao.check_login(username=username, password=password)
-        user_json = {
-            'id': user.id,
-            'name': user.name,
-            'username': user.username
-        }
 
         if user:
+            user_json = {
+                'id': user.id,
+                'name': user.name,
+                'username': user.username
+            }
             session["user"] = user_json
             return redirect(url_for('index'))
         else:
@@ -70,6 +72,21 @@ def logout():
     if "user" in session:
         session["user"] = None
     return redirect(url_for('index'))
+
+
+@app.route("/thong-tin-ca-nhan")
+def profile():
+    return render_template('profile.html')
+
+
+@app.route("/quan-ly-doi-bong")
+def my_league():
+    return render_template('my-league.html')
+
+
+@app.route("/quan-ly-giai-dau")
+def my_team():
+    return render_template('my-team.html')
 
 
 if __name__ == "__main__":

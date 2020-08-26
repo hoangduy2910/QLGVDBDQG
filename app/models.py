@@ -4,6 +4,17 @@ from sqlalchemy.orm import relationship
 
 
 # Tạo bảng MySQL
+class City(db.Model):
+    __tablename__ = "city"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    leagues = relationship('League', backref='city', lazy=True)
+
+    def __str__(self):
+        return self.name
+
+
 class TypeCompetition(db.Model):
     __tablename__ = "type_competition"
 
@@ -80,7 +91,8 @@ class League(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
-    type_competition_id = Column(Integer, ForeignKey('type_competition.id'), nullable=False)
+    city_id = Column(Integer, ForeignKey(City.id), nullable=False)
+    type_competition_id = Column(Integer, ForeignKey(TypeCompetition.id), nullable=False)
     rounds = relationship('Round', backref='league', lazy=True)
 
     def __str__(self):

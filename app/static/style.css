@@ -13,7 +13,8 @@ Version: 1.0
 #HEADER	
 #MENU 
 #FEATURED SLIDER 
-#CREATE LEAGUE
+#TYPE COMPETITION
+#LEAGUES
 #COUNTER
 #TUTORIAL
 #FOOTER
@@ -272,7 +273,7 @@ button:focus {
 }
 
 #mu-header.mu-fixed-nav{
-	background-color: rgba(0,0,0,0.8);
+	background-color: rgba(0, 0, 0, 0.8);
 	width: 100%;
 	position: fixed;
 	padding: 15px 0;
@@ -321,55 +322,34 @@ button:focus {
 /* USER NAVIGATION */
 /*--------------------*/
 
-.navigation-user ul {
-    list-style: none;
-    margin: 0;
-    padding-left: 0;
-}
-
-.navigation-user li {
-    color: #fff;
-    display: block;
-    float: left;
-    padding: .6rem;
+.navigation-user {
     position: relative;
-    text-decoration: none;
-    transition-duration: 0.5s;
 }
 
-.navigation-user li a {
-    color: #fff;
-    font-size: 13px important!;
-}
-
-.navigation-user li:hover {
-    cursor: pointer;
-}
-
-.navigation-user ul li ul {
-    background: #3fc35f;
+.navigation-user ul {
+    background-color: rgba(0, 0, 0, 0.8);
     visibility: hidden;
     opacity: 0;
     position: absolute;
     transition: all 0.5s ease;
-    margin-top: 1rem;
-    left: 0;
     display: block;
 }
 
-.navigation-user ul li:hover > ul,
-.navigation-user ul li ul:hover {
+.navigation-user ul li {
+    list-style: none;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.navigation-user:hover ul {
     visibility: visible;
     opacity: 1;
     display: block;
 }
 
-.navigation-user ul li ul li {
-    clear: both;
-    width: 100%;
+.navigation-user ul li a {
+    font-size: 13px !important;
 }
-
-/* END USER NAVIGATION */
 
 
 /*--------------------*/
@@ -479,24 +459,23 @@ button:focus {
 
 
 /*--------------------*/
-/* CREATE LEAGUE */
+/* TYPE COMPETITION */
 /*--------------------*/
 
-
-#mu-create-league {
+#mu-type-competition {
 	display: inline;
 	float: left;
 	width: 100%;
 }
 
-.mu-create-league-area {
+.mu-type-competition-area {
 	display: inline;
 	float: left;
 	padding: 100px 0;
 	width: 100%;
 }
 
-.mu-create-league-header {
+.mu-type-competition-header {
 	display: inline;
 	float: left;
 	text-align: center;
@@ -518,7 +497,7 @@ button:focus {
 	margin-bottom: 20px;
 }
 
-.mu-create-league-content{
+.mu-type-competition-content{
 	display: inline;
 	float: left;
 	margin: 0 auto;
@@ -526,14 +505,14 @@ button:focus {
 	width: 100%;
 }
 
-.mu-create-league-content-single{
+.mu-type-competition-content-single{
 	display: inline;
 	float: left;
 	text-align: center;
 	width: 100%;
 }
 
-.mu-create-league-icon-box {
+.mu-type-competition-icon-box {
 	font-size: 25px;
 	padding: 5px 12px;
 	margin-bottom: 30px;
@@ -543,11 +522,146 @@ button:focus {
 	border-radius: 10px;
 }
 
-.mu-create-league-content-single h4{
+.mu-type-competition-content-single h4{
 	margin-bottom: 20px;
 	color: #3fc35f;
 }
 
+
+/*--------------------*/
+/* RESPONSIVE STYLE */
+/*--------------------*/
+
+#mu-login {
+	display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-login-area {
+	display: inline;
+	float: left;
+	padding: 100px 0;
+	width: 100%;
+	margin-top: 100px;
+}
+
+.mu-login-form {
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 5px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.mu-login-form-header {
+    margin-bottom: 50px;
+}
+
+.mu-login-form-header h1 {
+    text-align: center;
+}
+
+.mu-login-form-body {
+    margin-bottom: 20px;
+}
+
+.mu-login-form-body-button {
+    margin-top: 30px;
+}
+
+.mu-login-form-body-button > button {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    transition: .5s;
+}
+
+.mu-login-form-body-button > button:hover {
+    background-color: #3fc35f;
+}
+
+.mu-login-form-footer {
+    margin-top: 30px;
+    padding: 10px;
+    padding-top: 20px;
+    border-top: 1px solid black;
+}
+
+.mu-login-form-footer a {
+    color: #3fc35f;
+    border-bottom: 1px solid #3fc35f;
+}
+
+
+/*--------------------*/
+/* LEAGUES */
+/*--------------------*/
+
+#mu-leagues {
+	display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-search-league-area {
+	display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-search-league-form input {
+    width: 85% !important;
+}
+
+.mu-search-league-btn {
+    background-color: #3fc35f;
+    border-radius: 5px;
+    color: white;
+    margin-top: 2px;
+}
+
+.mu-leagues-area {
+	display: inline;
+	float: left;
+    padding-top: 50px;
+    padding-bottom: 50px;
+	width: 100%;
+}
+
+.mu-leagues-group-card {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mu-leagues-card {
+    flex-basis: 30%;
+    border: 1px solid #3fc35f;
+    border-radius: 5px;
+    margin: 15px;
+    padding: 15px;
+    transition: .2s;
+}
+
+.mu-leagues-card:hover {
+    transform: scaleY(1.1);
+}
+
+.mu-leagues-card img {
+    width: 100%;
+}
+
+.mu-leagues-card h4 {
+    margin-top: 10px;
+}
+
+.mu-leagues-card p {
+    margin-top: 10px;
+}
 
 
 /*--------------------*/
@@ -717,7 +831,6 @@ button:focus {
 /* FOOTER */
 /*--------------------*/
 
-
 #mu-footer{
     background-image: linear-gradient(to right, #B06AB3, #3fc35f);
     color: white;
@@ -732,74 +845,6 @@ button:focus {
 	padding: 30px 0;
 	text-align: center;
 	width: 100%;
-}
-
-/*--------------------*/
-/* RESPONSIVE STYLE */
-/*--------------------*/
-
-#mu-login {
-	display: inline;
-	float: left;
-	width: 100%;
-}
-
-.mu-login-area {
-	display: inline;
-	float: left;
-	padding: 100px 0;
-	width: 100%;
-	margin-top: 100px;
-}
-
-.mu-login-form {
-    border: 1px solid black;
-    padding: 20px;
-    border-radius: 5px;
-    width: 60%;
-    margin: 0 auto;
-}
-
-.mu-login-form-header {
-    margin-bottom: 50px;
-}
-
-.mu-login-form-header h1 {
-    text-align: center;
-}
-
-.mu-login-form-body {
-    margin-bottom: 20px;
-}
-
-.mu-login-form-body-button {
-    margin-top: 30px;
-}
-
-.mu-login-form-body-button > button {
-    width: 100%;
-    text-align: center;
-    border-radius: 10px;
-    background-color: black;
-    color: white;
-    padding: 10px;
-    transition: .5s;
-}
-
-.mu-login-form-body-button > button:hover {
-    background-color: #3fc35f;
-}
-
-.mu-login-form-footer {
-    margin-top: 30px;
-    padding: 10px;
-    padding-top: 20px;
-    border-top: 1px solid black;
-}
-
-.mu-login-form-footer a {
-    color: #3fc35f;
-    border-bottom: 1px solid #3fc35f;
 }
 
 /*--------------------*/
@@ -833,11 +878,14 @@ button:focus {
 
 
 @media (max-width: 991px) {
-	
 	.navbar-default .mu-menu li a {
 		font-size: 14px;
 		margin: 10px 5px;
-	}	
+	}
+
+	.navigation-user ul li a {
+        font-size: 12px !important;
+    }
 
 	.mu-featured-slider-content h1 {
 		font-size: 25px;
@@ -855,11 +903,19 @@ button:focus {
 		padding: 12px 22px;
 	}
 
-	.mu-create-league-content-single,
+	.mu-type-competition-content-single,
 	.mu-single-counter {
 		margin-top: 15px;
 		margin-bottom: 15px;
 	}
+
+	.mu-search-league-area div {
+	    margin-bottom: 10px;
+	}
+
+    .mu-leagues-card {
+        flex-basis: 45%;
+    }
 }
 
 
@@ -878,17 +934,34 @@ button:focus {
 	}
 
 	.navbar-default .navbar-collapse, .navbar-default .navbar-form {
-		background-color: rgba(0,0,0,0.8);
+		background-color: rgba(0, 0, 0, 0.8);
 		text-align: center;
 	}
 
 	.navbar-default .mu-menu li a {
 		display: inline-block;
 	}
+
+	.navigation-user ul li a {
+        font-size: 15px !important;
+    }
+
+    .navigation-user ul {
+        background-color: rgba(0, 0, 0, 0);
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        transition: all 0.5s ease;
+        display: block;
+        left: 40%;
+    }
+
+    .mu-search-league-area div:first-child input {
+        display: inline !important;
+	}
 }
 
-
-@media (max-width: 640px){
+@media (max-width: 640px) {
 
 	#mu-header.mu-fixed-nav {
 		padding: 10px 0;
@@ -920,6 +993,10 @@ button:focus {
 	.slick-dots {
 		bottom: 15px;
 	}
+
+	.mu-leagues-card {
+        flex-basis: 90%;
+    }
 }
 
 
@@ -962,7 +1039,7 @@ button:focus {
 		margin-bottom: 10px;
 	}
 
-	.mu-create-league-content-single h4 {
+	.mu-type-competition-content-single h4 {
 		margin-bottom: 18px;
 	}
 }
@@ -983,6 +1060,10 @@ button:focus {
 		font-size: 16px;
 		margin-bottom: 0;
 		margin-top: 10px;
+	}
+
+	.mu-search-league-form input {
+        width: 60% !important;
 	}
 }
 

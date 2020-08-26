@@ -37,3 +37,13 @@ def check_login(username, password):
     else:
         return False
 
+
+def read_city():
+    cities = City.query.all()
+    return cities
+
+
+def read_type_competition():
+    type_competition = TypeCompetition.query.all()
+    return type_competition
+
