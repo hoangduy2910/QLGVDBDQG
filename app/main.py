@@ -1,6 +1,5 @@
 from app import app
 from flask import render_template
-from app.models import *
 
 
 @app.route("/")
@@ -13,14 +12,14 @@ def create_league():
     return render_template("create-league.html")
 
 
-@app.route("/tim-giai-dau")
-def find_league():
-    return render_template("find-league.html")
+@app.route("/giai-dau")
+def league():
+    return render_template("league.html")
 
 
-@app.route("/tim-doi")
-def find_team():
-    return render_template("find-team.html")
+@app.route("/doi")
+def team():
+    return render_template("team.html")
 
 
 @app.route("/dang-nhap")
@@ -34,4 +33,5 @@ def register():
 
 
 if __name__ == "__main__":
+    from app.admin import *
     app.run(debug=True)
