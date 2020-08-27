@@ -62,13 +62,13 @@
 					<ul class="nav navbar-nav mu-menu navbar-right">
 						<li><a href="{{ url_for('index') }}">TRANG CHỦ</a></li>
 						<li><a href="{{ url_for('league') }}">GIẢI ĐẤU</a></li>
-						<li><a href="{{ url_for('team') }}">ĐỘI</a></li>
+						<li><a href="{{ url_for('club') }}">ĐỘI</a></li>
 						{% if session.user %}
 						<li class="navigation-user">
 							<a class="text-uppercase">{{ session.user.name }}</a>
 							<ul>
 								<li><a href="{{ url_for('profile') }}">Thông tin cá nhân</a></li>
-								<li><a href="{{ url_for('my_team') }}">Quản lý đội bóng</a></li>
+								<li><a href="{{ url_for('my_club') }}">Quản lý đội bóng</a></li>
 								<li><a href="{{ url_for('my_league') }}">Quản lý giải đấu</a></li>
 								<li><a href="{{ url_for('logout') }}">Đăng xuất</a></li>
 							</ul>

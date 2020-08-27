@@ -327,6 +327,7 @@ button:focus {
 }
 
 .navigation-user ul {
+    width: 150px;
     background-color: rgba(0, 0, 0, 0.8);
     visibility: hidden;
     opacity: 0;
@@ -642,8 +643,9 @@ button:focus {
     flex-basis: 30%;
     border: 1px solid #3fc35f;
     border-radius: 5px;
+    padding: 10px;
     margin: 15px;
-    padding: 15px;
+    margin-bottom: 30px;
     transition: .2s;
 }
 
@@ -655,11 +657,99 @@ button:focus {
     width: 100%;
 }
 
-.mu-leagues-card h4 {
+.mu-leagues-card-image {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 25%;
+    transform: translate(0%, -50%);
+}
+
+.mu-leagues-card-image img {
+    border: 1px solid #3fc35f;
+    border-radius: 5px;
+    box-shadow: 5px 10px 8px #888888;
+}
+
+.mu-leagues-card-body {
+    margin-top: -25px;
+}
+
+.mu-leagues-card-body h4 {
+    margin-top: 10px;
+    color: #3fc35f;
+}
+
+.mu-leagues-card-body p {
     margin-top: 10px;
 }
 
-.mu-leagues-card p {
+
+/*--------------------*/
+/* CLUBS */
+/*--------------------*/
+
+#mu-clubs {
+	display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-search-club-area {
+	display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-search-club-form input {
+    width: 85% !important;
+}
+
+.mu-search-club-btn {
+    background-color: #3fc35f;
+    border-radius: 5px;
+    color: white;
+    margin-top: 2px;
+}
+
+.mu-clubs-area {
+	display: inline;
+	float: left;
+    padding-top: 50px;
+    padding-bottom: 50px;
+	width: 100%;
+}
+
+.mu-clubs-group-card {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mu-clubs-card {
+    flex-basis: 20%;
+    border: 1px solid #3fc35f;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 15px;
+    transition: .2s;
+}
+
+.mu-clubs-card:hover {
+    transform: scaleY(1.1);
+}
+
+.mu-clubs-card img {
+    margin-bottom: 10px;
+    width: 50%;
+    transform: translate(50%, 0%);
+}
+
+.mu-clubs-card h4 {
+    margin-top: 10px;
+    color: #3fc35f;
+}
+
+.mu-clubs-card p {
     margin-top: 10px;
 }
 
@@ -884,7 +974,7 @@ button:focus {
 	}
 
 	.navigation-user ul li a {
-        font-size: 12px !important;
+        font-size: 14px !important;
     }
 
 	.mu-featured-slider-content h1 {
@@ -915,6 +1005,14 @@ button:focus {
 
     .mu-leagues-card {
         flex-basis: 45%;
+    }
+
+    .mu-search-club-area div {
+	    margin-bottom: 10px;
+	}
+
+    .mu-clubs-card {
+        flex-basis: 43%;
     }
 }
 
@@ -953,10 +1051,16 @@ button:focus {
         position: absolute;
         transition: all 0.5s ease;
         display: block;
-        left: 40%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0%);
     }
 
     .mu-search-league-area div:first-child input {
+        display: inline !important;
+	}
+
+	.mu-search-club-area div:first-child input {
         display: inline !important;
 	}
 }
@@ -995,6 +1099,10 @@ button:focus {
 	}
 
 	.mu-leagues-card {
+        flex-basis: 90%;
+    }
+
+    .mu-clubs-card {
         flex-basis: 90%;
     }
 }
@@ -1063,6 +1171,10 @@ button:focus {
 	}
 
 	.mu-search-league-form input {
+        width: 60% !important;
+	}
+
+	.mu-search-club-form input {
         width: 60% !important;
 	}
 }

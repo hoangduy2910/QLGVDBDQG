@@ -1,15 +1,59 @@
 from app import db
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
+import enum
 
 
 # Tạo bảng MySQL
+class UserRole(enum.Enum):
+    __tablename__ = "user_role"
+
+    USER = 1
+    ADMIN = 2
+
+
+class User(db.Model):
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    username = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
+    active = Column(Boolean, default=True)
+    user_role = Column(Enum(UserRole), default=UserRole.USER)
+    clubs = relationship('Club', backref='user', lazy=True)
+    leagues = relationship('League', backref='user', lazy=True)
+
+    def __str__(self):
+        return self.username
+
+
 class City(db.Model):
     __tablename__ = "city"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
     leagues = relationship('League', backref='city', lazy=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Gender(db.Model):
+    __tablename__ = "gender"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(10), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Level(db.Model):
+    __tablename__ = "level"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
 
     def __str__(self):
         return self.name
@@ -61,9 +105,12 @@ class Club(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
-    home = Column(String(255), nullable=True)
     address = Column(String(255), nullable=True)
+    phone = Column(String(10), nullable=False)
     image = Column(String(255), nullable=True)
+    level_id = Column(Integer, ForeignKey(Level.id), nullable=False)
+    gender_id = Column(Integer, ForeignKey(Gender.id), nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     players = relationship('Player', backref='club', lazy=True)
     results = relationship('Result', backref='club', lazy=True)
 
@@ -77,6 +124,7 @@ class Player(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     birthday = Column(DateTime, nullable=False)
+    phone = Column(String(10), nullable=False)
     image = Column(String(255), nullable=True)
     type_player_id = Column(Integer, ForeignKey(TypePlayer.id), nullable=False)
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
@@ -91,6 +139,8 @@ class League(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
+    image = Column(String(255), nullable=True)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     city_id = Column(Integer, ForeignKey(City.id), nullable=False)
     type_competition_id = Column(Integer, ForeignKey(TypeCompetition.id), nullable=False)
     rounds = relationship('Round', backref='league', lazy=True)
@@ -159,30 +209,6 @@ class Rule(db.Model):
 
     def __str__(self):
         return self.name + " - " + self.number
-
-
-class User(db.Model):
-    __tablename__ = "user"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    username = Column(String(255), nullable=False)
-    password = Column(String(255), nullable=False)
-
-    def __str__(self):
-        return self.username
-
-
-class Administrator(db.Model):
-    __tablename__ = "administrator"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    username = Column(String(255), nullable=False)
-    password = Column(String(255), nullable=False)
-
-    def __str__(self):
-        return self.name + " - " + self.username
 
 
 if __name__ == "__main__":

@@ -21,8 +21,10 @@ def league():
 
 
 @app.route("/doi")
-def team():
-    return render_template("teams.html")
+def club():
+    levels = dao.read_level()
+    genders = dao.read_gender()
+    return render_template("clubs.html", levels=levels, genders=genders)
 
 
 @app.route("/dang-nhap", methods=["get", "post"])
@@ -79,14 +81,14 @@ def profile():
     return render_template('profile.html')
 
 
-@app.route("/quan-ly-doi-bong")
+@app.route("/quan-ly-giai-dau")
 def my_league():
     return render_template('my-league.html')
 
 
-@app.route("/quan-ly-giai-dau")
-def my_team():
-    return render_template('my-team.html')
+@app.route("/quan-ly-doi-bong")
+def my_club():
+    return render_template('my-club.html')
 
 
 if __name__ == "__main__":

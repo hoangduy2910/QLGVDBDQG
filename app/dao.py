@@ -47,3 +47,13 @@ def read_type_competition():
     type_competition = TypeCompetition.query.all()
     return type_competition
 
+
+def read_level():
+    levels = Level.query.all()
+    return levels
+
+
+def read_gender():
+    genders = Gender.query.all()
+    return genders
+
