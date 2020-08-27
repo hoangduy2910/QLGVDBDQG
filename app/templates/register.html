@@ -17,26 +17,31 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="mu-login-area">
-					<form class="mu-login-form">
+					<form class="mu-login-form" method="post">
+						{% if err_msg %}
+						<div class="alert alert-danger" role="alert">
+							<p class="text-center">{{ err_msg }}</p>
+						</div>
+						{% endif %}
 						<div class="mu-login-form-header">
 							<h1>Đăng ký</h1>
 						</div>
 						<div class="mu-login-form-body">
 							<div class="form-group">
 								<label>Họ và tên</label>
-								<input type="text" class="form-control" />
+								<input type="text" class="form-control" name="name" />
 							</div>
 							<div class="form-group">
 								<label>Tên đăng nhập</label>
-								<input type="text" class="form-control" />
+								<input type="text" class="form-control" name="username" />
 							</div>
 							<div class="form-group">
 								<label>Mật khẩu</label>
-								<input type="password" class="form-control" />
+								<input type="password" class="form-control" name="password" />
 							</div>
 							<div class="form-group">
-								<label>Nhập lại mật khẩu</label>
-								<input type="password" class="form-control" />
+								<label>Xác nhận mật khẩu</label>
+								<input type="password" class="form-control" name="confirm" />
 							</div>
 							<div class="mu-login-form-body-button">
 								<button type="submit">Đăng ký</button>
@@ -58,4 +63,13 @@
 {% endblock %}
 
 {% block jquery %}
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Slick slider -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- Custom js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
 {% endblock %}

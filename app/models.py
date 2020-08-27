@@ -5,32 +5,91 @@ from flask_admin.contrib.sqla import ModelView
 from app import db, admin
 from flask_admin import BaseView, expose
 from flask_login import UserMixin
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
+from sqlalchemy.orm import relationship
+import enum
 
 
 # Tạo bảng MySQL
-class Club(db.Model):
-    __tablename__ = "club"
+class UserRole(enum.Enum):
+    __tablename__ = "user_role"
+
+    USER = 1
+    ADMIN = 2
+
+
+class User(db.Model):
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
-    home = Column(String(255), nullable=False)
-    address = Column(String(255), nullable=False)
-    players = relationship('Player', backref='club', lazy=True)
-    coaches = relationship('Coach', backref='club', lazy=True)
-    results = relationship('Result', backref='club', lazy=True)
+    username = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
+    active = Column(Boolean, default=True)
+    user_role = Column(Enum(UserRole), default=UserRole.USER)
+    clubs = relationship('Club', backref='user', lazy=True)
+    leagues = relationship('League', backref='user', lazy=True)
+
+    def __str__(self):
+        return self.username
+
+
+class City(db.Model):
+    __tablename__ = "city"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    leagues = relationship('League', backref='city', lazy=True)
 
     def __str__(self):
         return self.name
 
 
-class Coach(db.Model):
-    __tablename__ = "coach"
+class Gender(db.Model):
+    __tablename__ = "gender"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(10), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Level(db.Model):
+    __tablename__ = "level"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
-    birthday = Column(DateTime, nullable=False)
-    description = Column(String(255), nullable=True)
-    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class TypeCompetition(db.Model):
+    __tablename__ = "type_competition"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class TypeResult(db.Model):
+    __tablename__ = "type_result"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class TypeGoal(db.Model):
+    __tablename__ = "type_goal"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
 
     def __str__(self):
         return self.name
@@ -47,12 +106,32 @@ class TypePlayer(db.Model):
         return self.name
 
 
+class Club(db.Model):
+    __tablename__ = "club"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    address = Column(String(255), nullable=True)
+    phone = Column(String(10), nullable=False)
+    image = Column(String(255), nullable=True)
+    level_id = Column(Integer, ForeignKey(Level.id), nullable=False)
+    gender_id = Column(Integer, ForeignKey(Gender.id), nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    players = relationship('Player', backref='club', lazy=True)
+    results = relationship('Result', backref='club', lazy=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Player(db.Model):
     __tablename__ = "player"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     birthday = Column(DateTime, nullable=False)
+    phone = Column(String(10), nullable=False)
+    image = Column(String(255), nullable=True)
     type_player_id = Column(Integer, ForeignKey(TypePlayer.id), nullable=False)
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
     goals = relationship('Goal', backref='player', lazy=True)
@@ -66,6 +145,10 @@ class League(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
+    image = Column(String(255), nullable=True)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    city_id = Column(Integer, ForeignKey(City.id), nullable=False)
+    type_competition_id = Column(Integer, ForeignKey(TypeCompetition.id), nullable=False)
     rounds = relationship('Round', backref='league', lazy=True)
 
     def __str__(self):
@@ -98,16 +181,6 @@ class Match(db.Model):
         return self.id + " - " + self.home + " - " + self.away
 
 
-class TypeGoal(db.Model):
-    __tablename__ = "type_goal"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-
-    def __str__(self):
-        return self.name
-
-
 class Goal(db.Model):
     __tablename__ = "goal"
 
@@ -118,16 +191,6 @@ class Goal(db.Model):
 
     def __str__(self):
         return self.id + " - " + self.player_id + " - " + self.match_id
-
-
-class TypeResult(db.Model):
-    __tablename__ = "type_result"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-
-    def __str__(self):
-        return self.name
 
 
 class Result(db.Model):
@@ -154,6 +217,7 @@ class Rule(db.Model):
         return self.name + " - " + self.number
 
 
+<<<<<<< HEAD
 class User(db.Model):
     __tablename__ = "user"
 
@@ -178,8 +242,6 @@ class Administrator(db.Model, UserMixin):  # Đa kế thừa
     def __str__(self):
         return self.name + " - " + self.username
 
-
-# <<<<<<< HEAD
 
 class ClubModelView(ModelView):
     column_display_pk = True

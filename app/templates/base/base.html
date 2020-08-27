@@ -30,7 +30,6 @@
   	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
 
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -59,13 +58,24 @@
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" {% block style_navigation %}{% endblock %}>
 					<ul class="nav navbar-nav mu-menu navbar-right">
 						<li><a href="{{ url_for('index') }}">TRANG CHỦ</a></li>
-						<li><a href="{{ url_for('create_league') }}">TẠO GIẢI ĐẤU</a></li>
-						<li><a href="{{ url_for('find_league') }}">TÌM GIẢI ĐẤU</a></li>
-						<li><a href="{{ url_for('find_team') }}">TÌM ĐỘI</a></li>
+						<li><a href="{{ url_for('league') }}">GIẢI ĐẤU</a></li>
+						<li><a href="{{ url_for('club') }}">ĐỘI</a></li>
+						{% if session.user %}
+						<li class="navigation-user">
+							<a class="text-uppercase">{{ session.user.name }}</a>
+							<ul>
+								<li><a href="{{ url_for('profile') }}">Thông tin cá nhân</a></li>
+								<li><a href="{{ url_for('my_club') }}">Quản lý đội bóng</a></li>
+								<li><a href="{{ url_for('my_league') }}">Quản lý giải đấu</a></li>
+								<li><a href="{{ url_for('logout') }}">Đăng xuất</a></li>
+							</ul>
+						</li>
+						{% else %}
 						<li><a href="{{ url_for('login') }}">ĐĂNG NHẬP</a></li>
+						{% endif %}
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			  </div><!-- /.container-fluid -->
@@ -122,27 +132,24 @@
 	<!-- Start main content -->
 	<main role="main">
 		{% block main %}
-		<!-- Start Create League -->
-		<section id="mu-create-league">
+		<section id="mu-type-competition">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="mu-create-league-area">
-
-							<div class="mu-create-league-header">
+						<div class="mu-type-competition-area">
+							<div class="mu-type-competition-header">
 								<h2 class="mu-heading-title"><span>Hỗ trợ nhiều thể thức đấu loại cho giải đấu</span></h2>
 								<span class="mu-header-dot"></span>
 								<p>Chia sẻ những giải đấu của bạn trên internet. Dễ dàng bình luận và thảo luận với những người theo dõi tại trang thông tin chung của giải</p>
 							</div>
 
 							<!-- Start Create League Content -->
-							<div class="mu-create-league-content">
+							<div class="mu-type-competition-content">
 								<div class="row">
-
 									<!-- Create League Single Content -->
 									<div class="col-md-4 col-sm-6">
-										<div class="mu-create-league-content-single">
-											<span class="mu-create-league-icon-box">
+										<div class="mu-type-competition-content-single">
+											<span class="mu-type-competition-icon-box">
 												<i class="icon-user-unfollow"></i>
 											</span>
 											<h4>Đấu loại trực tiếp</h4>
@@ -153,8 +160,8 @@
 
 									<!-- Create League Single Content -->
 									<div class="col-md-4 col-sm-6">
-										<div class="mu-create-league-content-single">
-											<span class="mu-create-league-icon-box">
+										<div class="mu-type-competition-content-single">
+											<span class="mu-type-competition-icon-box">
 												<i class="icon-reload"></i>
 											</span>
 											<h4>Đấu vòng tròn</h4>
@@ -165,8 +172,8 @@
 
 									<!-- Create League Single Content -->
 									<div class="col-md-4 col-sm-6">
-										<div class="mu-create-league-content-single">
-											<span class="mu-create-league-icon-box">
+										<div class="mu-type-competition-content-single">
+											<span class="mu-type-competition-icon-box">
 												<i class="icon-shuffle"></i>
 											</span>
 											<h4>Đấu tổng hợp</h4>
@@ -176,7 +183,6 @@
 									<!-- / Create League Single Content -->
 								</div>
 							</div>
-							<!-- End Create League Content -->
 						</div>
 					</div>
 				</div>

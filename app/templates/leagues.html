@@ -1,0 +1,144 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+{% block style_header %}
+    class="mu-fixed-nav" style="background-color: #3fc35f;"
+{% endblock %}
+
+{% block slider %}
+{% endblock %}
+
+{% block main %}
+<section id="mu-leagues">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-search-league-area">
+                    <div class="col-md-7">
+                        <nav class="mu-search-league-navbar">
+                            <form class="form-inline mu-search-league-form">
+                                <input class="form-control" type="search" placeholder="Tên giải đấu" />
+                                <button class="mu-search-league-btn" type="submit">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                            </form>
+                        </nav>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control">
+                            {% for tc in type_competition %}
+                            <option>{{ tc.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control">
+                            {% for city in cities %}
+                            <option>{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-leagues-area">
+                    <div class="mu-leagues-group-card">
+                        <a href="#" class="mu-leagues-card">
+                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                            <div class="mu-leagues-card-image">
+                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                            </div>
+                            <div class="mu-leagues-card-body">
+                                <h4 class="text-center">Tên giải đấu</h4>
+                                <p class="text-center">Địa chỉ giải đấu</p>
+                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="mu-leagues-card">
+                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                            <div class="mu-leagues-card-image">
+                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                            </div>
+                            <div class="mu-leagues-card-body">
+                                <h4 class="text-center">Tên giải đấu</h4>
+                                <p class="text-center">Địa chỉ giải đấu</p>
+                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="mu-leagues-card">
+                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                            <div class="mu-leagues-card-image">
+                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                            </div>
+                            <div class="mu-leagues-card-body">
+                                <h4 class="text-center">Tên giải đấu</h4>
+                                <p class="text-center">Địa chỉ giải đấu</p>
+                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="mu-leagues-card">
+                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                            <div class="mu-leagues-card-image">
+                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                            </div>
+                            <div class="mu-leagues-card-body">
+                                <h4 class="text-center">Tên giải đấu</h4>
+                                <p class="text-center">Địa chỉ giải đấu</p>
+                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="mu-leagues-card">
+                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                            <div class="mu-leagues-card-image">
+                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                            </div>
+                            <div class="mu-leagues-card-body">
+                                <h4 class="text-center">Tên giải đấu</h4>
+                                <p class="text-center">Địa chỉ giải đấu</p>
+                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="mu-leagues-card">
+                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                            <div class="mu-leagues-card-image">
+                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                            </div>
+                            <div class="mu-leagues-card-body">
+                                <h4 class="text-center">Tên giải đấu</h4>
+                                <p class="text-center">Địa chỉ giải đấu</p>
+                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block jquery %}
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Slick slider -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- Custom js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+{% endblock %}
