@@ -243,6 +243,7 @@ class AdministratorModelView(ModelView):
 
 
 # Tạo các trang admin
+admin.add_view(AdministratorModelView(Administrator, db.session))
 admin.add_view(ClubModelView(Club, db.session))
 admin.add_view(CoachModelView(Coach, db.session))
 admin.add_view(PlayerModelView(Player, db.session))
@@ -253,10 +254,9 @@ admin.add_view(GoalModelView(Goal, db.session))
 admin.add_view(ResultModelView(Result, db.session))
 admin.add_view(RuleModelView(Rule, db.session))
 admin.add_view(UserModelView(User, db.session))
-admin.add_view(AdministratorModelView(Administrator, db.session))
-# admin.add_view(TypePlayer(TypePlayer, db.session))
-# admin.add_view(TypeGoal(TypeGoal, db.session))
-# admin.add_view(TypeResult(TypeResult, db.session))
+admin.add_view(TypePlayerModelView(TypePlayer, db.session))
+admin.add_view(TypeGoalModelView(TypeGoal, db.session))
+admin.add_view(TypeResultModelView(TypeResult, db.session))
 
 
 class HomeAdmin(BaseView):
