@@ -122,9 +122,6 @@ def my_club():
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     app.run(debug=True)
-=======
     from app.admin import *
     app.run(debug=True)
->>>>>>> aba7ebebd635910c5480ca2b17a5110152c36ed4

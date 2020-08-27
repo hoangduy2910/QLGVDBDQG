@@ -217,7 +217,6 @@ class Rule(db.Model):
         return self.name + " - " + self.number
 
 
-<<<<<<< HEAD
 class User(db.Model):
     __tablename__ = "user"
 
