@@ -6,32 +6,34 @@ from flask import render_template, request, redirect, url_for, session, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
 @login.user_loader
 def user_loader(user_id):
     return User.query.get(user_id)
 
 
+@login.user_loader
+def admin_loader(admin_id):
+    return Administrator.query.get(admin_id)
+
+
 # ADMIN
-@app.route("/admin/login", methods=["post", "get"])
+@app.route("/admin/login-admin", methods=["post", "get"])
 def login_admin():
     if request.method == "POST":
         err_msg = ""
         username = request.form.get("username")
         password = request.form.get("password")
 
-        user = dao.check_login(username=username, password=password)
+        # user = dao.check_login(username=username, password=password)
+        administrator = dao.login_admin(username=username, password=password)
 
-        if user:
-            login_user(user=user)
+        # if user:
+        #     login_user(user=user)
+        if administrator:
+            login_user(user=administrator)
+            return redirect("/admin")
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
-
-    return redirect("/admin")
 
 
 # USER
@@ -124,5 +126,4 @@ def create_league():
 
 
 if __name__ == "__main__":
-    from app.admin import *
     app.run(debug=True)

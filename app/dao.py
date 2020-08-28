@@ -3,8 +3,16 @@ from app import db
 from app.models import *
 
 
-def login_admin():
-    pass
+def login_admin(username, password):
+    password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
+
+    administrator = Administrator.query.filter(Administrator.username == username.strip(),
+                                               Administrator.password == password).first()
+
+    if administrator:
+        return administrator
+    else:
+        return False
 
 
 def check_username(username):
@@ -31,6 +39,7 @@ def add_user(name, username, password):
 
 def check_login(username, password):
     password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
+
     user = User.query.filter(User.username == username.strip(),
                              User.password == password).first()
 

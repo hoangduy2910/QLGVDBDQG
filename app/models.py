@@ -1,8 +1,12 @@
 from app import db
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user, logout_user
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
 import enum
+from flask_admin.contrib.sqla import ModelView
+from app import admin
+from flask_admin import BaseView, expose
+from flask import redirect
 
 
 # Tạo bảng MySQL
@@ -237,71 +241,86 @@ class Administrator(db.Model, UserMixin):  # Đa kế thừa
         return self.name + " - " + self.username
 
 
-class ClubModelView(ModelView):
+class AuthenticatedView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+
+class ClubModelView(AuthenticatedView):
     column_display_pk = True
     create_modal = True
     can_view_details = True
 
 
-class CoachModelView(ModelView):
+class CoachModelView(AuthenticatedView):
     column_display_pk = True
     create_modal = True
     can_view_details = True
     list_template = 'create-league.html'
 
 
-class TypePlayerModelView(ModelView):
+class TypePlayerModelView(AuthenticatedView):
     create_modal = True
 
 
-class PlayerModelView(ModelView):
+class PlayerModelView(AuthenticatedView):
     create_modal = True
 
 
-class LeagueModelView(ModelView):
+class LeagueModelView(AuthenticatedView):
     create_modal = True
 
 
-class RoundModelView(ModelView):
+class RoundModelView(AuthenticatedView):
     create_modal = True
 
 
-class MatchModelView(ModelView):
+class MatchModelView(AuthenticatedView):
     create_modal = True
 
 
-class TypeGoalModelView(ModelView):
+class TypeGoalModelView(AuthenticatedView):
     create_modal = True
 
 
-class GoalModelView(ModelView):
+class GoalModelView(AuthenticatedView):
     create_modal = True
 
 
-class TypeResultModelView(ModelView):
+class TypeResultModelView(AuthenticatedView):
     create_modal = True
 
 
-class ResultModelView(ModelView):
+class ResultModelView(AuthenticatedView):
     create_modal = True
 
 
-class RuleModelView(ModelView):
+class RuleModelView(AuthenticatedView):
     create_modal = True
 
 
-class UserModelView(ModelView):
+class UserModelView(AuthenticatedView):
     create_modal = True
 
 
-class AdministratorModelView(ModelView):
+class AdministratorModelView(AuthenticatedView):
     create_modal = True
+
+
+# Log out
+class LogOutView(BaseView):
+    @expose('/')
+    def index(self):
+        logout_user()
+        return redirect('/admin')
+
+    def is_accessible(self):
+        return current_user.is_authenticated
 
 
 # Tạo các trang admin
 admin.add_view(AdministratorModelView(Administrator, db.session))
 admin.add_view(ClubModelView(Club, db.session))
-# admin.add_view(CoachModelView(Coach, db.session))
 admin.add_view(PlayerModelView(Player, db.session))
 admin.add_view(LeagueModelView(League, db.session))
 admin.add_view(RoundModelView(Round, db.session))
@@ -313,15 +332,8 @@ admin.add_view(UserModelView(User, db.session))
 admin.add_view(TypePlayerModelView(TypePlayer, db.session))
 admin.add_view(TypeGoalModelView(TypeGoal, db.session))
 admin.add_view(TypeResultModelView(TypeResult, db.session))
+admin.add_view(LogOutView(name="Log Out"))
 
-
-class HomeAdmin(BaseView):
-    @expose('/')
-    def index (self):
-        return self.render('admin/About us.html')
-
-
-admin.add_view(HomeAdmin(name="About Us"))
 
 if __name__ == "__main__":
     db.create_all()
