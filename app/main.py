@@ -1,17 +1,18 @@
 from app import app, dao, login
 from flask import render_template, request, redirect, url_for, session
-from flask_login import login_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 
-# ADMIN
 @login.user_loader
 def user_loader(user_id):
     return User.query.get(user_id)
 
 
-@app.route("/login-admin", methods=["post", "get"])
+# ADMIN
+@app.route("/admin/login", methods=["post", "get"])
 def login_admin():
     if request.method == "POST":
+        err_msg = ""
         username = request.form.get("username")
         password = request.form.get("password")
 
@@ -19,6 +20,8 @@ def login_admin():
 
         if user:
             login_user(user=user)
+        else:
+            err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
 
     return redirect("/admin")
 
@@ -53,12 +56,7 @@ def login():
         user = dao.check_login(username=username, password=password)
 
         if user:
-            user_json = {
-                'id': user.id,
-                'name': user.name,
-                'username': user.username
-            }
-            session["user"] = user_json
+            login_user(user=user)
             return redirect(url_for('index'))
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
@@ -86,9 +84,9 @@ def register():
 
 
 @app.route("/dang-xuat")
+@login_required
 def logout():
-    if "user" in session:
-        session["user"] = None
+    logout_user()
     return redirect(url_for('index'))
 
 
@@ -105,6 +103,11 @@ def my_league():
 @app.route("/quan-ly-doi-bong")
 def my_club():
     return render_template('my-club.html')
+
+
+@app.route("/tao-doi")
+def create_club():
+    return render_template("create-club.html")
 
 
 @app.route("/tao-giai-dau")

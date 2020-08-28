@@ -63,9 +63,9 @@
 						<li><a href="{{ url_for('index') }}">TRANG CHỦ</a></li>
 						<li><a href="{{ url_for('league') }}">GIẢI ĐẤU</a></li>
 						<li><a href="{{ url_for('club') }}">ĐỘI</a></li>
-						{% if session.user %}
+						{% if current_user.is_authenticated %}
 						<li class="navigation-user">
-							<a class="text-uppercase">{{ session.user.name }}</a>
+							<a class="text-uppercase">{{ current_user.name }}</a>
 							<ul>
 								<li><a href="{{ url_for('profile') }}">Thông tin cá nhân</a></li>
 								<li><a href="{{ url_for('my_club') }}">Quản lý đội bóng</a></li>

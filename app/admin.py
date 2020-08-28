@@ -1,4 +1,4 @@
-from app import admin
+from app import admin, db
 from app.models import *
 from flask import redirect
 from flask_admin.contrib.sqla import ModelView

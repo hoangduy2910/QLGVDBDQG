@@ -15,6 +15,10 @@ Version: 1.0
 #FEATURED SLIDER 
 #TYPE COMPETITION
 #LEAGUES
+#CLUBS
+#PROFILE
+#MY LEAGUE
+#MY CLUB
 #COUNTER
 #TUTORIAL
 #FOOTER
@@ -241,7 +245,6 @@ button:focus {
 }
 
 
-
 /*--------------------*/
 /* HEADER */
 /*--------------------*/
@@ -278,6 +281,7 @@ button:focus {
 	position: fixed;
 	padding: 15px 0;
 }
+
 
 /*--------------------*/
 /* MENU */
@@ -530,7 +534,7 @@ button:focus {
 
 
 /*--------------------*/
-/* RESPONSIVE STYLE */
+/* LOGIN */
 /*--------------------*/
 
 #mu-login {
@@ -608,18 +612,18 @@ button:focus {
 	width: 100%;
 }
 
-.mu-search-league-area {
+.mu-search-leagues-area {
 	display: inline;
 	float: left;
 	padding-top: 100px;
 	width: 100%;
 }
 
-.mu-search-league-form input {
+.mu-search-leagues-form input {
     width: 85% !important;
 }
 
-.mu-search-league-btn {
+.mu-search-leagues-btn {
     background-color: #3fc35f;
     border-radius: 5px;
     color: white;
@@ -751,6 +755,147 @@ button:focus {
 
 .mu-clubs-card p {
     margin-top: 10px;
+}
+
+
+/*--------------------*/
+/* PROFILE */
+/*--------------------*/
+
+#mu-profile {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-profile-area {
+    display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-profile-area h1 {
+    color: #3fc35f;
+    margin-bottom: 50px;
+}
+
+.mu-profile-content {
+    display: flex;
+    padding: 20px;
+    border: 1px solid #3fc35f;
+}
+
+.mu-profile-image {
+    flex-basis: 30%;
+}
+
+.mu-profile-image img {
+    border: 1px solid #3fc35f;
+    border-radius: 50%;
+    transform: translate(25%, 25%);
+}
+
+.mu-profile-form {
+    flex-basis: 60%;
+}
+
+.mu-profile-form button {
+    background-color: #3fc35f;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+
+/*--------------------*/
+/* MY CLUB */
+/*--------------------*/
+
+#mu-my-club {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-my-club-area {
+    display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-my-club-area h1 {
+    color: #3fc35f;
+    margin-bottom: 50px;
+}
+
+.mu-my-club-area > a {
+    text-decoration: none;
+    background-color: #3fc35f;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.mu-no-clubs-area {
+    margin-top: 50px;
+    padding: 10px;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    border-radius: 5px;
+}
+
+.mu-no-clubs-area h5 {
+    margin: 0;
+}
+
+
+/*--------------------*/
+/* MY LEAGUE */
+/*--------------------*/
+
+#mu-my-league {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-my-league-area {
+    display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-my-league-area h1 {
+    color: #3fc35f;
+    margin-bottom: 50px;
+}
+
+.mu-my-league-area > a {
+    text-decoration: none;
+    background-color: #3fc35f;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.mu-no-leagues-area {
+    margin-top: 50px;
+    padding: 10px;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    border-radius: 5px;
+}
+
+.mu-no-leagues-area h5 {
+    margin: 0;
 }
 
 
@@ -999,7 +1144,7 @@ button:focus {
 		margin-bottom: 15px;
 	}
 
-	.mu-search-league-area div {
+	.mu-search-leagues-area div {
 	    margin-bottom: 10px;
 	}
 
@@ -1056,7 +1201,7 @@ button:focus {
         transform: translate(-50%, 0%);
     }
 
-    .mu-search-league-area div:first-child input {
+    .mu-search-leagues-area div:first-child input {
         display: inline !important;
 	}
 
@@ -1170,7 +1315,7 @@ button:focus {
 		margin-top: 10px;
 	}
 
-	.mu-search-league-form input {
+	.mu-search-leagues-form input {
         width: 60% !important;
 	}
 
