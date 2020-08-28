@@ -1,13 +1,9 @@
 {% extends 'admin/master.html' %}
 
-
-<!--Ghi đè phần body trang admin-->
 {% block body %}
-<!--Kiểm tra trạng thái đã login hay chưa
-    => dùng biến toàn cục current_user-->
     {% if current_user.is_authenticated %}
         <h1 class="text-center">Welcome to admin page!!!</h1>
-        <h1>{{ current.user.name }}</h1>
+        <h1>{{ current_user.name }}</h1>
     {% else %}
         {% include 'admin/admin-login.html' %}
     {% endif %}

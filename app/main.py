@@ -1,21 +1,9 @@
-from flask import render_template, redirect, request
-from app import app
-from app.models import *
-from app import login
+from app import app, dao, login
+from flask import render_template, request, redirect, url_for, session
 from flask_login import login_user
-# thư viện để băm mật khẩu
-import hashlib
-
-from app import dao
-from flask import render_template, request, redirect, url_for, session, jsonify
 
 
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
+# ADMIN
 @login.user_loader
 def user_loader(user_id):
     return User.query.get(user_id)
@@ -26,20 +14,19 @@ def login_admin():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        password = str(hashlib.md5(password.strip().encode("utf-8")).hexdigest())
-        user = Administrator.query.filter(Administrator.username == username.strip(),
-                                          Administrator.password == password).first()
-        # .first() => nếu có thì trả ra ngược lại trả ra null
-        # .strip() => cắt 2 đầu khoảng trắng
+
+        user = dao.check_login(username=username, password=password)
 
         if user:
             login_user(user=user)
+
     return redirect("/admin")
 
 
-@app.route("/tao-giai-dau")
-def create_league():
-    return render_template("create-leagues.html")
+# USER
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
 @app.route("/giai-dau")
@@ -58,7 +45,6 @@ def club():
 
 @app.route("/dang-nhap", methods=["get", "post"])
 def login():
-    return render_template("admin-login.html")
     err_msg = ""
     if request.method == "POST":
         username = request.form.get("username")
@@ -121,7 +107,11 @@ def my_club():
     return render_template('my-club.html')
 
 
+@app.route("/tao-giai-dau")
+def create_league():
+    return render_template("create-league.html")
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
     from app.admin import *
     app.run(debug=True)
