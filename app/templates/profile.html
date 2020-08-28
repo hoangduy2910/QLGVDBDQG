@@ -12,6 +12,41 @@
 {% endblock %}
 
 {% block main %}
+<section id="mu-profile">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="mu-profile-area">
+					<h1>Thông tin của tôi</h1>
+					<div class="mu-profile-content">
+						<div class="mu-profile-image">
+							<img src="{{ url_for('static', filename='images/default_user.png') }}">
+						</div>
+						<div class="mu-profile-form">
+							<form>
+								<div class="form-group">
+									<label>Họ và tên</label>
+									<input type="text" class="form-control" name="username" />
+								</div>
+								<div class="form-group">
+									<label>Số điện thoại</label>
+									<input type="password" class="form-control" name="password" />
+								</div>
+								<div class="form-group">
+									<label>Ngày sinh</label>
+									<input type="date" class="form-control" name="birthday" />
+								</div>
+								<div class="form-group">
+									<button type="submit">Lưu thông tin</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock %}
 
 {% block footer %}

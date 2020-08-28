@@ -1,13 +1,9 @@
-from flask import render_template, redirect, request
-from app import app
 from app.models import *
-from app import login
-from flask_login import login_user
 # thư viện để băm mật khẩu
 import hashlib
-
-from app import dao
+from app import app, dao, login
 from flask import render_template, request, redirect, url_for, session, jsonify
+from flask_login import login_user, logout_user, current_user, login_required
 
 
 @app.route("/")
@@ -20,25 +16,28 @@ def user_loader(user_id):
     return User.query.get(user_id)
 
 
-@app.route("/login-admin", methods=["post", "get"])
+# ADMIN
+@app.route("/admin/login", methods=["post", "get"])
 def login_admin():
     if request.method == "POST":
+        err_msg = ""
         username = request.form.get("username")
         password = request.form.get("password")
-        password = str(hashlib.md5(password.strip().encode("utf-8")).hexdigest())
-        user = Administrator.query.filter(Administrator.username == username.strip(),
-                                          Administrator.password == password).first()
-        # .first() => nếu có thì trả ra ngược lại trả ra null
-        # .strip() => cắt 2 đầu khoảng trắng
+
+        user = dao.check_login(username=username, password=password)
 
         if user:
             login_user(user=user)
+        else:
+            err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
+
     return redirect("/admin")
 
 
-@app.route("/tao-giai-dau")
-def create_league():
-    return render_template("create-leagues.html")
+# USER
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
 @app.route("/giai-dau")
@@ -57,7 +56,6 @@ def club():
 
 @app.route("/dang-nhap", methods=["get", "post"])
 def login():
-    return render_template("admin-login.html")
     err_msg = ""
     if request.method == "POST":
         username = request.form.get("username")
@@ -66,12 +64,7 @@ def login():
         user = dao.check_login(username=username, password=password)
 
         if user:
-            user_json = {
-                'id': user.id,
-                'name': user.name,
-                'username': user.username
-            }
-            session["user"] = user_json
+            login_user(user=user)
             return redirect(url_for('index'))
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
@@ -99,9 +92,9 @@ def register():
 
 
 @app.route("/dang-xuat")
+@login_required
 def logout():
-    if "user" in session:
-        session["user"] = None
+    logout_user()
     return redirect(url_for('index'))
 
 
@@ -120,7 +113,16 @@ def my_club():
     return render_template('my-club.html')
 
 
+@app.route("/tao-doi")
+def create_club():
+    return render_template("create-club.html")
+
+
+@app.route("/tao-giai-dau")
+def create_league():
+    return render_template("create-league.html")
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
     from app.admin import *
     app.run(debug=True)

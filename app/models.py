@@ -1,9 +1,4 @@
 from app import db
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
-from sqlalchemy.orm import relationship
-from flask_admin.contrib.sqla import ModelView
-from app import db, admin
-from flask_admin import BaseView, expose
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
@@ -18,7 +13,7 @@ class UserRole(enum.Enum):
     ADMIN = 2
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -327,7 +322,6 @@ class HomeAdmin(BaseView):
 
 
 admin.add_view(HomeAdmin(name="About Us"))
-
 
 if __name__ == "__main__":
     db.create_all()

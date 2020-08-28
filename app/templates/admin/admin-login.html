@@ -1,18 +1,12 @@
-<!--when you login the method always is post-->
-<!--Vì đã inlude bên page index rồi nên không cần phải extends master ở đây nữa-->
 <h1 class="text-center text-warning">LOGIN</h1>
-    <form action="{{ url_for('login_admin') }}" method="post" >
-
-        <div class="form-group">
-            <input type="text", name="username", class="form-control", placeholder="Tên đăng nhập"/>
-        </div>
-
-        <div class="form-group">
-            <input type="password", name="password", class="form-control", placeholder="Mật khẩu"/>
-        </div>
-
-        <div class="form-group">
-            <input type="submit", value="Login" , class="btn btn-danger"/>
-        </div>
-
-    </form>
+<form action="{{ url_for('login_admin') }}" method="post">
+    <div class="form-group">
+        <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" />
+    </div>
+    <div class="form-group">
+        <input type="password" name="password" class="form-control" placeholder="Mật khẩu" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Login" class="btn btn-danger" />
+    </div>
+</form>

@@ -30,16 +30,11 @@ def add_user(name, username, password):
 
 
 def check_login(username, password):
-    user = User.query.filter_by(username=username).first()
+    password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
+    user = User.query.filter(User.username == username.strip(),
+                             User.password == password).first()
 
-    if user:
-        password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
-        if user.password == password:
-            return user
-        else:
-            return False
-    else:
-        return False
+    return user if user else False
 
 
 def read_city():
