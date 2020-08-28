@@ -20,7 +20,6 @@ def admin_loader(admin_id):
 @app.route("/admin/login-admin", methods=["post", "get"])
 def login_admin():
     if request.method == "POST":
-        err_msg = ""
         username = request.form.get("username")
         password = request.form.get("password")
 
@@ -70,6 +69,7 @@ def login():
             return redirect(url_for('index'))
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
+            return err_msg
 
     return render_template("login.html", err_msg=err_msg)
 
