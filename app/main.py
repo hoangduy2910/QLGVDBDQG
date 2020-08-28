@@ -66,7 +66,12 @@ def login():
 
         if user:
             login_user(user=user)
-            return redirect(url_for('index'))
+            next_page = request.args.get('next')
+
+            if next_page:
+                return redirect(next_page)
+            else:
+                return redirect(url_for('index'))
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
             return err_msg
@@ -101,28 +106,50 @@ def logout():
 
 
 @app.route("/thong-tin-ca-nhan")
+@login_required
 def profile():
     return render_template('profile.html')
 
 
 @app.route("/quan-ly-giai-dau")
+@login_required
 def my_league():
     return render_template('my-league.html')
 
 
 @app.route("/quan-ly-doi-bong")
+@login_required
 def my_club():
     return render_template('my-club.html')
 
 
 @app.route("/tao-doi")
+@login_required
 def create_club():
-    return render_template("create-club.html")
+    levels = dao.read_level()
+    genders = dao.read_gender()
+    return render_template("create-club.html", levels=levels, genders=genders)
 
 
 @app.route("/tao-giai-dau")
+@login_required
 def create_league():
-    return render_template("create-league.html")
+    genders = dao.read_gender()
+    cities = dao.read_city()
+    type_competition = dao.read_type_competition()
+    return render_template("create-league.html", genders=genders, cities=cities, type_competition=type_competition)
+
+
+@app.route("/chi-tiet-doi-bong")
+@login_required
+def club_detail():
+    return render_template('club-detail.html')
+
+
+@app.route("/chi-tiet-giai-dau")
+@login_required
+def league_detail():
+    return render_template('league-detail.html')
 
 
 if __name__ == "__main__":

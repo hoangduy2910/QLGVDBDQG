@@ -775,7 +775,7 @@ button:focus {
 	width: 100%;
 }
 
-.mu-profile-area h1 {
+.mu-profile-area h2 {
     color: #3fc35f;
     margin-bottom: 50px;
 }
@@ -826,7 +826,7 @@ button:focus {
 	width: 100%;
 }
 
-.mu-my-club-area h1 {
+.mu-my-club-area h2 {
     color: #3fc35f;
     margin-bottom: 50px;
 }
@@ -871,7 +871,7 @@ button:focus {
 	width: 100%;
 }
 
-.mu-my-league-area h1 {
+.mu-my-league-area h2 {
     color: #3fc35f;
     margin-bottom: 50px;
 }
@@ -896,6 +896,108 @@ button:focus {
 
 .mu-no-leagues-area h5 {
     margin: 0;
+}
+
+
+/*--------------------*/
+/* CREATE CLUB */
+/*--------------------*/
+
+#mu-create-club {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-create-club-area {
+    display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-create-club-area h2 {
+    color: #3fc35f;
+    margin-bottom: 50px;
+}
+
+.mu-create-club-content {
+    display: flex;
+    border: 1px solid #3fc35f;
+    padding: 10px;
+}
+
+.mu-create-club-image {
+    flex-basis: 30%;
+}
+
+.mu-create-club-image > img {
+    transform: translate(20%, 40%);
+    border: 1px solid #3fc35f;
+    border-radius: 5px;
+}
+
+.mu-create-club-form-body {
+    flex-basis: 60%;
+}
+
+.mu-create-club-form-body button {
+    padding: 10px;
+    margin-top: 5px;
+    color: white;
+    background-color: #3fc35f;
+    border-radius: 5px;
+}
+
+
+/*--------------------*/
+/* CREATE LEAGUE */
+/*--------------------*/
+
+#mu-create-league {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-create-league-area {
+    display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-create-league-area h2 {
+    color: #3fc35f;
+    margin-bottom: 50px;
+}
+
+.mu-create-league-content {
+    display: flex;
+    border: 1px solid #3fc35f;
+    padding: 10px;
+}
+
+.mu-create-league-image {
+    flex-basis: 30%;
+}
+
+.mu-create-league-image > img {
+    transform: translate(20%, 40%);
+    border: 1px solid #3fc35f;
+    border-radius: 5px;
+}
+
+.mu-create-league-form-body {
+    flex-basis: 60%;
+}
+
+.mu-create-league-form-body button {
+    padding: 10px;
+    margin-top: 5px;
+    color: white;
+    background-color: #3fc35f;
+    border-radius: 5px;
 }
 
 
@@ -1109,8 +1211,11 @@ button:focus {
 	.navbar-default .mu-menu li a {
 		margin: 10px 12px 5px;
 	}
-}
 
+	.mu-create-club-image > img {
+        width: 65%;
+    }
+}
 
 @media (max-width: 991px) {
 	.navbar-default .mu-menu li a {
@@ -1158,6 +1263,26 @@ button:focus {
 
     .mu-clubs-card {
         flex-basis: 43%;
+    }
+
+    .mu-profile-content {
+        flex-direction: column;
+    }
+
+    .mu-profile-image > img {
+        margin-bottom: 30px;
+        width: 30%;
+        transform: translate(110%, 0%);
+    }
+
+    .mu-create-club-content {
+        flex-direction: column;
+    }
+
+    .mu-create-club-image > img {
+        margin-bottom: 30px;
+        width: 30%;
+        transform: translate(110%, 0%);
     }
 }
 

@@ -144,6 +144,7 @@ class League(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
+    address = Column(String(255), nullable=False)
     image = Column(String(255), nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     city_id = Column(Integer, ForeignKey(City.id), nullable=False)
