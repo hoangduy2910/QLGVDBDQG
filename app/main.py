@@ -10,7 +10,6 @@ from app import dao
 from flask import render_template, request, redirect, url_for, session, jsonify
 
 
-
 @app.route("/")
 def index():
     return render_template("index.html")

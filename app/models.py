@@ -217,16 +217,16 @@ class Rule(db.Model):
         return self.name + " - " + self.number
 
 
-class User(db.Model):
-    __tablename__ = "user"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    username = Column(String(255), nullable=False)
-    password = Column(String(255), nullable=False)
-
-    def __str__(self):
-        return self.name + " - " + self.username
+# class User(db.Model):
+#     __tablename__ = "user"
+#
+#     id = Column(Integer, primary_key=True, autoincrement=True)
+#     name = Column(String(100), nullable=False)
+#     username = Column(String(255), nullable=False)
+#     password = Column(String(255), nullable=False)
+#
+#     def __str__(self):
+#         return self.name + " - " + self.username
 
 
 class Administrator(db.Model, UserMixin):  # Đa kế thừa
@@ -306,7 +306,7 @@ class AdministratorModelView(ModelView):
 # Tạo các trang admin
 admin.add_view(AdministratorModelView(Administrator, db.session))
 admin.add_view(ClubModelView(Club, db.session))
-admin.add_view(CoachModelView(Coach, db.session))
+# admin.add_view(CoachModelView(Coach, db.session))
 admin.add_view(PlayerModelView(Player, db.session))
 admin.add_view(LeagueModelView(League, db.session))
 admin.add_view(RoundModelView(Round, db.session))
