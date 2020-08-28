@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
-from flask_login import LoginManager
+from flask_login import LoginManager, login_manager
 
 
 app = Flask(__name__)
@@ -18,4 +18,5 @@ admin = Admin(app=app, name="Quản Lý Giải Vô Địch Bóng Đá Quốc Gia
 
 # Login
 login = LoginManager(app=app)
+login.login_view = "login"
 

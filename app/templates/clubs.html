@@ -30,14 +30,14 @@
                     <div class="col-md-2">
                         <select class="form-control">
                             {% for level in levels %}
-                            <option>{{ level.name }}</option>
+                            <option value="{{ level.id }}">{{ level.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="col-md-2">
                         <select class="form-control">
                             {% for gender in genders %}
-                            <option>{{ gender.name }}</option>
+                            <option value="{{ gender.id }}">{{ gender.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
