@@ -1,0 +1,99 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+{% block style_header %}
+    class="mu-fixed-nav" style="background-color: #3fc35f;"
+{% endblock %}
+
+{% block slider %}
+{% endblock %}
+
+{% block main %}
+<section id="mu-achievements">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-achievements-area">
+                    <div class="mu-achievements-content">
+                        <div id="sidebar">
+                            <a href="{{ url_for('club_detail') }}"><i class="icon-info"></i><span>Đội bóng</span></a>
+                            <a href="{{ url_for('players_club') }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
+                            <a href="{{ url_for('leagues_club') }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
+                            <a href="{{ url_for('achievements') }}"><i class="icon-chart"></i><span>Thành tích</span></a>
+                        </div>
+                        <div class="mu-achievements-body">
+                            <h4>Thống kê thành tích</h4>
+                            <div class="mu-achievements-body-content">
+                                <div class="mu-achievements-match">
+                                    <div class="mu-achievements-match-header">
+                                        <h5>Trận đấu</h5>
+                                    </div>
+                                    <div class="mu-achievements-match-body">
+                                        <div>
+                                            <p>Tổng số trận</p>
+                                            <h3>0</h3>
+                                        </div>
+                                        <div>
+                                            <p>Số trận thắng</p>
+                                            <h3>0</h3>
+                                        </div>
+                                        <div>
+                                            <p>Số trận hòa</p>
+                                            <h3>0</h3>
+                                        </div>
+                                        <div>
+                                            <p>Số trận thua</p>
+                                            <h3>0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mu-achievements-goal">
+                                    <div class="mu-achievements-goal-header">
+                                        <h5>Bàn thắng</h5>
+                                    </div>
+                                    <div class="mu-achievements-goal-body">
+                                        <div>
+                                            <p>Trực tiếp</p>
+                                            <h3>0</h3>
+                                        </div>
+                                        <div>
+                                            <p>Phản lưới nhà</p>
+                                            <h3>0</h3>
+                                        </div>
+                                        <div>
+                                            <p>Đá phạt</p>
+                                            <h3>0</h3>
+                                        </div>
+                                        <div>
+                                            <p>Đấ phạt đền</p>
+                                            <h3>0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block jquery %}
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Slick slider -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- Custom js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+{% endblock %}
