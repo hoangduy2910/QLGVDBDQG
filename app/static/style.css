@@ -771,7 +771,7 @@ button:focus {
 .mu-profile-area {
     display: inline;
 	float: left;
-	padding-top: 100px;
+	padding-top: 150px;
 	width: 100%;
 }
 
@@ -822,7 +822,7 @@ button:focus {
 .mu-my-club-area {
     display: inline;
 	float: left;
-	padding-top: 100px;
+	padding-top: 150px;
 	width: 100%;
 }
 
@@ -867,7 +867,7 @@ button:focus {
 .mu-my-league-area {
     display: inline;
 	float: left;
-	padding-top: 100px;
+	padding-top: 150px;
 	width: 100%;
 }
 
@@ -912,7 +912,7 @@ button:focus {
 .mu-create-club-area {
     display: inline;
 	float: left;
-	padding-top: 100px;
+	padding-top: 150px;
 	width: 100%;
 }
 
@@ -963,7 +963,7 @@ button:focus {
 .mu-create-league-area {
     display: inline;
 	float: left;
-	padding-top: 100px;
+	padding-top: 150px;
 	width: 100%;
 }
 
@@ -1005,38 +1005,30 @@ button:focus {
 /* SIDEBAR */
 /*--------------------*/
 
-.mu-club-sidebar {
-    flex-basis: 22%;
+#sidebar {
+    flex-basis: 20%;
     margin-right: 20px;
+    background-color: #2F323A;
 }
 
-.mu-club-sidebar ul {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.mu-club-sidebar ul li {
-    list-style: none;
-    padding: 10px;
-}
-
-.mu-club-sidebar ul li:last-child {
-    padding-bottom: 50vh;
-}
-
-.mu-club-sidebar ul li:hover {
-    border-bottom: 2px solid white;
-}
-
-.mu-club-sidebar ul li i {
-    color: #eee;
-}
-
-.mu-club-sidebar ul li a {
-    color: #eee;
-    padding: 5px;
-    display: inline-block;
+#sidebar a {
+    color: #fff;
+    display: block;
+    width: 100%;
+    line-height: 60px;
+    text-decoration: none;
+    padding-left: 40px;
     box-sizing: border-box;
-    transition: .2s;
+    transition: .5s;
+}
+
+#sidebar a:hover {
+    background: #fff;
+    color: black;
+}
+
+#sidebar i {
+    padding-right: 10px;
 }
 
 
@@ -1053,57 +1045,227 @@ button:focus {
 .mu-club-detail-area {
     display: inline;
 	float: left;
-	padding-top: 100px;
+	padding-top: 150px;
 	width: 100%;
 }
 
 .mu-club-detail-content {
     display: flex;
-    border: 1px solid black;
+    border: 2px solid #2F323A;
 }
 
 .mu-club-detail-body {
-    flex-basis: 60%;
+    flex-basis: 75%;
     padding: 20px;
 }
 
-.mu-club-detail-body h3 {
-    color: #3fc35f;
-    margin-top: 10xp;
+.mu-club-detail-body h4 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.mu-club-detail-body-content {
+.mu-club-detail-image {
+    margin-bottom: 20px;
+}
+
+.mu-club-detail-image img {
+    width: 20%;
+    padding: 5px;
+    border: 1px solid #3fc35f;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+}
+
+/*--------------------*/
+/* PLAYERS */
+/*--------------------*/
+
+#mu-players {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-players-area {
+    display: inline;
+	float: left;
+	padding-top: 150px;
+	width: 100%;
+}
+
+.mu-players-content {
+    display: flex;
+    border: 2px solid #2F323A;
+}
+
+.mu-players-content h4 {
+    text-align: center;
+    margin: 20px;
+}
+
+.mu-players-body {
+    flex-basis: 75%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mu-players-card {
+    border: 1px solid #2F323A;
+    border-radius: 10%;
+    padding: 5px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.mu-players-card-image {
+    margin-bottom: 10px;
+}
+
+.mu-players-card-image img {
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #3fc35f;
+    border-radius: 50%;
+}
+
+.mu-players-card-body h5 {
+    color: #3fc35f;
+    text-align: center;
+}
+
+.mu-players-card-body p {
+    text-align: center;
+}
+
+
+/*--------------------*/
+/* LEAGUE CLUB */
+/*--------------------*/
+
+#mu-leagues-club {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-leagues-club-area {
+    display: inline;
+	float: left;
+	padding-top: 150px;
+	width: 100%;
+}
+
+.mu-leagues-club-content {
+    display: flex;
+    border: 2px solid #2F323A;
+}
+
+.mu-leagues-club-body {
+    flex-basis: 75%;
+}
+
+.mu-leagues-club-body h4 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.mu-leagues-club-group-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mu-leagues-club-card {
+    flex-basis: 30%;
+    padding: 10px;
+    margin: 20px 10px;
+    border: 1px solid #3fc35f;
+    border-radius: 10%;
+}
+
+.mu-leagues-club-card-body h5 {
+    color: #3fc35f;
+    text-align: center;
+    margin: 10px;
+}
+
+.mu-leagues-club-card-body p {
+    text-align: center;
+}
+
+
+/*--------------------*/
+/* ACHIEVEMENTS */
+/*--------------------*/
+
+#mu-achievements {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-achievements-area {
+    display: inline;
+	float: left;
+	padding-top: 150px;
+	width: 100%;
+}
+
+.mu-achievements-content {
+    display: flex;
+    border: 2px solid #2F323A;
+}
+
+.mu-achievements-body {
+    flex-basis: 75%;
+}
+
+.mu-achievements-body h4 {
+    margin: 20px;
+    text-align: center;
+}
+
+.mu-achievements-body-content {
     display: flex;
     flex-direction: column;
 }
 
-.mu-club-detail-image {
-    margin-top: 50px;
-}
-
-.mu-club-detail-image img {
+.mu-achievements-match, .mu-achievements-goal {
     border: 1px solid #3fc35f;
-    padding: 5px;
-    transform: translate(125%, 0%);
+    border-radius: 5px;
+    margin-bottom: 20px;
 }
 
-.mu-club-detail-info {
-    margin-top: 50px;
-    margin-left: 20px;
+.mu-achievements-match-header h5, .mu-achievements-goal-header h5 {
+    margin: 0;
+    padding: 0;
 }
 
-.mu-club-detail-info div {
-    display: flex;
-    align-items: center;
-}
-
-.mu-club-detail-info div h5 {
-    flex-basis: 30%;
+.mu-achievements-match-header, .mu-achievements-goal-header {
+    margin-bottom: 20px;
     padding: 10px;
+    border-bottom: 1px solid #eee;
+    background-color: #3fc35f;
+    text-transform: uppercase;
 }
 
-.mu-club-detail-info div i {
-    padding-bottom: 10px;
+.mu-achievements-match-body, .mu-achievements-goal-body {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.mu-achievements-match-body div, .mu-achievements-goal-body div {
+    flex-basis: 25%;
+}
+
+.mu-achievements-match-body div p, h3, .mu-achievements-goal-body div p, h3 {
+    text-align: center;
+    font-weight: bold;
 }
 
 
@@ -1321,14 +1483,6 @@ button:focus {
 	.mu-create-club-image > img {
         width: 65%;
     }
-
-    .mu-club-detail-image img {
-        transform: translate(85%, 0%);
-    }
-
-    .mu-club-detail-info div h5 {
-        flex-basis: 50%;
-    }
 }
 
 @media (max-width: 991px) {
@@ -1399,8 +1553,24 @@ button:focus {
         transform: translate(110%, 0%);
     }
 
-    .mu-club-detail-image img {
-        transform: translate(50%, 0%);
+    #sidebar {
+        flex-basis: 7%;
+    }
+
+    #sidebar a {
+        padding-left: 15px;
+    }
+
+    #sidebar a span {
+        display: none;
+    }
+
+    .mu-leagues-club-card {
+        flex-basis: 45%;
+    }
+
+    .mu-achievements-body {
+        flex-basis: 85%;
     }
 }
 
@@ -1451,11 +1621,6 @@ button:focus {
 	.mu-search-club-area div:first-child input {
         display: inline !important;
 	}
-
-	.mu-club-detail-info div h5 {
-        flex-basis: 50%;
-        padding: 10px;
-    }
 }
 
 @media (max-width: 640px) {
@@ -1499,12 +1664,12 @@ button:focus {
         flex-basis: 90%;
     }
 
-    .mu-club-detail-image img {
-        transform: translate(30%, 0%);
+    .mu-leagues-club-card {
+        flex-basis: 90%;
     }
 
-    .mu-club-detail-info div h5 {
-        flex-basis: 70%;
+    .mu-achievements-match-body div, .mu-achievements-goal-body div {
+        flex-basis: 45%;
     }
 }
 
@@ -1552,19 +1717,12 @@ button:focus {
 		margin-bottom: 18px;
 	}
 
-	.mu-club-detail-image img {
-	    width: 80%;
-        transform: translate(20%, 0%);
+    .mu-achievements-body {
+        flex-basis: 80%;
     }
 
-    .mu-club-detail-info {
-        margin-left: 0;
-    }
-
-    .mu-club-detail-info div h5, i {
-        padding-left: 0;
-        margin-left: -10px;
-        font-size: 14px;
+	.mu-achievements-match-body div, .mu-achievements-goal-body div {
+        flex-basis: 100%;
     }
 }
 
@@ -1594,14 +1752,9 @@ button:focus {
         width: 60% !important;
 	}
 
-	.mu-club-detail-image > img {
-        width: 50%;
+	.mu-achievements-body {
+        flex-basis: 70%;
     }
 
-    .mu-club-detail-info div h5, i {
-        padding-left: 0;
-        margin-left: -15px;
-        font-size: 12px;
-    }
 }
 
