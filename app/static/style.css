@@ -1002,6 +1002,112 @@ button:focus {
 
 
 /*--------------------*/
+/* SIDEBAR */
+/*--------------------*/
+
+.mu-club-sidebar {
+    flex-basis: 22%;
+    margin-right: 20px;
+}
+
+.mu-club-sidebar ul {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.mu-club-sidebar ul li {
+    list-style: none;
+    padding: 10px;
+}
+
+.mu-club-sidebar ul li:last-child {
+    padding-bottom: 50vh;
+}
+
+.mu-club-sidebar ul li:hover {
+    border-bottom: 2px solid white;
+}
+
+.mu-club-sidebar ul li i {
+    color: #eee;
+}
+
+.mu-club-sidebar ul li a {
+    color: #eee;
+    padding: 5px;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: .2s;
+}
+
+
+/*--------------------*/
+/* CLUB DETAIL */
+/*--------------------*/
+
+#mu-club-detail {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-club-detail-area {
+    display: inline;
+	float: left;
+	padding-top: 100px;
+	width: 100%;
+}
+
+.mu-club-detail-content {
+    display: flex;
+    border: 1px solid black;
+}
+
+.mu-club-detail-body {
+    flex-basis: 60%;
+    padding: 20px;
+}
+
+.mu-club-detail-body h3 {
+    color: #3fc35f;
+    margin-top: 10xp;
+}
+
+.mu-club-detail-body-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.mu-club-detail-image {
+    margin-top: 50px;
+}
+
+.mu-club-detail-image img {
+    border: 1px solid #3fc35f;
+    padding: 5px;
+    transform: translate(125%, 0%);
+}
+
+.mu-club-detail-info {
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+.mu-club-detail-info div {
+    display: flex;
+    align-items: center;
+}
+
+.mu-club-detail-info div h5 {
+    flex-basis: 30%;
+    padding: 10px;
+}
+
+.mu-club-detail-info div i {
+    padding-bottom: 10px;
+}
+
+
+/*--------------------*/
 /* COUNTER */
 /*--------------------*/
 
@@ -1215,6 +1321,14 @@ button:focus {
 	.mu-create-club-image > img {
         width: 65%;
     }
+
+    .mu-club-detail-image img {
+        transform: translate(85%, 0%);
+    }
+
+    .mu-club-detail-info div h5 {
+        flex-basis: 50%;
+    }
 }
 
 @media (max-width: 991px) {
@@ -1284,6 +1398,10 @@ button:focus {
         width: 30%;
         transform: translate(110%, 0%);
     }
+
+    .mu-club-detail-image img {
+        transform: translate(50%, 0%);
+    }
 }
 
 
@@ -1333,6 +1451,11 @@ button:focus {
 	.mu-search-club-area div:first-child input {
         display: inline !important;
 	}
+
+	.mu-club-detail-info div h5 {
+        flex-basis: 50%;
+        padding: 10px;
+    }
 }
 
 @media (max-width: 640px) {
@@ -1374,6 +1497,14 @@ button:focus {
 
     .mu-clubs-card {
         flex-basis: 90%;
+    }
+
+    .mu-club-detail-image img {
+        transform: translate(30%, 0%);
+    }
+
+    .mu-club-detail-info div h5 {
+        flex-basis: 70%;
     }
 }
 
@@ -1420,6 +1551,21 @@ button:focus {
 	.mu-type-competition-content-single h4 {
 		margin-bottom: 18px;
 	}
+
+	.mu-club-detail-image img {
+	    width: 80%;
+        transform: translate(20%, 0%);
+    }
+
+    .mu-club-detail-info {
+        margin-left: 0;
+    }
+
+    .mu-club-detail-info div h5, i {
+        padding-left: 0;
+        margin-left: -10px;
+        font-size: 14px;
+    }
 }
 
 
@@ -1447,5 +1593,15 @@ button:focus {
 	.mu-search-club-form input {
         width: 60% !important;
 	}
+
+	.mu-club-detail-image > img {
+        width: 50%;
+    }
+
+    .mu-club-detail-info div h5, i {
+        padding-left: 0;
+        margin-left: -15px;
+        font-size: 12px;
+    }
 }
 
