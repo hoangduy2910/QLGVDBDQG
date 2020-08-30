@@ -1,6 +1,3 @@
-/* Hình thức thi đấu */
-insert into db_qlgiaibongda.type_competition (name) values ('Đấu loại trực tiếp'), ('Đấu vòng tròn'), ('Đấu tổng hợp');
-
 /* Loại bàn thắng */
 insert into db_qlgiaibongda.type_goal (name) values ('Trực tiếp'), ('Phản lưới nhà'), ('Đá phạt'), ('Đá phạt đền');
 
@@ -15,6 +12,12 @@ insert into db_qlgiaibongda.gender (name) values ('Nam'), ('Nữ');
 
 /* Trình độ */
 insert into db_qlgiaibongda.level (name) values ('Chuyên nghiệp'), ('Bán chuyên'), ('Cao cấp'), ('Trung cấp'), ('Vui');
+
+/* Người dùng */
+insert into db_qlgiaibongda.user (name, username, password, active, user_role) values 
+('user1', 'user1', '202cb962ac59075b964b07152d234b70', 1, 1),
+('user2', 'user2', '202cb962ac59075b964b07152d234b70', 1, 1),
+('user3', 'user3', '202cb962ac59075b964b07152d234b70', 1, 1);
 
 /* Các tỉnh thành */
 insert into db_qlgiaibongda.city (name) values

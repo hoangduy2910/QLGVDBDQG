@@ -3,10 +3,6 @@ from app import db
 from app.models import *
 
 
-def login_admin():
-    pass
-
-
 def check_username(username):
     if User.query.filter_by(username=username).first():
         return True
@@ -38,21 +34,45 @@ def check_login(username, password):
 
 
 def read_city():
-    cities = City.query.all()
-    return cities
+    return City.query.all()
 
 
-def read_type_competition():
-    type_competition = TypeCompetition.query.all()
-    return type_competition
+def read_city_by_id(city_id):
+    return City.query.get(city_id)
 
 
 def read_level():
-    levels = Level.query.all()
-    return levels
+    return Level.query.all()
 
 
 def read_gender():
-    genders = Gender.query.all()
-    return genders
+    return Gender.query.all()
+
+
+def create_league(name, address, image, gender_id, city_id, user_id):
+    league = League(name=name, address=address, image=image,
+                    gender_id=gender_id, city_id=city_id, user_id=user_id)
+
+    db.session.add(league)
+    db.session.commit()
+
+
+def read_leagues_by_user_id(user_id):
+    return User.query.get(user_id).leagues
+
+
+def read_league_by_id(league_id):
+    return League.query.get(league_id)
+
+
+def read_league(keyword="", city_id=0):
+    leagues = League.query
+
+    if keyword:
+        leagues = leagues.filter(League.name.contains(keyword))
+
+    if city_id != 0:
+        leagues = leagues.filter(League.city_id == city_id)
+
+    return leagues.all()
 

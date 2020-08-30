@@ -18,7 +18,7 @@
 			<div class="col-md-12">
 				<div class="mu-create-league-area">
                     <h2>Tạo giải đấu</h2>
-                    <form class="mu-create-league-form">
+                    <form class="mu-create-league-form" method="post">
                         <div class="mu-create-league-content">
                             <div class="mu-create-league-image">
                                 <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
@@ -26,33 +26,25 @@
                             <div class="mu-create-league-form-body">
                                 <div class="form-group">
                                     <label>Tên giải đấu</label>
-                                    <input type="text" class="form-control" name="name" />
+                                    <input type="text" class="form-control" name="name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Địa điểm</label>
+                                    <input type="text" class="form-control" name="address" required />
                                 </div>
                                 <div class="form-group">
                                     <label>Giới tính</label>
-                                    <select class="form-control">
+                                    <select class="form-control" name="gender_id">
                                         {% for gender in genders %}
                                         <option value="{{ gender.id }}">{{ gender.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Địa điểm</label>
-                                    <input type="text" class="form-control" name="address" />
-                                </div>
-                                <div class="form-group">
                                     <label>Tỉnh / Thành</label>
-                                    <select class="form-control">
+                                    <select class="form-control" name="city_id">
                                         {% for city in cities %}
                                         <option value="{{ city.id }}">{{ city.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Hình thức thi đấu</label>
-                                    <select class="form-control">
-                                        {% for tc in type_competition %}
-                                        <option value="{{ tc.id }}">{{ tc.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

@@ -19,87 +19,29 @@
 				<div class="mu-my-league-area">
 					<h2>Giải đấu của tôi</h2>
 					<a href="{{ url_for('create_league') }}">Tạo giải đấu</a>
+					{% if leagues %}
+						{% for l in leagues %}
+						<div class="mu-leagues-area">
+							<div class="mu-leagues-group-card">
+								<a href="{{ url_for('league_detail', league_id=l.id) }}" class="mu-leagues-card">
+									<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+									<div class="mu-leagues-card-image">
+										<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+									</div>
+									<div class="mu-leagues-card-body">
+										<h4 class="text-center">{{ l.name }}</h4>
+										<p class="text-center">{{ l.address }}</p>
+										<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+									</div>
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					{% else %}
 					<div class="mu-no-leagues-area">
 						<h5>Hiện tại bạn chưa có giải đấu nào !!!</h5>
 					</div>
-					<!--
-					<div class="mu-leagues-area">
-						<div class="mu-leagues-group-card">
-							<a href="#" class="mu-leagues-card">
-								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-								<div class="mu-leagues-card-image">
-									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-								</div>
-								<div class="mu-leagues-card-body">
-									<h4 class="text-center">Tên giải đấu</h4>
-									<p class="text-center">Địa chỉ giải đấu</p>
-									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-								</div>
-							</a>
-
-							<a href="#" class="mu-leagues-card">
-								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-								<div class="mu-leagues-card-image">
-									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-								</div>
-								<div class="mu-leagues-card-body">
-									<h4 class="text-center">Tên giải đấu</h4>
-									<p class="text-center">Địa chỉ giải đấu</p>
-									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-								</div>
-							</a>
-
-							<a href="#" class="mu-leagues-card">
-								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-								<div class="mu-leagues-card-image">
-									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-								</div>
-								<div class="mu-leagues-card-body">
-									<h4 class="text-center">Tên giải đấu</h4>
-									<p class="text-center">Địa chỉ giải đấu</p>
-									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-								</div>
-							</a>
-
-							<a href="#" class="mu-leagues-card">
-								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-								<div class="mu-leagues-card-image">
-									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-								</div>
-								<div class="mu-leagues-card-body">
-									<h4 class="text-center">Tên giải đấu</h4>
-									<p class="text-center">Địa chỉ giải đấu</p>
-									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-								</div>
-							</a>
-
-							<a href="#" class="mu-leagues-card">
-								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-								<div class="mu-leagues-card-image">
-									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-								</div>
-								<div class="mu-leagues-card-body">
-									<h4 class="text-center">Tên giải đấu</h4>
-									<p class="text-center">Địa chỉ giải đấu</p>
-									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-								</div>
-							</a>
-
-							<a href="#" class="mu-leagues-card">
-								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-								<div class="mu-leagues-card-image">
-									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-								</div>
-								<div class="mu-leagues-card-body">
-									<h4 class="text-center">Tên giải đấu</h4>
-									<p class="text-center">Địa chỉ giải đấu</p>
-									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-								</div>
-							</a>
-
-						</div>
-					</div>
-					-->
+					{% endif %}
 				</div>
 			</div>
 		</div>

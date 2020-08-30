@@ -17,30 +17,29 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="mu-search-leagues-area">
-                    <div class="col-md-7">
-                        <nav class="mu-search-leagues-navbar">
-                            <form class="form-inline mu-search-leagues-form">
-                                <input class="form-control" type="search" placeholder="Tên giải đấu" />
+                    <nav class="mu-search-leagues-navbar">
+                        <form class="form-inline mu-search-leagues-form">
+                            <div class="col-md-7">
+                                <input class="form-control" type="search"
+                                       placeholder="Tên giải đấu" name="keyword" value="{{ keyword }}" />
                                 <button class="mu-search-leagues-btn" type="submit">
                                     <i class="icon-magnifier"></i>
                                 </button>
-                            </form>
-                        </nav>
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-control">
-                            {% for tc in type_competition %}
-                            <option value="{{ tc.id }}">{{ tc.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-control">
-                            {% for city in cities %}
-                            <option value="{{ city.id }}">{{ city.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control" name="city_id">
+                                    <option value="0">Tỉnh/Thành</option>
+                                    {% for city in cities %}
+                                        {% if city_id == city.id %}
+                                        <option value="{{ city.id }}" selected>{{ city.name }}</option>
+                                        {% else %}
+                                        <option value="{{ city.id }}">{{ city.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -48,41 +47,25 @@
             <div class="col-md-12">
                 <div class="mu-leagues-area">
                     <div class="mu-leagues-group-card">
-                        <a href="{{ url_for('league_detail') }}" class="mu-leagues-card">
+                        {% for l in leagues %}
+                        <a href="{{ url_for('league_detail', league_id=l.id) }}" class="mu-leagues-card">
                             <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
                             <div class="mu-leagues-card-image">
                                 <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
                             </div>
                             <div class="mu-leagues-card-body">
-                                <h4 class="text-center">Tên giải đấu</h4>
-                                <p class="text-center">Địa chỉ giải đấu</p>
-                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+                                <h4 class="text-center">{{ l.name }}</h4>
+                                <p class="text-center">
+                                    {% for city in cities %}
+                                        {% if city.id == l.city_id %}
+                                        <span>{{ l.address }}|{{ city.name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p class="text-center"><i class="icon-people"></i> {{ l.clubs|length }} Đội</p>
                             </div>
                         </a>
-
-                        <a href="{{ url_for('league_detail') }}" class="mu-leagues-card">
-                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-                            <div class="mu-leagues-card-image">
-                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-                            </div>
-                            <div class="mu-leagues-card-body">
-                                <h4 class="text-center">Tên giải đấu</h4>
-                                <p class="text-center">Địa chỉ giải đấu</p>
-                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-                            </div>
-                        </a>
-
-                        <a href="{{ url_for('league_detail') }}" class="mu-leagues-card">
-                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-                            <div class="mu-leagues-card-image">
-                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-                            </div>
-                            <div class="mu-leagues-card-body">
-                                <h4 class="text-center">Tên giải đấu</h4>
-                                <p class="text-center">Địa chỉ giải đấu</p>
-                                <p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-                            </div>
-                        </a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
