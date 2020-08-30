@@ -654,7 +654,8 @@ button:focus {
 }
 
 .mu-leagues-card:hover {
-    transform: scaleY(1.1);
+    transform: scale(1.05);
+    box-shadow: 5px 10px 8px #888888;
 }
 
 .mu-leagues-card img {
@@ -739,7 +740,8 @@ button:focus {
 }
 
 .mu-clubs-card:hover {
-    transform: scaleY(1.1);
+    transform: scale(1.05);
+    box-shadow: 5px 10px 8px #888888;
 }
 
 .mu-clubs-card img {
@@ -918,23 +920,26 @@ button:focus {
 
 .mu-create-club-area h2 {
     color: #3fc35f;
-    margin-bottom: 50px;
+    margin-bottom: 15px;
 }
 
 .mu-create-club-content {
     display: flex;
-    border: 1px solid #3fc35f;
+    flex-direction: column;
+    border: 2px solid #2F323A;
     padding: 10px;
 }
 
 .mu-create-club-image {
     flex-basis: 30%;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #3fc35f;
 }
 
 .mu-create-club-image > img {
-    transform: translate(20%, 40%);
-    border: 1px solid #3fc35f;
-    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
 }
 
 .mu-create-club-form-body {
@@ -969,23 +974,25 @@ button:focus {
 
 .mu-create-league-area h2 {
     color: #3fc35f;
-    margin-bottom: 50px;
+    margin-bottom: 15px;
 }
 
 .mu-create-league-content {
     display: flex;
-    border: 1px solid #3fc35f;
+    flex-direction: column;
+    border: 2px solid black;
     padding: 10px;
 }
 
 .mu-create-league-image {
-    flex-basis: 30%;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #3fc35f;
 }
 
 .mu-create-league-image > img {
-    transform: translate(20%, 40%);
-    border: 1px solid #3fc35f;
-    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
 }
 
 .mu-create-league-form-body {
@@ -1066,12 +1073,11 @@ button:focus {
 
 .mu-club-detail-image {
     margin-bottom: 20px;
+    border: 1px solid #3fc35f;
 }
 
 .mu-club-detail-image img {
-    width: 20%;
     padding: 5px;
-    border: 1px solid #3fc35f;
     border-radius: 5px;
     margin: 0 auto;
     display: block;
@@ -1266,6 +1272,138 @@ button:focus {
 .mu-achievements-match-body div p, h3, .mu-achievements-goal-body div p, h3 {
     text-align: center;
     font-weight: bold;
+}
+
+
+/*--------------------*/
+/* LEAGUE DETAIL */
+/*--------------------*/
+
+#mu-league-detail {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-league-detail-area {
+    display: inline;
+	float: left;
+	padding-top: 150px;
+	width: 100%;
+}
+
+.mu-league-detail-content-header {
+    display: flex;
+    color: #fff;
+    padding: 20px 0;
+    background-color: #2F323A;
+    border-bottom: 2px solid #fff;
+}
+
+.mu-league-detail-content-header-image {
+    flex-basis: 20%;
+    padding: 5px;
+}
+
+.mu-league-detail-content-header-image img {
+    width: 35%;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #3fc35f;
+    border-radius: 5%;
+}
+
+.mu-league-detail-content-body {
+    display: flex;
+    border: 2px solid #2F323A;
+}
+
+.mu-league-detail-body {
+    flex-basis: 75%;
+    justify-content: center;
+}
+
+
+/*--------------------*/
+/* RANK */
+/*--------------------*/
+#rank thead {
+    background: #eee;
+}
+
+#rank th, tr {
+    text-align: center;
+}
+
+#rank .tooltip {
+  position: relative;
+}
+
+#rank #tooltip .tooltip-text {
+  visibility: hidden;
+  background-color: #2F323A;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  margin-left: 10px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+#rank #tooltip:hover .tooltip-text {
+  visibility: visible;
+}
+
+#badge-win {
+    background-color: #28a745;
+}
+
+#badge-draw {
+    background-color: #6c757d;
+}
+
+#badge-lose {
+    background-color: #dc3545;
+}
+
+/*--------------------*/
+/* CLUB LEAGUE */
+/*--------------------*/
+#clubs-league {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#clubs-league .mu-clubs-league-card {
+    flex-basis: 25%;
+    border: 1px solid #2F323A;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.mu-clubs-league-card-image {
+    margin-bottom: 10px;
+    border: 1px solid #3fc35f;
+    border-radius: 5%;
+}
+
+.mu-clubs-league-card img {
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+}
+
+.mu-clubs-league-card-body h5 {
+    color: #3fc35f;
+}
+
+.mu-clubs-league-card-body .badge-group {
+    display: flex;
+    justify-content: center;
 }
 
 
@@ -1479,10 +1617,6 @@ button:focus {
 	.navbar-default .mu-menu li a {
 		margin: 10px 12px 5px;
 	}
-
-	.mu-create-club-image > img {
-        width: 65%;
-    }
 }
 
 @media (max-width: 991px) {
@@ -1547,12 +1681,6 @@ button:focus {
         flex-direction: column;
     }
 
-    .mu-create-club-image > img {
-        margin-bottom: 30px;
-        width: 30%;
-        transform: translate(110%, 0%);
-    }
-
     #sidebar {
         flex-basis: 7%;
     }
@@ -1571,6 +1699,14 @@ button:focus {
 
     .mu-achievements-body {
         flex-basis: 85%;
+    }
+
+    .mu-league-detail-body {
+        flex-basis: 88%;
+    }
+
+    #clubs-league .mu-clubs-league-card {
+        flex-basis: 40%;
     }
 }
 
@@ -1671,8 +1807,11 @@ button:focus {
     .mu-achievements-match-body div, .mu-achievements-goal-body div {
         flex-basis: 45%;
     }
-}
 
+    #clubs-league .mu-clubs-league-card {
+        flex-basis: 85%;
+    }
+}
 
 @media (max-width: 480px) {
 
