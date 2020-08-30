@@ -93,4 +93,3 @@ admin.add_view(ResultModelView(Result, db.session))
 admin.add_view(RuleModelView(Rule, db.session))
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(LogOutView(name="Logout"))
-

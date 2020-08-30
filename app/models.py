@@ -1,5 +1,5 @@
 from app import db
-from flask_login import UserMixin, current_user, logout_user
+from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
 import enum
