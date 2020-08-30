@@ -1,0 +1,92 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+{% block style_header %}
+    class="mu-fixed-nav" style="background-color: #3fc35f;"
+{% endblock %}
+
+{% block slider %}
+{% endblock %}
+
+{% block main %}
+<section id="mu-players">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-players-area">
+                    <div class="mu-players-content">
+                        <div id="sidebar">
+                            <a href="{{ url_for('club_detail') }}"><i class="icon-info"></i><span>Đội bóng</span></a>
+                            <a href="{{ url_for('players_club') }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
+                            <a href="{{ url_for('leagues_club') }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
+                            <a href="{{ url_for('achievements') }}"><i class="icon-chart"></i><span>Thành tích</span></a>
+                        </div>
+                        <div>
+                            <h4>Các cầu thủ</h4>
+                            <div class="mu-players-body">
+                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
+                                    <div class="mu-players-card-image">
+                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
+                                    </div>
+                                    <div class="mu-players-card-body">
+                                        <h5>Tên cầu thủ</h5>
+                                        <p>Số bàn thắng: <span>0</span></p>
+                                    </div>
+                                </a>
+
+                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
+                                    <div class="mu-players-card-image">
+                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
+                                    </div>
+                                    <div class="mu-players-card-body">
+                                        <h5>Tên cầu thủ</h5>
+                                        <p>Số bàn thắng: <span>0</span></p>
+                                    </div>
+                                </a>
+
+                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
+                                    <div class="mu-players-card-image">
+                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
+                                    </div>
+                                    <div class="mu-players-card-body">
+                                        <h5>Tên cầu thủ</h5>
+                                        <p>Số bàn thắng: <span>0</span></p>
+                                    </div>
+                                </a>
+
+                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
+                                    <div class="mu-players-card-image">
+                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
+                                    </div>
+                                    <div class="mu-players-card-body">
+                                        <h5>Tên cầu thủ</h5>
+                                        <p>Số bàn thắng: <span>0</span></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block jquery %}
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Slick slider -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- Custom js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+{% endblock %}

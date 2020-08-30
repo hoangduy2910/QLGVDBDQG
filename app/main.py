@@ -141,13 +141,31 @@ def create_league():
 
 
 @app.route("/chi-tiet-doi-bong")
-@login_required
 def club_detail():
     return render_template('club-detail.html')
 
 
+@app.route("/cau-thu-cua-doi")
+def players_club():
+    return render_template('players-club.html')
+
+
+@app.route("/giai-dau-cua-doi")
+def leagues_club():
+    return render_template('leagues-club.html')
+
+
+@app.route("/thanh-tich-cua-doi")
+def achievements():
+    return render_template('achievements.html')
+
+
+@app.route("/chi-tiet-cau-thu")
+def player_detail():
+    return render_template('player-detail.html')
+
+
 @app.route("/chi-tiet-giai-dau")
-@login_required
 def league_detail():
     return render_template('league-detail.html')
 
