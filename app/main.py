@@ -1,6 +1,4 @@
 from app.models import *
-# thư viện để băm mật khẩu
-import hashlib
 from app import app, dao, login
 from flask import render_template, request, redirect, url_for, session, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
@@ -33,6 +31,7 @@ def login_admin():
             return redirect("/admin")
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
+            return err_msg
 
 
 # USER

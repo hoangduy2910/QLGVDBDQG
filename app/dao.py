@@ -65,3 +65,4 @@ def read_gender():
     genders = Gender.query.all()
     return genders
 
+
