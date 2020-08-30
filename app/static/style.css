@@ -627,7 +627,10 @@ button:focus {
     background-color: #3fc35f;
     border-radius: 5px;
     color: white;
-    margin-top: 2px;
+}
+
+.mu-search-leagues-btn:hover {
+    color: white;
 }
 
 .mu-leagues-area {
@@ -714,7 +717,10 @@ button:focus {
     background-color: #3fc35f;
     border-radius: 5px;
     color: white;
-    margin-top: 2px;
+}
+
+.mu-search-club-btn:hover {
+    color: #fff;
 }
 
 .mu-clubs-area {

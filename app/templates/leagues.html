@@ -22,7 +22,7 @@
                             <div class="col-md-7">
                                 <input class="form-control" type="search"
                                        placeholder="Tên giải đấu" name="keyword" value="{{ keyword }}" />
-                                <button class="mu-search-leagues-btn" type="submit">
+                                <button class="btn mu-search-leagues-btn" type="submit">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
@@ -30,7 +30,7 @@
                                 <select class="form-control" name="city_id">
                                     <option value="0">Tỉnh/Thành</option>
                                     {% for city in cities %}
-                                        {% if city_id == city.id %}
+                                        {% if city_id|int == city.id|int %}
                                         <option value="{{ city.id }}" selected>{{ city.name }}</option>
                                         {% else %}
                                         <option value="{{ city.id }}">{{ city.name }}</option>
