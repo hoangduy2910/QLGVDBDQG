@@ -160,6 +160,21 @@ def league_detail():
     return render_template('league-detail.html')
 
 
+@app.route("/xep-hang")
+def rank():
+    return render_template('rank.html')
+
+
+@app.route("/cac-doi-cua-giai-dau")
+def clubs_league():
+    return render_template('clubs-league.html')
+
+
+@app.route("/thong-ke")
+def statistic():
+    return render_template('statistic.html')
+
+
 if __name__ == "__main__":
     from app.admin import *
     app.run(debug=True)
