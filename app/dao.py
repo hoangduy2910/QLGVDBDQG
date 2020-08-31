@@ -33,17 +33,6 @@ def check_login(username, password):
     return user if user else False
 
 
-def check_login_admin(username, password):
-    password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
-    user = User.query.filter(User.username == username.strip(),
-                             User.password == password).first()
-
-    if user.user_role == 2:
-        return user
-    else:
-        return None
-
-
 def read_city():
     return City.query.all()
 
@@ -67,8 +56,6 @@ def create_league(name, address, image, gender_id, city_id, user_id):
     db.session.add(league)
     db.session.commit()
 
-    return league.id
-
 
 def read_leagues_by_user_id(user_id):
     return User.query.get(user_id).leagues
@@ -88,3 +75,14 @@ def read_league(keyword="", city_id=0):
         leagues = leagues.filter(League.city_id == city_id)
 
     return leagues.all()
+
+
+def update_profile(user_id, phone, birthday, name):
+    user = User.query.get(user_id)
+
+    user.name = name
+    user.phone = phone
+    user.birthday = birthday
+
+    db.session.add(user)
+    db.session.commit()

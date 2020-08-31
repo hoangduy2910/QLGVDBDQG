@@ -23,18 +23,18 @@
 							<img src="{{ url_for('static', filename='images/default_user.png') }}">
 						</div>
 						<div class="mu-profile-form">
-							<form>
+							<form method="post">
 								<div class="form-group">
 									<label>Họ và tên</label>
-									<input type="text" class="form-control" name="username" />
+									<input type="text" class="form-control" name="name" value="{{ user.name }}" />
 								</div>
 								<div class="form-group">
 									<label>Số điện thoại</label>
-									<input type="password" class="form-control" name="password" />
+									<input type="number" class="form-control" name="phone" value="{{ user.phone }}" />
 								</div>
 								<div class="form-group">
 									<label>Ngày sinh</label>
-									<input type="date" class="form-control" name="birthday" />
+									<input type="date" class="form-control" name="birthday" value="{{ user.birthday }}" />
 								</div>
 								<div class="form-group">
 									<button type="submit">Lưu thông tin</button>

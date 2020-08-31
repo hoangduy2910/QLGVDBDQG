@@ -24,6 +24,8 @@ class User(db.Model, UserMixin):
     user_role = Column(Enum(UserRole), default=UserRole.USER)
     clubs = relationship('Club', backref='user', lazy=True)
     leagues = relationship('League', backref='user', lazy=True)
+    phone = Column(String(10), nullable=True)
+    birthday = Column(DateTime, nullable=True)
 
     def __str__(self):
         return self.username
@@ -203,6 +205,19 @@ class Rule(db.Model):
 
     def __str__(self):
         return self.name + " - " + self.number
+
+
+class Administrator(db.Model, UserMixin):  # Đa kế thừa
+    __tablename__ = "administrator"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)  # autoincrement: tăng tự động
+    name = Column(String(100), nullable=False)
+    active = Column(Boolean, default=True)
+    username = Column(String(100), nullable=False)
+    password = Column(String(100), nullable=False)
+
+    def __str__(self):
+        return self.name + " - " + self.username
 
 
 if __name__ == "__main__":
