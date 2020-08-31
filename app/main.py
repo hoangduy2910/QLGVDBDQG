@@ -17,13 +17,10 @@ def login_admin():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # user = dao.check_login(username=username, password=password)
-        administrator = dao.login_admin(username=username, password=password)
+        user = dao.check_login_admin(username=username, password=password)
 
-        # if user:
-        #     login_user(user=user)
-        if administrator:
-            login_user(user=administrator)
+        if user:
+            login_user(user=user)
             return redirect("/admin")
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
@@ -163,8 +160,10 @@ def create_league():
         city_id = request.form.get("city_id")
         user_id = current_user.id
 
-        dao.create_league(name=name, address=address, image=image,
+        league_id = dao.create_league(name=name, address=address, image=image,
                           gender_id=gender_id, city_id=city_id, user_id=user_id)
+
+        return redirect(url_for('league_detail', league_id=league_id))
 
     return render_template("create-league.html", genders=genders, cities=cities)
 
@@ -201,6 +200,16 @@ def league_detail(league_id):
     return render_template('league-detail.html', league=league, cities=cities)
 
 
+@app.route("/danh-sach-dang-ky")
+def list_register():
+    return render_template('list-register.html')
+
+
+@app.route("/lich-thi-dau")
+def schedule():
+    return render_template('schedule.html')
+
+
 @app.route("/xep-hang/<int:league_id>")
 def rank(league_id):
     cities = dao.read_city()
@@ -221,6 +230,10 @@ def statistic(league_id):
     league = dao.read_league_by_id(league_id)
     return render_template('statistic.html', league=league, cities=cities)
 
+
+@app.route("/tuy-chinh")
+def settings():
+    return render_template('settings.html')
 
 if __name__ == "__main__":
     from app import admin
