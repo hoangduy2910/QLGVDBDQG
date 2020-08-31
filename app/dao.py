@@ -76,3 +76,13 @@ def read_league(keyword="", city_id=0):
 
     return leagues.all()
 
+
+def update_profile(user_id, phone, birthday, name):
+    user = User.query.get(user_id)
+
+    user.name = name
+    user.phone = phone
+    user.birthday = birthday
+
+    db.session.add(user)
+    db.session.commit()

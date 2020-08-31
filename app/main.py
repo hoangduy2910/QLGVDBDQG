@@ -20,9 +20,14 @@ def login_admin():
 
         if user:
             login_user(user=user)
+
+        user = dao.check_login_admin(username=username, password=password)
+
+        if user:
+            login_user(user=user)
+            return redirect("/admin")
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
-
     return redirect("/admin")
 
 
