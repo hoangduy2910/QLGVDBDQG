@@ -1,6 +1,7 @@
 from app import app, dao, login
 from flask import render_template, request, redirect, url_for, session
 from flask_login import login_user, logout_user, current_user, login_required
+from datetime import datetime
 
 
 @login.user_loader
@@ -15,11 +16,6 @@ def login_admin():
         err_msg = ""
         username = request.form.get("username")
         password = request.form.get("password")
-
-        user = dao.check_login(username=username, password=password)
-
-        if user:
-            login_user(user=user)
 
         user = dao.check_login_admin(username=username, password=password)
 
@@ -111,10 +107,27 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/thong-tin-ca-nhan")
+@app.route("/thong-tin-ca-nhan/<int:user_id>", methods=["get", "post"])
 @login_required
-def profile():
-    return render_template('profile.html')
+def profile(user_id):
+    user = User.query.get(user_id)
+    convert_birthday = user.birthday.strftime("%Y-%m-%d")
+    err_msg = ""
+
+    if request.method == "POST":
+        if request.form.get("name") and request.form.get("phone") and request.form.get("birthday"):
+            name = request.form.get("name")
+            phone = request.form.get("phone")
+            birthday = request.form.get("birthday")
+
+            dao.update_profile(user_id=user_id, name=name, phone=phone, birthday=birthday)
+            msg = "Cập nhật thành công !"
+
+            return render_template('profile.html', user=user, msg=msg, convert_birthday=convert_birthday)
+        else:
+            err_msg = "Bạn phải nhập đủ thông tin !"
+
+    return render_template('profile.html', user=user, err_msg=err_msg, convert_birthday=convert_birthday)
 
 
 @app.route("/quan-ly-giai-dau")

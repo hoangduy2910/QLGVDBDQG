@@ -14,10 +14,11 @@ insert into db_qlgiaibongda.gender (name) values ('Nam'), ('Nữ');
 insert into db_qlgiaibongda.level (name) values ('Chuyên nghiệp'), ('Bán chuyên'), ('Cao cấp'), ('Trung cấp'), ('Vui');
 
 /* Người dùng */
-insert into db_qlgiaibongda.user (name, username, password, active, user_role) values 
-('user1', 'user1', '202cb962ac59075b964b07152d234b70', 1, 1),
-('user2', 'user2', '202cb962ac59075b964b07152d234b70', 1, 1),
-('user3', 'user3', '202cb962ac59075b964b07152d234b70', 1, 1);
+insert into db_qlgiaibongda.user (name, username, password, phone, birthday, active, user_role) values
+('admin', 'admin', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-01-01', 1, 2),
+('user1', 'user1', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-01-01', 1, 1),
+('user2', 'user2', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1),
+('user3', 'user3', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1);
 
 /* Các tỉnh thành */
 insert into db_qlgiaibongda.city (name) values

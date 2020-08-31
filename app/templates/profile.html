@@ -18,6 +18,16 @@
 			<div class="col-md-12">
 				<div class="mu-profile-area">
 					<h2>Thông tin của tôi</h2>
+					{% if msg %}
+					<div class="alert alert-success" role="alert">
+						<div class="text-center">{{ msg }}</div>
+					</div>
+					{% endif %}
+					{% if err_msg %}
+					<div class="alert alert-warning" role="alert">
+						<div class="text-center">{{ err_msg }}</div>
+					</div>
+					{% endif %}
 					<div class="mu-profile-content">
 						<div class="mu-profile-image">
 							<img src="{{ url_for('static', filename='images/default_user.png') }}">
@@ -34,7 +44,7 @@
 								</div>
 								<div class="form-group">
 									<label>Ngày sinh</label>
-									<input type="date" class="form-control" name="birthday" value="{{ user.birthday }}" />
+									<input type="date" class="form-control" name="birthday" value="{{ convert_birthday }}" />
 								</div>
 								<div class="form-group">
 									<button type="submit">Lưu thông tin</button>
