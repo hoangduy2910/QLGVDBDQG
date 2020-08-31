@@ -20,17 +20,23 @@
                                 <img src="/static/images/default_football_league.png">
                             </div>
                             <div class="mu-league-detail-content-header-body">
-                                <h6>Tên giải đấu</h6>
-                                <p>Địa chỉ giải đấu</p>
-                                <p><i class="icon-people"></i> 00 Đội</p>
+                                <h6>{{ league.name }}</h6>
+                                <p>
+                                    {% for city in cities %}
+                                        {% if city.id == league.city_id %}
+                                        <span>{{ league.address }} | {{ city.name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p><i class="icon-people"></i> {{ league.clubs|length }} Đội</p>
                             </div>
                         </div>
                         <div class="mu-league-detail-content-body">
                             <div id="sidebar">
                                  <a href="#"><i class="icon-calendar"></i><span>Lịch thi đấu</span></a>
-                                <a href="{{ url_for('rank') }}"><i class="icon-trophy"></i><span>Bảng xếp hạng</span></a>
-                                <a href="{{ url_for('clubs_league') }}"><i class="icon-people"></i><span>Đội bóng</span></a>
-                                <a href="{{ url_for('statistic') }}"><i class="icon-chart"></i><span>Thống kê</span></a>
+                                <a href="{{ url_for('rank', league_id=league.id) }}"><i class="icon-trophy"></i><span>Bảng xếp hạng</span></a>
+                                <a href="{{ url_for('clubs_league', league_id=league.id) }}"><i class="icon-people"></i><span>Đội bóng</span></a>
+                                <a href="{{ url_for('statistic', league_id=league.id) }}"><i class="icon-chart"></i><span>Thống kê</span></a>
                             </div>
                             <div class="mu-league-detail-body">
                                 <table class="table" id="rank">
@@ -40,22 +46,24 @@
                                             <th scope="col">Tên đội</th>
                                             <th scope="col">Số trận</th>
                                             <th scope="col" id="tooltip">
-                                                <span class="badge" id="badge-win">T</span> -
-                                                <span class="badge" id="badge-draw">H</span> -
-                                                <span class="badge" id="badge-lose">T</span>
+                                                <span class="badge badge-win">T</span> -
+                                                <span class="badge badge-draw">H</span> -
+                                                <span class="badge badge-lose">T</span>
                                                 <span class="tooltip-text">Thắng - Hòa - Thua</span>
                                             </th>
                                             <th scope="col">Điểm</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for club in league.clubs %}
                                         <tr>
                                             <th scope="row">1</th>
-                                            <td>Mark</td>
+                                            <td>{{ club.name }}</td>
                                             <td>2</td>
                                             <td>1 - 1 - 1</td>
                                             <td>4</td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

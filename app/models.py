@@ -60,16 +60,6 @@ class Level(db.Model):
         return self.name
 
 
-class TypeCompetition(db.Model):
-    __tablename__ = "type_competition"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-
-    def __str__(self):
-        return self.name
-
-
 class TypeResult(db.Model):
     __tablename__ = "type_result"
 
@@ -101,6 +91,23 @@ class TypePlayer(db.Model):
         return self.name
 
 
+class League(db.Model):
+    __tablename__ = "league"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    address = Column(String(255), nullable=False)
+    image = Column(String(255), nullable=True)
+    gender_id = Column(Integer, ForeignKey(Gender.id), nullable=False)
+    city_id = Column(Integer, ForeignKey(City.id), nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    clubs = relationship('Club', backref='league', lazy=True)
+    rounds = relationship('Round', backref='league', lazy=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Club(db.Model):
     __tablename__ = "club"
 
@@ -112,6 +119,7 @@ class Club(db.Model):
     level_id = Column(Integer, ForeignKey(Level.id), nullable=False)
     gender_id = Column(Integer, ForeignKey(Gender.id), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
     players = relationship('Player', backref='club', lazy=True)
     results = relationship('Result', backref='club', lazy=True)
 
@@ -135,22 +143,6 @@ class Player(db.Model):
         return self.name
 
 
-class League(db.Model):
-    __tablename__ = "league"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    address = Column(String(255), nullable=False)
-    image = Column(String(255), nullable=True)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
-    city_id = Column(Integer, ForeignKey(City.id), nullable=False)
-    type_competition_id = Column(Integer, ForeignKey(TypeCompetition.id), nullable=False)
-    rounds = relationship('Round', backref='league', lazy=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Round(db.Model):
     __tablename__ = "round"
 
@@ -167,11 +159,11 @@ class Match(db.Model):
     __tablename__ = "match"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
     home = Column(Integer, ForeignKey(Club.id), nullable=False)
     away = Column(Integer, ForeignKey(Club.id), nullable=False)
     stadium = Column(String(255), nullable=False)
     date = Column(DateTime, nullable=False)
+    round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
 
     def __str__(self):
         return self.id + " - " + self.home + " - " + self.away

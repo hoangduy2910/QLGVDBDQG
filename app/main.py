@@ -43,8 +43,13 @@ def index():
 @app.route("/giai-dau")
 def league():
     cities = dao.read_city()
-    type_competition = dao.read_type_competition()
-    return render_template("leagues.html", cities=cities, type_competition=type_competition)
+
+    keyword = request.args["keyword"] if request.args.get("keyword") else ""
+    city_id = request.args["city_id"] if request.args.get("city_id") else 0
+    leagues = dao.read_league(keyword=keyword, city_id=city_id)
+
+    return render_template("leagues.html", cities=cities, leagues=leagues,
+                           keyword=keyword, city_id=city_id)
 
 
 @app.route("/doi")
@@ -56,6 +61,9 @@ def club():
 
 @app.route("/dang-nhap", methods=["get", "post"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     err_msg = ""
     if request.method == "POST":
         username = request.form.get("username")
@@ -80,6 +88,9 @@ def login():
 
 @app.route("/dang-ky", methods=["get", "post"])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     err_msg = ""
     if request.method == "POST":
         name = request.form.get("name")
@@ -113,7 +124,8 @@ def profile():
 @app.route("/quan-ly-giai-dau")
 @login_required
 def my_league():
-    return render_template('my-league.html')
+    leagues = dao.read_leagues_by_user_id(current_user.id)
+    return render_template('my-league.html', leagues=leagues)
 
 
 @app.route("/quan-ly-doi-bong")
@@ -130,13 +142,24 @@ def create_club():
     return render_template("create-club.html", levels=levels, genders=genders)
 
 
-@app.route("/tao-giai-dau")
+@app.route("/tao-giai-dau", methods=["get", "post"])
 @login_required
 def create_league():
     genders = dao.read_gender()
     cities = dao.read_city()
-    type_competition = dao.read_type_competition()
-    return render_template("create-league.html", genders=genders, cities=cities, type_competition=type_competition)
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        address = request.form.get("address")
+        image = ''
+        gender_id = request.form.get("gender_id")
+        city_id = request.form.get("city_id")
+        user_id = current_user.id
+
+        dao.create_league(name=name, address=address, image=image,
+                          gender_id=gender_id, city_id=city_id, user_id=user_id)
+
+    return render_template("create-league.html", genders=genders, cities=cities)
 
 
 @app.route("/chi-tiet-doi-bong")
@@ -164,24 +187,32 @@ def player_detail():
     return render_template('player-detail.html')
 
 
-@app.route("/chi-tiet-giai-dau")
-def league_detail():
-    return render_template('league-detail.html')
+@app.route("/chi-tiet-giai-dau/<int:league_id>")
+def league_detail(league_id):
+    cities = dao.read_city()
+    league = dao.read_league_by_id(league_id)
+    return render_template('league-detail.html', league=league, cities=cities)
 
 
-@app.route("/xep-hang")
-def rank():
-    return render_template('rank.html')
+@app.route("/xep-hang/<int:league_id>")
+def rank(league_id):
+    cities = dao.read_city()
+    league = dao.read_league_by_id(league_id)
+    return render_template('rank.html', league=league, cities=cities)
 
 
-@app.route("/cac-doi-cua-giai-dau")
-def clubs_league():
-    return render_template('clubs-league.html')
+@app.route("/cac-doi-cua-giai-dau/<int:league_id>")
+def clubs_league(league_id):
+    cities = dao.read_city()
+    league = dao.read_league_by_id(league_id)
+    return render_template('clubs-league.html', league=league, cities=cities)
 
 
-@app.route("/thong-ke")
-def statistic():
-    return render_template('statistic.html')
+@app.route("/thong-ke/<int:league_id>")
+def statistic(league_id):
+    cities = dao.read_city()
+    league = dao.read_league_by_id(league_id)
+    return render_template('statistic.html', league=league, cities=cities)
 
 
 if __name__ == "__main__":
