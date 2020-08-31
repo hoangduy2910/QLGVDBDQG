@@ -1,8 +1,6 @@
-from app.models import *
 from app import app, dao, login
-from flask import render_template, request, redirect, url_for, session, jsonify
+from flask import render_template, request, redirect, url_for, session
 from flask_login import login_user, logout_user, current_user, login_required
-import datetime
 
 
 @login.user_loader
@@ -11,23 +9,21 @@ def user_loader(user_id):
 
 
 # ADMIN
-@app.route("/admin/login-admin", methods=["post", "get"])
+@app.route("/admin/login", methods=["post", "get"])
 def login_admin():
     if request.method == "POST":
+        err_msg = ""
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # user = dao.check_login(username=username, password=password)
-        administrator = dao.login_admin(username=username, password=password)
+        user = dao.check_login(username=username, password=password)
 
-        # if user:
-        #     login_user(user=user)
-        if administrator:
-            login_user(user=administrator)
-            return redirect("/admin")
+        if user:
+            login_user(user=user)
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
-            return err_msg
+
+    return redirect("/admin")
 
 
 # USER
@@ -77,7 +73,6 @@ def login():
                 return redirect(url_for('index'))
         else:
             err_msg = "Tên tài khoản hoặc mật khẩu không hợp lệ."
-            return err_msg
 
     return render_template("login.html", err_msg=err_msg)
 
@@ -111,21 +106,10 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/thong-tin-ca-nhan/<string:user_id>", methods=["post", "get"])
+@app.route("/thong-tin-ca-nhan")
 @login_required
-def profile(user_id):
-    user = dao.read_user_by_id(user_id=int(user_id))
-    user.birthday = user.birthday.strftime("%m/%d/%Y")
-    print(user.birthday)
-
-    if request.method == "POST":
-        name = request.form.get("name")
-        phone = request.form.get("phone")
-        birthday = request.form.get("birthday")
-
-        dao.update_profile(user_id=user_id, name=name, phone=phone, birthday=birthday)
-
-    return render_template('profile.html', user=user)
+def profile():
+    return render_template('profile.html')
 
 
 @app.route("/quan-ly-giai-dau")
@@ -223,5 +207,5 @@ def statistic(league_id):
 
 
 if __name__ == "__main__":
-    from app import admin
+    from app.admin import *
     app.run(debug=True)

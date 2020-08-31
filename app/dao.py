@@ -25,13 +25,8 @@ def add_user(name, username, password):
     db.session.commit()
 
 
-def read_user_by_id(user_id):
-    return User.query.get(user_id)
-
-
 def check_login(username, password):
     password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
-
     user = User.query.filter(User.username == username.strip(),
                              User.password == password).first()
 
@@ -80,17 +75,4 @@ def read_league(keyword="", city_id=0):
         leagues = leagues.filter(League.city_id == city_id)
 
     return leagues.all()
-
-
-def update_profile(user_id, phone, birthday, name):
-    user = User.query.get(user_id)
-
-    user.name = name
-    user.phone = phone
-    user.birthday = birthday
-
-    db.session.add(user)
-    db.session.commit()
-
-
 
