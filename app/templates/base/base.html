@@ -67,7 +67,7 @@
 						<li class="navigation-user">
 							<a class="text-uppercase">{{ current_user.name }}</a>
 							<ul>
-								<li><a href="{{ url_for('profile') }}">Thông tin cá nhân</a></li>
+								<li><a href="{{ url_for('profile', user_id=current_user.id) }}">Thông tin cá nhân</a></li>
 								<li><a href="{{ url_for('my_club') }}">Quản lý đội bóng</a></li>
 								<li><a href="{{ url_for('my_league') }}">Quản lý giải đấu</a></li>
 								<li><a href="{{ url_for('logout') }}">Đăng xuất</a></li>

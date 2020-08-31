@@ -24,6 +24,8 @@ class User(db.Model, UserMixin):
     user_role = Column(Enum(UserRole), default=UserRole.USER)
     clubs = relationship('Club', backref='user', lazy=True)
     leagues = relationship('League', backref='user', lazy=True)
+    phone = Column(String(10), nullable=True)
+    birthday = Column(DateTime, nullable=True)
 
     def __str__(self):
         return self.username

@@ -2,16 +2,12 @@ from app.models import *
 from app import app, dao, login
 from flask import render_template, request, redirect, url_for, session, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
+import datetime
 
 
 @login.user_loader
 def user_loader(user_id):
     return User.query.get(user_id)
-
-
-@login.user_loader
-def admin_loader(admin_id):
-    return Administrator.query.get(admin_id)
 
 
 # ADMIN
@@ -115,10 +111,21 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/thong-tin-ca-nhan")
+@app.route("/thong-tin-ca-nhan/<string:user_id>", methods=["post", "get"])
 @login_required
-def profile():
-    return render_template('profile.html')
+def profile(user_id):
+    user = dao.read_user_by_id(user_id=int(user_id))
+    user.birthday = user.birthday.strftime("%m/%d/%Y")
+    print(user.birthday)
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        phone = request.form.get("phone")
+        birthday = request.form.get("birthday")
+
+        dao.update_profile(user_id=user_id, name=name, phone=phone, birthday=birthday)
+
+    return render_template('profile.html', user=user)
 
 
 @app.route("/quan-ly-giai-dau")
