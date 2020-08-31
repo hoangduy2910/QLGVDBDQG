@@ -56,6 +56,10 @@ class TypeResultModelView(AuthenticatedView):
     create_modal = True
 
 
+class TypeResultModelView(AuthenticatedView):
+    create_modal = True
+
+
 class ResultModelView(AuthenticatedView):
     create_modal = True
 
