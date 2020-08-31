@@ -156,6 +156,7 @@ def create_club():
 def create_league():
     genders = dao.read_gender()
     cities = dao.read_city()
+    msg = ""
 
     if request.method == "POST":
         name = request.form.get("name")
@@ -165,8 +166,10 @@ def create_league():
         city_id = request.form.get("city_id")
         user_id = current_user.id
 
-        dao.create_league(name=name, address=address, image=image,
-                          gender_id=gender_id, city_id=city_id, user_id=user_id)
+        league = dao.create_league(name=name, address=address, image=image,
+                                   gender_id=gender_id, city_id=city_id, user_id=user_id)
+
+        return redirect(url_for('league_detail', league_id=league.id))
 
     return render_template("create-league.html", genders=genders, cities=cities)
 
@@ -203,6 +206,12 @@ def league_detail(league_id):
     return render_template('league-detail.html', league=league, cities=cities)
 
 
+@app.route("/lich-thi-dau/<int:league_id>")
+def schedule(league_id):
+    league = dao.read_league_by_id(league_id)
+    return render_template('schedule.html', league=league)
+
+
 @app.route("/xep-hang/<int:league_id>")
 def rank(league_id):
     cities = dao.read_city()
@@ -219,9 +228,44 @@ def clubs_league(league_id):
 
 @app.route("/thong-ke/<int:league_id>")
 def statistic(league_id):
-    cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
-    return render_template('statistic.html', league=league, cities=cities)
+    return render_template('statistic.html', league=league)
+
+
+@app.route("/danh-sach-dang-ky/<int:league_id>")
+@login_required
+def list_register(league_id):
+    league = dao.read_league_by_id(league_id)
+    return render_template('list-register.html', league=league)
+
+
+@app.route("/tuy-chinh-giai-dau/<int:league_id>", methods=["get", "post"])
+@login_required
+def settings(league_id):
+    cities = dao.read_city()
+    genders= dao.read_gender()
+    league = dao.read_league_by_id(league_id)
+    err_msg = ""
+    msg = ""
+
+    if request.method == "POST":
+        if request.form.get("name") and request.form.get("address") and \
+           request.form.get("gender_id") and request.form.get("city_id"):
+            name = request.form.get("name")
+            address = request.form.get("address")
+            image = ""
+            gender_id = request.form.get("gender_id")
+            city_id = request.form.get("city_id")
+            user_id = current_user.id
+
+            dao.update_league(league_id=league_id, name=name, address=address,
+                              image=image, gender_id=gender_id, city_id=city_id, user_id=user_id)
+            msg = "Cập nhật thông tin của giải đấu thành công !"
+
+        else:
+            err_msg = "Bạn phải nhập đầy đủ thông tin của giải đấu !"
+
+    return render_template('settings.html', league=league, cities=cities, genders=genders, msg=msg, err_msg=err_msg)
 
 
 if __name__ == "__main__":

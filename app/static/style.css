@@ -1019,8 +1019,7 @@ button:focus {
 /*--------------------*/
 
 #sidebar {
-    flex-basis: 20%;
-    margin-right: 20px;
+    flex-basis: 25%;
     background-color: #2F323A;
 }
 
@@ -1410,6 +1409,40 @@ button:focus {
 .mu-clubs-league-card-body .badge-group {
     display: flex;
     justify-content: center;
+}
+
+
+/*--------------------*/
+/* SETTINGS */
+/*--------------------*/
+
+.mu-settings-league-content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.mu-settings-league-image {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #3fc35f;
+}
+
+.mu-settings-league-image > img {
+    margin: 0 auto;
+    display: block;
+}
+
+.mu-settings-league-form-body {
+    flex-basis: 60%;
+}
+
+.mu-settings-league-form-body button {
+    padding: 10px;
+    margin-top: 5px;
+    color: white;
+    background-color: #3fc35f;
+    border-radius: 5px;
 }
 
 

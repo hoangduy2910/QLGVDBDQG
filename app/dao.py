@@ -65,6 +65,22 @@ def create_league(name, address, image, gender_id, city_id, user_id):
     db.session.add(league)
     db.session.commit()
 
+    return league
+
+
+def update_league(league_id, name, address, image, gender_id, city_id, user_id):
+    league = League.query.get(league_id)
+
+    league.name = name
+    league.address = address
+    league.image = image
+    league.gender_id = gender_id
+    league.city_id = city_id
+    league.user_id = user_id
+
+    db.session.add(league)
+    db.session.commit()
+
 
 def read_leagues_by_user_id(user_id):
     return User.query.get(user_id).leagues

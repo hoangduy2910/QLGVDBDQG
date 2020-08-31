@@ -33,10 +33,14 @@
                         </div>
                         <div class="mu-league-detail-content-body">
                             <div id="sidebar">
-                                 <a href="#"><i class="icon-calendar"></i><span>Lịch thi đấu</span></a>
+                                <a href="{{ url_for('schedule', league_id=league.id) }}"><i class="icon-calendar"></i><span>Lịch thi đấu</span></a>
                                 <a href="{{ url_for('rank', league_id=league.id) }}"><i class="icon-trophy"></i><span>Bảng xếp hạng</span></a>
                                 <a href="{{ url_for('clubs_league', league_id=league.id) }}"><i class="icon-people"></i><span>Đội bóng</span></a>
                                 <a href="{{ url_for('statistic', league_id=league.id) }}"><i class="icon-chart"></i><span>Thống kê</span></a>
+                                {% if current_user.id == league.user_id %}
+                                <a href="{{ url_for('list_register', league_id=league.id) }}"><i class="icon-list"></i><span>Danh sách đăng ký</span></a>
+                                <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
+                                {% endif %}
                             </div>
                             <div class="mu-league-detail-body">
                                 <table class="table" id="rank">

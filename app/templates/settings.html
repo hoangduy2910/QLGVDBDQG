@@ -33,13 +33,70 @@
                         </div>
                         <div class="mu-league-detail-content-body">
                             <div id="sidebar">
-                                <a href="#"><i class="icon-calendar"></i><span>Lịch thi đấu</span></a>
+                                <a href="{{ url_for('schedule', league_id=league.id) }}"><i class="icon-calendar"></i><span>Lịch thi đấu</span></a>
                                 <a href="{{ url_for('rank', league_id=league.id) }}"><i class="icon-trophy"></i><span>Bảng xếp hạng</span></a>
                                 <a href="{{ url_for('clubs_league', league_id=league.id) }}"><i class="icon-people"></i><span>Đội bóng</span></a>
                                 <a href="{{ url_for('statistic', league_id=league.id) }}"><i class="icon-chart"></i><span>Thống kê</span></a>
+                                {% if current_user.id == league.user_id %}
+                                <a href="{{ url_for('list_register', league_id=league.id) }}"><i class="icon-list"></i><span>Danh sách đăng ký</span></a>
+                                <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
+                                {% endif %}
                             </div>
                             <div class="mu-league-detail-body">
-                               
+                                <form class="mu-settings-league-form" method="post">
+                                    {% if msg %}
+                                    <div class="alert alert-success" role="alert" style="margin: 10px;">
+                                        <div class="text-center">{{ msg }}</div>
+                                    </div>
+                                    {% endif %}
+                                    {% if err_msg %}
+                                    <div class="alert alert-warning" role="alert" style="margin: 10px;">
+                                        <div class="text-center">{{ err_msg }}</div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="mu-settings-league-content">
+                                        <div class="mu-settings-league-image">
+                                            <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                                        </div>
+                                        <div class="mu-settings-league-form-body">
+                                            <div class="form-group">
+                                                <label>Tên giải đấu</label>
+                                                <input type="text" class="form-control" name="name" value="{{ league.name }}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Địa điểm</label>
+                                                <input type="text" class="form-control" name="address" value="{{ league.address }}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Giới tính</label>
+                                                <select class="form-control" name="gender_id">
+                                                    {% for gender in genders %}
+                                                        {% if league.gender_id == gender.id  %}
+                                                        <option value="{{ gender.id }}" selected>{{ gender.name }}</option>
+                                                        {% else %}
+                                                        <option value="{{ gender.id }}">{{ gender.name }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Tỉnh / Thành</label>
+                                                <select class="form-control" name="city_id">
+                                                    {% for city in cities %}
+                                                    {% if league.city_id == city.id  %}
+                                                        <option value="{{ city.id }}" selected>{{ city.name }}</option>
+                                                        {% else %}
+                                                        <option value="{{ city.id }}">{{ city.name }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit">Cập nhật</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

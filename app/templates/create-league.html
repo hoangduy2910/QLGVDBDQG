@@ -18,6 +18,11 @@
 			<div class="col-md-12">
 				<div class="mu-create-league-area">
                     <h2>Tạo giải đấu</h2>
+                    {% if msg %}
+					<div class="alert alert-success" role="alert">
+						<div class="text-center">{{ msg }}</div>
+					</div>
+					{% endif %}
                     <form class="mu-create-league-form" method="post">
                         <div class="mu-create-league-content">
                             <div class="mu-create-league-image">
