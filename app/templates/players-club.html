@@ -24,49 +24,39 @@
                             <a href="{{ url_for('leagues_club') }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
                             <a href="{{ url_for('achievements') }}"><i class="icon-chart"></i><span>Thành tích</span></a>
                         </div>
-                        <div>
+                        <div class="mu-players-body table-responsive">
                             <h4>Các cầu thủ</h4>
-                            <div class="mu-players-body">
-                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
-                                    <div class="mu-players-card-image">
-                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
-                                    </div>
-                                    <div class="mu-players-card-body">
-                                        <h5>Tên cầu thủ</h5>
-                                        <p>Số bàn thắng: <span>0</span></p>
-                                    </div>
-                                </a>
-
-                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
-                                    <div class="mu-players-card-image">
-                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
-                                    </div>
-                                    <div class="mu-players-card-body">
-                                        <h5>Tên cầu thủ</h5>
-                                        <p>Số bàn thắng: <span>0</span></p>
-                                    </div>
-                                </a>
-
-                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
-                                    <div class="mu-players-card-image">
-                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
-                                    </div>
-                                    <div class="mu-players-card-body">
-                                        <h5>Tên cầu thủ</h5>
-                                        <p>Số bàn thắng: <span>0</span></p>
-                                    </div>
-                                </a>
-
-                                <a href="{{ url_for('player_detail') }}" class="mu-players-card">
-                                    <div class="mu-players-card-image">
-                                        <img src="{{ url_for('static', filename='images/default_user.png') }}">
-                                    </div>
-                                    <div class="mu-players-card-body">
-                                        <h5>Tên cầu thủ</h5>
-                                        <p>Số bàn thắng: <span>0</span></p>
-                                    </div>
-                                </a>
-                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Tên cầu thủ</th>
+                                        <th scope="col">Loại cầu thủ</th>
+                                        <th scope="col">Tổng số bàn thắng</th>
+                                        <th scope="col">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Nguyễn Văn A</td>
+                                        <td>Trong nước</td>
+                                        <td>10</td>
+                                        <td>
+                                            <a href="{{ url_for('player_detail') }}" class="btn">Chi tiết</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Nguyễn Bình B</td>
+                                        <td>Trong nước</td>
+                                        <td>8</td>
+                                        <td>
+                                            <a href="{{ url_for('player_detail') }}" class="btn">Chi tiết</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

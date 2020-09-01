@@ -44,7 +44,8 @@
 								</div>
 								<div class="form-group">
 									<label>Ngày sinh</label>
-									<input type="date" class="form-control" name="birthday" value="{{ convert_birthday }}" />
+									<input type="date" class="form-control" name="birthday"
+										   value="{{ user.birthday.strftime('%Y-%m-%d') }}" />
 								</div>
 								<div class="form-group">
 									<button type="submit">Lưu thông tin</button>

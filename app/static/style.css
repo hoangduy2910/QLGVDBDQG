@@ -1067,7 +1067,7 @@ button:focus {
 }
 
 .mu-club-detail-body {
-    flex-basis: 75%;
+    flex-basis: 100%;
     padding: 20px;
 }
 
@@ -1116,40 +1116,21 @@ button:focus {
 }
 
 .mu-players-body {
-    flex-basis: 75%;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-basis: 100%;
 }
 
-.mu-players-card {
-    border: 1px solid #2F323A;
-    border-radius: 10%;
-    padding: 5px;
-    margin-right: 20px;
-    margin-bottom: 20px;
+.mu-players-body table thead {
+    background: #eee;
 }
 
-.mu-players-card-image {
-    margin-bottom: 10px;
-}
-
-.mu-players-card-image img {
-    width: 50%;
-    display: block;
-    margin: 0 auto;
-    border: 1px solid #3fc35f;
-    border-radius: 50%;
-}
-
-.mu-players-card-body h5 {
-    color: #3fc35f;
+.mu-players-body table th, tr, td {
     text-align: center;
 }
 
-.mu-players-card-body p {
-    text-align: center;
+.mu-players-body table a {
+    color: #fff;
+    background-color: #3fc35f;
+    border-radius: 5px;
 }
 
 
@@ -1176,7 +1157,7 @@ button:focus {
 }
 
 .mu-leagues-club-body {
-    flex-basis: 75%;
+    flex-basis: 100%;
 }
 
 .mu-leagues-club-body h4 {
@@ -1195,7 +1176,7 @@ button:focus {
     padding: 10px;
     margin: 20px 10px;
     border: 1px solid #3fc35f;
-    border-radius: 10%;
+    border-radius: 5%;
 }
 
 .mu-leagues-club-card-body h5 {
@@ -1233,6 +1214,7 @@ button:focus {
 
 .mu-achievements-body {
     flex-basis: 75%;
+    margin: 20px;
 }
 
 .mu-achievements-body h4 {
@@ -1326,6 +1308,8 @@ button:focus {
 .mu-league-detail-body {
     flex-basis: 75%;
     justify-content: center;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 
@@ -1336,7 +1320,7 @@ button:focus {
     background: #eee;
 }
 
-#rank th, tr {
+#rank th, tr, td {
     text-align: center;
 }
 
@@ -1410,6 +1394,58 @@ button:focus {
     display: flex;
     justify-content: center;
 }
+
+/*--------------------*/
+/* REGISTER LEAGUE */
+/*--------------------*/
+.mu-register-league {
+    display: flex;
+    flex-direction: column;
+}
+
+.mu-register-league-text {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.mu-register-league-text span {
+    color: red;
+}
+
+#clock {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+}
+
+#clock div {
+    flex-basis: 20%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: #262626;
+    color: #fff;
+    border-radius: 10px;
+}
+
+#clock div span:first-child {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.mu-register-league-form button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #3fc35f;
+    color: #fff;
+    border-radius: 5px;
+}
+
+
 
 
 /*--------------------*/

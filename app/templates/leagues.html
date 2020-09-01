@@ -48,23 +48,43 @@
                 <div class="mu-leagues-area">
                     <div class="mu-leagues-group-card">
                         {% for l in leagues %}
-                        <a href="{{ url_for('league_detail', league_id=l.id) }}" class="mu-leagues-card">
-                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-                            <div class="mu-leagues-card-image">
-                                <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-                            </div>
-                            <div class="mu-leagues-card-body">
-                                <h4 class="text-center">{{ l.name }}</h4>
-                                <p class="text-center">
-                                    {% for city in cities %}
-                                        {% if city.id == l.city_id %}
-                                        <span>{{ l.address }}|{{ city.name }}</span>
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
-                                <p class="text-center"><i class="icon-people"></i> {{ l.clubs|length }} Đội</p>
-                            </div>
-                        </a>
+                            {% if date_now.strftime("%Y-%m-%d") <= l.date_end.strftime("%Y-%m-%d") %}
+                            <a href="{{ url_for('register_league', league_id=l.id) }}" class="mu-leagues-card">
+                                <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                                <div class="mu-leagues-card-image">
+                                    <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                                </div>
+                                <div class="mu-leagues-card-body">
+                                    <h4 class="text-center">{{ l.name }}</h4>
+                                    <p class="text-center">
+                                        {% for city in cities %}
+                                            {% if city.id == l.city_id %}
+                                            <span>{{ l.address }}|{{ city.name }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <p class="text-center"><i class="icon-people"></i> {{ l.clubs|length }} Đội</p>
+                                </div>
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('schedule', league_id=l.id) }}" class="mu-leagues-card">
+                                <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+                                <div class="mu-leagues-card-image">
+                                    <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                                </div>
+                                <div class="mu-leagues-card-body">
+                                    <h4 class="text-center">{{ l.name }}</h4>
+                                    <p class="text-center">
+                                        {% for city in cities %}
+                                            {% if city.id == l.city_id %}
+                                            <span>{{ l.address }}|{{ city.name }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <p class="text-center"><i class="icon-people"></i> {{ l.clubs|length }} Đội</p>
+                                </div>
+                            </a>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>

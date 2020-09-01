@@ -33,17 +33,33 @@
                         </div>
                         <div class="mu-league-detail-content-body">
                             <div id="sidebar">
+                                {% if check_date %}
+                                <a href="{{ url_for('register_league', league_id=league.id) }}"><i class="icon-clock"></i><span>Đăng ký giải đấu</span></a>
+                                {% endif %}
                                 <a href="{{ url_for('schedule', league_id=league.id) }}"><i class="icon-calendar"></i><span>Lịch thi đấu</span></a>
                                 <a href="{{ url_for('rank', league_id=league.id) }}"><i class="icon-trophy"></i><span>Bảng xếp hạng</span></a>
                                 <a href="{{ url_for('clubs_league', league_id=league.id) }}"><i class="icon-people"></i><span>Đội bóng</span></a>
-                                <a href="{{ url_for('statistic', league_id=league.id) }}"><i class="icon-chart"></i><span>Thống kê</span></a>
                                 {% if current_user.id == league.user_id %}
                                 <a href="{{ url_for('list_register', league_id=league.id) }}"><i class="icon-list"></i><span>Danh sách đăng ký</span></a>
                                 <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
                                 {% endif %}
                             </div>
                             <div class="mu-league-detail-body">
-
+                                <div class="mu-register-league">
+                                    <div class="mu-register-league-text">
+                                        <div class="text-center">
+                                            Giải cho phép đăng ký đến hết ngày <span>{{ league.date_end.strftime("%d/%m/%Y") }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="mu-register-league-counter">
+                                        <div id="clock"></div>
+                                    </div>
+                                    <div class="mu-register-league-form">
+                                        <form method="post">
+                                            <button type="submit">Đăng ký giải đấu</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -63,6 +79,21 @@
 {% block jquery %}
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.js"
+        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/countdown.js') }}"></script>
+<script>
+    $('#clock').countdown('{{ date_end }}', function(event) {
+        var $this = $(this).html(event.strftime(''
+            +'<div><span>%w</span><span>Tuần</span></div>'
+            +'<div><span>%d</span><span>Ngày</span></div>'
+            +'<div><span>%H</span><span>Giờ</span></div>'
+            +'<div><span>%M</span><span>Phút</span></div>'
+            +'<div><span>%S</span><span>Giây</span></div>'
+        ));
+    })
+</script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <!-- Bootstrap -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

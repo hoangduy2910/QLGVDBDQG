@@ -1,7 +1,7 @@
 from app import app, dao, login
 from flask import render_template, request, redirect, url_for, session
 from flask_login import login_user, logout_user, current_user, login_required
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @login.user_loader
@@ -36,13 +36,14 @@ def index():
 @app.route("/giai-dau")
 def league():
     cities = dao.read_city()
+    date_now = datetime.now()
 
     keyword = request.args["keyword"] if request.args.get("keyword") else ""
     city_id = request.args["city_id"] if request.args.get("city_id") else 0
     leagues = dao.read_league(keyword=keyword, city_id=city_id)
 
     return render_template("leagues.html", cities=cities, leagues=leagues,
-                           keyword=keyword, city_id=city_id)
+                           keyword=keyword, city_id=city_id, date_now=date_now)
 
 
 @app.route("/doi")
@@ -111,7 +112,6 @@ def logout():
 @login_required
 def profile(user_id):
     user = User.query.get(user_id)
-    convert_birthday = user.birthday.strftime("%Y-%m-%d")
     err_msg = ""
 
     if request.method == "POST":
@@ -123,11 +123,11 @@ def profile(user_id):
             dao.update_profile(user_id=user_id, name=name, phone=phone, birthday=birthday)
             msg = "Cập nhật thành công !"
 
-            return render_template('profile.html', user=user, msg=msg, convert_birthday=convert_birthday)
+            return render_template('profile.html', user=user, msg=msg)
         else:
             err_msg = "Bạn phải nhập đủ thông tin !"
 
-    return render_template('profile.html', user=user, err_msg=err_msg, convert_birthday=convert_birthday)
+    return render_template('profile.html', user=user, err_msg=err_msg)
 
 
 @app.route("/quan-ly-giai-dau")
@@ -156,6 +156,7 @@ def create_club():
 def create_league():
     genders = dao.read_gender()
     cities = dao.read_city()
+    date_now = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
     msg = ""
 
     if request.method == "POST":
@@ -164,14 +165,17 @@ def create_league():
         image = ''
         gender_id = request.form.get("gender_id")
         city_id = request.form.get("city_id")
+        date_begin = datetime.now()
+        date_end = request.form.get("date_end")
         user_id = current_user.id
 
-        league = dao.create_league(name=name, address=address, image=image,
-                                   gender_id=gender_id, city_id=city_id, user_id=user_id)
+        league = dao.create_league(name=name, address=address, image=image, gender_id=gender_id, city_id=city_id,
+                                   date_begin=date_begin, date_end=date_end, user_id=user_id)
 
-        return redirect(url_for('league_detail', league_id=league.id))
+        return redirect(url_for('register_league', league_id=league.id))
 
-    return render_template("create-league.html", genders=genders, cities=cities)
+    return render_template("create-league.html", genders=genders, cities=cities,
+                           date_now=date_now)
 
 
 @app.route("/chi-tiet-doi-bong")
@@ -199,44 +203,51 @@ def player_detail():
     return render_template('player-detail.html')
 
 
-@app.route("/chi-tiet-giai-dau/<int:league_id>")
-def league_detail(league_id):
+@app.route("/dang-ky-thi-dau/<int:league_id>")
+def register_league(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
-    return render_template('league-detail.html', league=league, cities=cities)
+
+    check_date = False
+    date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+    date_end = (league.date_end + timedelta(days=1)).strftime('%Y-%m-%d')
+
+    if date_now <= date_end:
+        check_date = True
+
+    return render_template('register-league.html', league=league, cities=cities,
+                           date_now=date_now, date_end=date_end, check_date=check_date)
 
 
 @app.route("/lich-thi-dau/<int:league_id>")
 def schedule(league_id):
     league = dao.read_league_by_id(league_id)
-    return render_template('schedule.html', league=league)
+    check_date = dao.check_date_end_league(league.date_end)
+    return render_template('schedule.html', league=league, check_date=check_date)
 
 
 @app.route("/xep-hang/<int:league_id>")
 def rank(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
-    return render_template('rank.html', league=league, cities=cities)
+    check_date = dao.check_date_end_league(league.date_end)
+    return render_template('rank.html', league=league, cities=cities, check_date=check_date)
 
 
 @app.route("/cac-doi-cua-giai-dau/<int:league_id>")
 def clubs_league(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
-    return render_template('clubs-league.html', league=league, cities=cities)
-
-
-@app.route("/thong-ke/<int:league_id>")
-def statistic(league_id):
-    league = dao.read_league_by_id(league_id)
-    return render_template('statistic.html', league=league)
+    check_date = dao.check_date_end_league(league.date_end)
+    return render_template('clubs-league.html', league=league, cities=cities, check_date=check_date)
 
 
 @app.route("/danh-sach-dang-ky/<int:league_id>")
 @login_required
 def list_register(league_id):
     league = dao.read_league_by_id(league_id)
-    return render_template('list-register.html', league=league)
+    check_date = dao.check_date_end_league(league.date_end)
+    return render_template('list-register.html', league=league, check_date=check_date)
 
 
 @app.route("/tuy-chinh-giai-dau/<int:league_id>", methods=["get", "post"])
@@ -245,6 +256,9 @@ def settings(league_id):
     cities = dao.read_city()
     genders= dao.read_gender()
     league = dao.read_league_by_id(league_id)
+    date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+    check_date = dao.check_date_end_league(league.date_end)
+
     err_msg = ""
     msg = ""
 
@@ -256,16 +270,19 @@ def settings(league_id):
             image = ""
             gender_id = request.form.get("gender_id")
             city_id = request.form.get("city_id")
+            date_begin = league.date_begin
+            date_end = request.form.get("date_end")
             user_id = current_user.id
 
-            dao.update_league(league_id=league_id, name=name, address=address,
-                              image=image, gender_id=gender_id, city_id=city_id, user_id=user_id)
+            dao.update_league(league_id=league_id, name=name, address=address, image=image, gender_id=gender_id,
+                              city_id=city_id, date_begin=date_begin, date_end=date_end, user_id=user_id)
             msg = "Cập nhật thông tin của giải đấu thành công !"
 
         else:
             err_msg = "Bạn phải nhập đầy đủ thông tin của giải đấu !"
 
-    return render_template('settings.html', league=league, cities=cities, genders=genders, msg=msg, err_msg=err_msg)
+    return render_template('settings.html', league=league, cities=cities, genders=genders,
+                           msg=msg, err_msg=err_msg, date_now=date_now, check_date=check_date)
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ from app import db
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
+from datetime import datetime
 import enum
 
 
@@ -102,6 +103,8 @@ class League(db.Model):
     image = Column(String(255), nullable=True)
     gender_id = Column(Integer, ForeignKey(Gender.id), nullable=False)
     city_id = Column(Integer, ForeignKey(City.id), nullable=False)
+    date_begin = Column(DateTime, default=datetime.now())
+    date_end = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     clubs = relationship('Club', backref='league', lazy=True)
     rounds = relationship('Round', backref='league', lazy=True)
@@ -166,9 +169,10 @@ class Match(db.Model):
     stadium = Column(String(255), nullable=False)
     date = Column(DateTime, nullable=False)
     round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
+    goals = relationship('Goal', backref='match', lazy=True)
 
     def __str__(self):
-        return self.id + " - " + self.home + " - " + self.away
+        return self.id + " - " + self.home.name + " - " + self.away.name
 
 
 class Goal(db.Model):

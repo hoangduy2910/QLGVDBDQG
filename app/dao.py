@@ -1,18 +1,17 @@
 import hashlib
 from app import db
 from app.models import *
+from datetime import datetime, timedelta
 
 
 # ADMIN
 def check_login_admin(username, password):
     password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
     user = User.query.filter(User.username == username.strip(),
-                             User.password == password).first()
+                             User.password == password,
+                             User.user_role == 2).first()
 
-    if user.user_role == 2:
-        return user
-    else:
-        return None
+    return user
 
 
 # USER
@@ -33,7 +32,8 @@ def check_password(password, confirm):
 def check_login(username, password):
     password = str(hashlib.md5(password.encode("utf-8")).hexdigest())
     user = User.query.filter(User.username == username.strip(),
-                             User.password == password).first()
+                             User.password == password,
+                             User.user_role == 1).first()
 
     return user if user else False
 
@@ -58,9 +58,19 @@ def update_profile(user_id, name, phone, birthday):
 
 
 # LEAGUE
-def create_league(name, address, image, gender_id, city_id, user_id):
-    league = League(name=name, address=address, image=image,
-                    gender_id=gender_id, city_id=city_id, user_id=user_id)
+def check_date_end_league(date_end):
+    date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+    date_end = (date_end + timedelta(days=1)).strftime('%Y-%m-%d')
+
+    if date_now <= date_end:
+        return True
+
+    return False
+
+
+def create_league(name, address, image, gender_id, city_id, date_begin, date_end, user_id):
+    league = League(name=name, address=address, image=image, gender_id=gender_id, city_id=city_id,
+                    date_begin=date_begin, date_end=date_end, user_id=user_id)
 
     db.session.add(league)
     db.session.commit()
@@ -68,7 +78,7 @@ def create_league(name, address, image, gender_id, city_id, user_id):
     return league
 
 
-def update_league(league_id, name, address, image, gender_id, city_id, user_id):
+def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end, user_id):
     league = League.query.get(league_id)
 
     league.name = name
@@ -76,6 +86,8 @@ def update_league(league_id, name, address, image, gender_id, city_id, user_id):
     league.image = image
     league.gender_id = gender_id
     league.city_id = city_id
+    league.date_begin = date_begin
+    league.date_end = date_end
     league.user_id = user_id
 
     db.session.add(league)
