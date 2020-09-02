@@ -114,6 +114,34 @@ def read_league(keyword="", city_id=0):
     return leagues.all()
 
 
+# CLUB
+def create_club(name, phone, address, image, gender_id, level_id, user_id):
+    club = Club(name=name, phone=phone, address=address, image=image,
+                gender_id=gender_id, level_id=level_id, user_id=user_id)
+
+    db.session.add(club)
+    db.session.commit()
+
+
+def read_clubs_by_user_id(user_id):
+    return User.query.get(user_id).clubs
+
+
+def read_club(keyword="", level_id=0, gender_id=0):
+    clubs = Club.query
+
+    if keyword:
+        clubs = clubs.filter(Club.name.contains(keyword))
+
+    if level_id:
+        clubs = clubs.filter(Club.level_id == level_id)
+
+    if gender_id:
+        clubs = clubs.filter(Club.gender_id == gender_id)
+
+    return clubs.all()
+
+
 # CITY
 def read_city():
     return City.query.all()

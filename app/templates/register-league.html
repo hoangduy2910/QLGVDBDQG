@@ -54,11 +54,56 @@
                                     <div class="mu-register-league-counter">
                                         <div id="clock"></div>
                                     </div>
-                                    <div class="mu-register-league-form">
-                                        <form method="post">
-                                            <button type="submit">Đăng ký giải đấu</button>
-                                        </form>
+                                    {% if check_date %}
+                                    <div class="mu-register-league-modal">
+                                        {% if current_user.is_authenticated %}
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="mu-register-league-btn" data-toggle="modal" data-target="#exampleModal">
+                                            Đăng ký giải đấu
+                                        </button>
+                                        {% else %}
+                                        <button class="mu-register-league-btn">
+                                             <a href="{{ url_for('login', next=url_for('register_league', league_id=league.id)) }}">Đăng nhập</a>
+                                        </button>
+                                        {% endif %}
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel" style="display: inline-block;">Đăng ký</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <select class="form-control" name="">
+                                                            {% if current_user.clubs %}
+                                                                {% for club in current_user.clubs %}
+                                                                <option value="{{ club.id }}">{{ club.name }}</option>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <option id="mu-register-league-create-new-club">
+                                                                    Vui lòng tạo đội thi đấu trước khi đăng ký
+                                                                </option>
+                                                            {% endif %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                        {% if current_user.clubs %}
+                                                        <button type="button" class="btn btn-success">Đăng ký</button>
+                                                        {% else %}
+                                                        <a class="btn btn-success" href="{{ url_for('create_club',
+                                                        next=url_for('register_league', league_id=league.id)) }}">Tạo đội mới</a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

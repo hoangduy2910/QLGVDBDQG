@@ -20,23 +20,37 @@
 					<h2>Giải đấu của tôi</h2>
 					<a href="{{ url_for('create_league') }}">Tạo giải đấu</a>
 					{% if leagues %}
+					<div class="mu-leagues-area">
+						<div class="mu-leagues-group-card">
 						{% for l in leagues %}
-						<div class="mu-leagues-area">
-							<div class="mu-leagues-group-card">
-								<a href="{{ url_for('league_detail', league_id=l.id) }}" class="mu-leagues-card">
-									<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
-									<div class="mu-leagues-card-image">
-										<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
-									</div>
-									<div class="mu-leagues-card-body">
-										<h4 class="text-center">{{ l.name }}</h4>
-										<p class="text-center">{{ l.address }}</p>
-										<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
-									</div>
-								</a>
-							</div>
-						</div>
+							{% if date_now.strftime("%Y-%m-%d") <= l.date_end.strftime("%Y-%m-%d") %}
+							<a href="{{ url_for('register_league', league_id=l.id) }}" class="mu-leagues-card">
+								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+								<div class="mu-leagues-card-image">
+									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+								</div>
+								<div class="mu-leagues-card-body">
+									<h4 class="text-center">{{ l.name }}</h4>
+									<p class="text-center">{{ l.address }}</p>
+									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+								</div>
+							</a>
+							{% else %}
+							<a href="{{ url_for('schedule', league_id=l.id) }}" class="mu-leagues-card">
+								<img src="{{ url_for('static', filename='images/football-colorful.jpg') }}" />
+								<div class="mu-leagues-card-image">
+									<img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+								</div>
+								<div class="mu-leagues-card-body">
+									<h4 class="text-center">{{ l.name }}</h4>
+									<p class="text-center">{{ l.address }}</p>
+									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+								</div>
+							</a>
+							{% endif %}
 						{% endfor %}
+						</div>
+					</div>
 					{% else %}
 					<div class="mu-no-leagues-area">
 						<h5>Hiện tại bạn chưa có giải đấu nào !!!</h5>

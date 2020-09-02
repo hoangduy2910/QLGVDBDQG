@@ -1436,13 +1436,19 @@ button:focus {
     font-weight: 700;
 }
 
-.mu-register-league-form button {
+.mu-register-league-btn {
     display: block;
     margin: 0 auto;
     padding: 10px;
     background-color: #3fc35f;
     color: #fff;
     border-radius: 5px;
+}
+
+.mu-register-league-btn a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
 }
 
 

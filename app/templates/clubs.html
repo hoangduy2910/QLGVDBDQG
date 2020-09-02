@@ -17,31 +17,41 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="mu-search-club-area">
-                    <div class="col-md-7">
-                        <nav class="mu-search-club-navbar">
-                            <form class="form-inline mu-search-club-form">
-                                <input class="form-control" type="search" placeholder="Tên đội bóng" />
+                    <nav class="mu-search-club-navbar">
+                        <form class="form-inline mu-search-club-form">
+                            <div class="col-md-7">
+                                <input class="form-control" type="search" placeholder="Tên đội bóng"
+                                       name="keyword" value="{{ keyword }}" />
                                 <button class="btn mu-search-club-btn" type="submit">
                                     <i class="icon-magnifier"></i>
                                 </button>
-                            </form>
-                        </nav>
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-control">
-                            {% for level in levels %}
-                            if level_id == level.id
-                            <option value="{{ level.id }}">{{ level.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-control">
-                            {% for gender in genders %}
-                            <option value="{{ gender.id }}">{{ gender.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control" name="level_id">
+                                    <option value="0">Trình độ</option>
+                                    {% for level in levels %}
+                                        {% if level_id|int == level.id|int %}
+                                        <option value="{{ level.id }}" selected>{{ level.name }}</option>
+                                        {% else %}
+                                        <option value="{{ level.id }}">{{ level.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control" name="gender_id">
+                                    <option value="0">Giới tính</option>
+                                    {% for gender in genders %}
+                                        {% if gender_id|int == gender.id|int %}
+                                        <option value="{{ gender.id }}" selected>{{ gender.name }}</option>
+                                        {% else %}
+                                        <option value="{{ gender.id }}">{{ gender.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -49,50 +59,27 @@
             <div class="col-md-12">
                 <div class="mu-clubs-area">
                     <div class="mu-clubs-group-card">
+                        {% for c in clubs %}
                         <a href="{{ url_for('club_detail') }}" class="mu-clubs-card">
                             <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
                             <div class="mu-clubs-card-body">
-                                <h4 class="text-center">Tên đội bóng</h4>
+                                <h4 class="text-center">{{ c.name }}</h4>
                                 <p class="text-center">
-                                    Trình độ | Giới tính
+                                    {% for level in levels %}
+                                        {% if c.level_id == level.id %}
+                                        <span>{{ level.name }}</span> |
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for gender in genders %}
+                                        {% if c.gender_id == gender.id %}
+                                        <span>{{ gender.name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
                                 </p>
-                                <p class="text-center"><i class="icon-people"></i> 00 Thành viên</p>
+                                <p class="text-center"><i class="icon-people"></i> {{ c.players|length }} Thành viên</p>
                             </div>
                         </a>
-
-                        <a href="{{ url_for('club_detail') }}" class="mu-clubs-card">
-                            <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
-                            <div class="mu-clubs-card-body">
-                                <h4 class="text-center">Tên đội bóng</h4>
-                                <p class="text-center">
-                                    Trình độ | Giới tính
-                                </p>
-                                <p class="text-center"><i class="icon-people"></i> 00 Thành viên</p>
-                            </div>
-                        </a>
-
-                        <a href="{{ url_for('club_detail') }}" class="mu-clubs-card">
-                            <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
-                            <div class="mu-clubs-card-body">
-                                <h4 class="text-center">Tên đội bóng</h4>
-                                <p class="text-center">
-                                    Trình độ | Giới tính
-                                </p>
-                                <p class="text-center"><i class="icon-people"></i> 00 Thành viên</p>
-                            </div>
-                        </a>
-
-                        <a href="{{ url_for('club_detail') }}" class="mu-clubs-card">
-                            <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
-                            <div class="mu-clubs-card-body">
-                                <h4 class="text-center">Tên đội bóng</h4>
-                                <p class="text-center">
-                                    Trình độ | Giới tính
-                                </p>
-                                <p class="text-center"><i class="icon-people"></i> 00 Thành viên</p>
-                            </div>
-                        </a>
-
+                        {% endfor %}
                     </div>
                 </div>
             </div>

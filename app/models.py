@@ -1,7 +1,7 @@
 from app import db
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from datetime import datetime
 import enum
 
@@ -94,6 +94,11 @@ class TypePlayer(db.Model):
         return self.name
 
 
+league_club = db.Table("league_club",
+                       Column("league_id", Integer, ForeignKey('league.id'), primary_key=True),
+                       Column("club_id", Integer, ForeignKey('club.id'), primary_key=True))
+
+
 class League(db.Model):
     __tablename__ = "league"
 
@@ -106,8 +111,8 @@ class League(db.Model):
     date_begin = Column(DateTime, default=datetime.now())
     date_end = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
-    clubs = relationship('Club', backref='league', lazy=True)
     rounds = relationship('Round', backref='league', lazy=True)
+    clubs = relationship('Club', secondary='league_club', lazy='subquery')
 
     def __str__(self):
         return self.name
@@ -118,15 +123,15 @@ class Club(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
-    address = Column(String(255), nullable=True)
     phone = Column(String(10), nullable=False)
+    address = Column(String(255), nullable=True)
     image = Column(String(255), nullable=True)
-    level_id = Column(Integer, ForeignKey(Level.id), nullable=False)
     gender_id = Column(Integer, ForeignKey(Gender.id), nullable=False)
+    level_id = Column(Integer, ForeignKey(Level.id), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
-    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
     players = relationship('Player', backref='club', lazy=True)
     results = relationship('Result', backref='club', lazy=True)
+    leagues = relationship('League', secondary='league_club', lazy='subquery')
 
     def __str__(self):
         return self.name
