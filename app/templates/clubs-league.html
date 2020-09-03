@@ -46,21 +46,22 @@
                             </div>
                             <div class="mu-league-detail-body">
                                 <div id="clubs-league">
-                                    {% for club in league.clubs %}
-                                    <a href="{{ url_for('club_detail') }}" class="mu-clubs-league-card">
-                                        <div class="mu-clubs-league-card-image">
-                                            <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
-                                        </div>
-                                        <div class="mu-clubs-league-card-body">
-                                            <h5 class="text-center">{{ club.name }}</h5>
-                                            <p class="text-center">Tổng số trận</p>
-                                            <div class="badge-group">
-                                                <span class="badge badge-win">0 thắng</span>
-                                                <span class="badge badge-draw">0 hòa</span>
-                                                <span class="badge badge-lose">0 thua</span>
+                                    {% for lc in league_club %}
+                                        {% if lc[3] == 2  %}
+                                        <a href="{{ url_for('club_detail') }}" class="mu-clubs-league-card">
+                                            <div class="mu-clubs-league-card-image">
+                                                <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
                                             </div>
-                                        </div>
-                                    </a>
+                                            <div class="mu-clubs-league-card-body">
+                                                <h5 class="text-center">{{ lc[1] }}</h5>
+                                                <div class="badge-group">
+                                                    <span class="badge badge-win">0 thắng</span>
+                                                    <span class="badge badge-draw">0 hòa</span>
+                                                    <span class="badge badge-lose">0 thua</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>

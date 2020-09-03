@@ -1,5 +1,5 @@
 from app import app, dao, login
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime, timedelta
 
@@ -40,7 +40,7 @@ def league():
 
     keyword = request.args["keyword"] if request.args.get("keyword") else ""
     city_id = request.args["city_id"] if request.args.get("city_id") else 0
-    leagues = dao.read_league(keyword=keyword, city_id=city_id)
+    leagues = dao.read_league(keyword=keyword, city_id=int(city_id))
 
     return render_template("leagues.html", cities=cities, leagues=leagues,
                            keyword=keyword, city_id=int(city_id), date_now=date_now)
@@ -197,8 +197,8 @@ def create_league():
         date_end = request.form.get("date_end")
         user_id = current_user.id
 
-        league = dao.create_league(name=name, address=address, image=image, gender_id=gender_id, city_id=city_id,
-                                   date_begin=date_begin, date_end=date_end, user_id=user_id)
+        league = dao.create_league(name=name, address=address, image=image, gender_id=int(gender_id), city_id=int(city_id),
+                                   date_begin=date_begin, date_end=date_end, user_id=int(user_id))
 
         return redirect(url_for('register_league', league_id=league.id))
 
@@ -260,8 +260,9 @@ def register_league(league_id):
 @app.route("/lich-thi-dau/<int:league_id>")
 def schedule(league_id):
     league = dao.read_league_by_id(league_id)
+    cities = dao.read_city()
     check_date = dao.check_date_end_league(league.date_end)
-    return render_template('schedule.html', league=league, check_date=check_date)
+    return render_template('schedule.html', league=league, cities=cities, check_date=check_date)
 
 
 @app.route("/xep-hang/<int:league_id>")
@@ -277,22 +278,33 @@ def clubs_league(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
     check_date = dao.check_date_end_league(league.date_end)
-    return render_template('clubs-league.html', league=league, cities=cities, check_date=check_date)
+
+    league_club = dao.read_league_club_by_league_id(league_id=league_id)
+
+    return render_template('clubs-league.html', league=league, cities=cities,
+                           check_date=check_date, league_club=league_club)
 
 
 @app.route("/danh-sach-dang-ky/<int:league_id>")
 @login_required
 def list_register(league_id):
     league = dao.read_league_by_id(league_id)
+    cities = dao.read_city()
     status = dao.read_status()
     check_date = dao.check_date_end_league(league.date_end)
 
-    league_club = dao.get_league_club_status_by_league_id(league_id=league_id)
+    league_club = dao.read_league_club_by_league_id(league_id=league_id)
 
-    print(league_club)
+    if request.args.get('status_id') and request.args.get('club_id'):
+        status_id = request.args.get('status_id')
+        club_id = request.args.get('club_id')
 
-    return render_template('list-register.html', league=league, status=status,
-                           check_date=check_date, league_club=None)
+        dao.update_status_club_in_league_club(league_id=league_id, club_id=int(club_id), status_id=int(status_id))
+
+        return redirect(url_for('list_register', league_id=league_id))
+
+    return render_template('list-register.html', league=league, cities=cities, status=status,
+                           check_date=check_date, league_club=league_club)
 
 
 @app.route("/tuy-chinh-giai-dau/<int:league_id>", methods=["get", "post"])
@@ -319,8 +331,8 @@ def settings(league_id):
             date_end = request.form.get("date_end")
             user_id = current_user.id
 
-            dao.update_league(league_id=league_id, name=name, address=address, image=image, gender_id=gender_id,
-                              city_id=city_id, date_begin=date_begin, date_end=date_end, user_id=user_id)
+            dao.update_league(league_id=league_id, name=name, address=address, image=image, gender_id=int(gender_id),
+                              city_id=int(city_id), date_begin=date_begin, date_end=date_end, user_id=int(user_id))
             msg = "Cập nhật thông tin của giải đấu thành công !"
 
         else:

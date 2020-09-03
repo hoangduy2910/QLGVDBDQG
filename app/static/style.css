@@ -1320,6 +1320,21 @@ button:focus {
     text-align: center;
 }
 
+.mu-league-detail-body .status-primary {
+    color: blue;
+    border-bottom: 1px solid blue;
+}
+
+.mu-league-detail-body .status-success {
+    color: green;
+    border-bottom: 1px solid green;
+}
+
+.mu-league-detail-body .status-danger {
+    color: red;
+    border-bottom: 1px solid red;
+}
+
 
 /*--------------------*/
 /* RANK */

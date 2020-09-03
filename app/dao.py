@@ -142,6 +142,10 @@ def read_club(keyword="", level_id=0, gender_id=0):
     return clubs.all()
 
 
+def read_club_by_league_id(league_id):
+    pass
+
+
 # LEAGUE CLUB
 def get_club_id_in_league_club_by_league_id(league_id):
     clubs = []
@@ -158,8 +162,21 @@ def create_league_club(league_id, club_id, status_id):
     db.session.commit()
 
 
-def get_league_club_status_by_league_id(league_id):
-    return LeagueClub.join(League).join(Club).join(Status).filter(LeagueClub.league_id == league_id).all()
+def read_league_club_by_league_id(league_id):
+    league_club = LeagueClub.query.filter(LeagueClub.league_id == league_id)
+    league_club = league_club.join(Club, LeagueClub.club_id == Club.id)
+    league_club = league_club.join(Status, LeagueClub.status_id == Status.id)
+    league_club = league_club.add_columns(Club.name, Club.phone, Status.id, Status.name, Status.color)
+
+    return league_club.all()
+
+
+def update_status_club_in_league_club(league_id, club_id, status_id):
+    league_club = LeagueClub.query.filter(LeagueClub.league_id == league_id, LeagueClub.club_id == club_id).first()
+    league_club.status_id = status_id
+
+    db.session.add(league_club)
+    db.session.commit()
 
 
 # STATUS
