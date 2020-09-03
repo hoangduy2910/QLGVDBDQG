@@ -45,7 +45,39 @@
                                 {% endif %}
                             </div>
                             <div class="mu-league-detail-body">
-
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Tên đội</th>
+                                                <th scope="col">Số lượng cầu thủ</th>
+                                                <th scope="col">Số điện thoại</th>
+                                                <th scope="col">Trạng thái</th>
+                                                <th scope="col">Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for lc in league_club %}
+                                            <tr>
+                                                <td>{{ lc }}</td>
+                                                <td>10</td>
+                                                <td>123456676</td>
+                                                <td>
+                                                    <a class="status-{{ lc.status_id }}">{{ status[0].name }}</a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ url_for('player_detail') }}" class="text-success">
+                                                        {{ status[1].name }}
+                                                    </a>
+                                                    <a href="{{ url_for('player_detail') }}" class="text-danger">
+                                                        {{ status[2].name }}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

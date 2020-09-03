@@ -1312,6 +1312,14 @@ button:focus {
     margin-bottom: 20px;
 }
 
+.mu-league-detail-body table thead {
+    background-color: #eee;
+}
+
+.mu-league-detail-body table th, tr, td {
+    text-align: center;
+}
+
 
 /*--------------------*/
 /* RANK */

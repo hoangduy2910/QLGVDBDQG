@@ -20,6 +20,9 @@ insert into db_qlgiaibongda.user (name, username, password, phone, birthday, act
 ('user2', 'user2', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1),
 ('user3', 'user3', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1);
 
+/* Trạng thái xét duyệt */
+insert into db_qlgiaibongda.status (name, color) values ('Đang duyệt', 'primary'), ('Chấp nhận', 'success'), ('Từ chối', 'danger');
+
 /* Các tỉnh thành */
 insert into db_qlgiaibongda.city (name) values
 ('An Giang'),

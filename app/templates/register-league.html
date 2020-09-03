@@ -63,45 +63,44 @@
                                         </button>
                                         {% else %}
                                         <button class="mu-register-league-btn">
-                                             <a href="{{ url_for('login', next=url_for('register_league', league_id=league.id)) }}">Đăng nhập</a>
+                                             <a href="{{ url_for('login', next=url_for('register_league', league_id=league.id)) }}">Đăng ký giải đấu</a>
                                         </button>
                                         {% endif %}
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel" style="display: inline-block;">Đăng ký</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <select class="form-control" name="">
-                                                            {% if current_user.clubs %}
-                                                                {% for club in current_user.clubs %}
-                                                                <option value="{{ club.id }}">{{ club.name }}</option>
-                                                                {% endfor %}
-                                                            {% else %}
-                                                                <option id="mu-register-league-create-new-club">
-                                                                    Vui lòng tạo đội thi đấu trước khi đăng ký
+                                        <form method="post">
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel" style="display: inline-block;">Đăng ký</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <label>Chọn đội bóng: </label>
+                                                            <select class="form-control" name="club_id" id="chose_club">
+                                                                <option value="0">
+                                                                    <a class="btn btn-success" href="{{ url_for('create_club',
+                                                                        next=url_for('register_league', league_id=league.id)) }}">Tạo đội mới</a>
                                                                 </option>
-                                                            {% endif %}
-                                                        </select>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                        {% if current_user.clubs %}
-                                                        <button type="button" class="btn btn-success">Đăng ký</button>
-                                                        {% else %}
-                                                        <a class="btn btn-success" href="{{ url_for('create_club',
-                                                        next=url_for('register_league', league_id=league.id)) }}">Tạo đội mới</a>
-                                                        {% endif %}
+                                                                {% for club in current_user.clubs %}
+                                                                    {% if club.id not in league_club %}
+                                                                    <option value="{{ club.id }}">{{ club.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="modal-footer" id="register_create">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                            <a class="btn btn-success" href="{{ url_for('create_club',
+                                                                        next=url_for('register_league', league_id=league.id)) }}">Tạo đội mới</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                     {% endif %}
                                 </div>
@@ -138,6 +137,22 @@
             +'<div><span>%S</span><span>Giây</span></div>'
         ));
     })
+
+    $("#chose_club").change(function() {
+        console.log($("#chose_club").val());
+        if ($("#chose_club").val() != 0) {
+            $("#register_create").html(
+                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>' +
+                '<button type="submit" class="btn btn-success">Đăng ký</button>'
+            );
+        } else {
+            $("#register_create").html(
+                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>' +
+                '<a class="btn btn-success" href="{{ url_for('create_club',
+                    next=url_for('register_league', league_id=league.id)) }}">Tạo đội mới</a>'
+            );
+        }
+    });
 </script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <!-- Bootstrap -->

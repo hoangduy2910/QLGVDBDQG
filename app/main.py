@@ -169,11 +169,11 @@ def create_club():
         user_id = current_user.id
 
         dao.create_club(name=name, phone=phone, address=address, image=image,
-                        gender_id=gender_id, level_id=level_id, user_id=user_id)
+                        gender_id=int(gender_id), level_id=int(level_id), user_id=user_id)
 
         next_page = request.args.get('next')
         if next_page:
-            redirect(next_page)
+            return redirect(next_page)
 
         return redirect(url_for('club_detail'))
 
@@ -186,7 +186,6 @@ def create_league():
     genders = dao.read_gender()
     cities = dao.read_city()
     date_now = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
-    msg = ""
 
     if request.method == "POST":
         name = request.form.get("name")
@@ -236,6 +235,7 @@ def player_detail():
 def register_league(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
+    league_club = dao.get_club_id_in_league_club_by_league_id(league_id)
 
     check_date = False
     date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
@@ -244,8 +244,17 @@ def register_league(league_id):
     if date_now <= date_end:
         check_date = True
 
-    return render_template('register-league.html', league=league, cities=cities,
-                           date_now=date_now, date_end=date_end, check_date=check_date)
+    if request.method == "POST":
+        league_id = league_id
+        club_id = request.form.get("club_id")
+        status_id = 1
+
+        dao.create_league_club(league_id=league_id, club_id=int(club_id), status_id=status_id)
+
+        return redirect(url_for('register_league', league_id=league_id))
+
+    return render_template('register-league.html', league=league, cities=cities, date_now=date_now,
+                           date_end=date_end, check_date=check_date, league_club=league_club)
 
 
 @app.route("/lich-thi-dau/<int:league_id>")
@@ -275,8 +284,15 @@ def clubs_league(league_id):
 @login_required
 def list_register(league_id):
     league = dao.read_league_by_id(league_id)
+    status = dao.read_status()
     check_date = dao.check_date_end_league(league.date_end)
-    return render_template('list-register.html', league=league, check_date=check_date)
+
+    league_club = dao.get_league_club_status_by_league_id(league_id=league_id)
+
+    print(league_club)
+
+    return render_template('list-register.html', league=league, status=status,
+                           check_date=check_date, league_club=None)
 
 
 @app.route("/tuy-chinh-giai-dau/<int:league_id>", methods=["get", "post"])

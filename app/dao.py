@@ -142,6 +142,31 @@ def read_club(keyword="", level_id=0, gender_id=0):
     return clubs.all()
 
 
+# LEAGUE CLUB
+def get_club_id_in_league_club_by_league_id(league_id):
+    clubs = []
+    league_club = LeagueClub.query.filter(LeagueClub.league_id == league_id).all()
+    for lc in league_club:
+        clubs.append(lc.club_id)
+    return clubs
+
+
+def create_league_club(league_id, club_id, status_id):
+    league_club = LeagueClub(league_id=league_id, club_id=club_id, status_id=status_id)
+
+    db.session.add(league_club)
+    db.session.commit()
+
+
+def get_league_club_status_by_league_id(league_id):
+    return LeagueClub.join(League).join(Club).join(Status).filter(LeagueClub.league_id == league_id).all()
+
+
+# STATUS
+def read_status():
+    return Status.query.all()
+
+
 # CITY
 def read_city():
     return City.query.all()

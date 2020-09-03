@@ -94,9 +94,10 @@ class TypePlayer(db.Model):
         return self.name
 
 
-league_club = db.Table("league_club",
-                       Column("league_id", Integer, ForeignKey('league.id'), primary_key=True),
-                       Column("club_id", Integer, ForeignKey('club.id'), primary_key=True))
+# league_club = db.Table("league_club",
+#                        Column("league_id", Integer, ForeignKey('league.id'), primary_key=True),
+#                        Column("club_id", Integer, ForeignKey('club.id'), primary_key=True),
+#                        Column("status_id", Integer, ForeignKey('status.id')))
 
 
 class League(db.Model):
@@ -112,7 +113,9 @@ class League(db.Model):
     date_end = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     rounds = relationship('Round', backref='league', lazy=True)
-    clubs = relationship('Club', secondary='league_club', lazy='subquery')
+    clubs = relationship('LeagueClub', backref='league', lazy=True)
+    # clubs = relationship('Club', secondary='league_club', lazy='subquery',
+    #                      backref=backref('league', lazy=True))
 
     def __str__(self):
         return self.name
@@ -131,10 +134,32 @@ class Club(db.Model):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     players = relationship('Player', backref='club', lazy=True)
     results = relationship('Result', backref='club', lazy=True)
-    leagues = relationship('League', secondary='league_club', lazy='subquery')
+    leagues = relationship('LeagueClub', backref='club', lazy=True)
+    # leagues = relationship('League', secondary='league_club', lazy='subquery',
+    #                        backref=backref('club', lazy=True))
 
     def __str__(self):
         return self.name
+
+
+class Status(db.Model):
+    __tablename__ = "status"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    color = Column(String(50), nullable=False)
+
+    def __str__(self):
+        return self.name
+
+
+class LeagueClub(db.Model):
+    __tablename__ = "league_club"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
+    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
+    status_id = Column(Integer, ForeignKey(Status.id), nullable=False)
 
 
 class Player(db.Model):

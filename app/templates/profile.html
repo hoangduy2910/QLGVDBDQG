@@ -44,8 +44,12 @@
 								</div>
 								<div class="form-group">
 									<label>Ngày sinh</label>
+									{% if user.birthday %}
 									<input type="date" class="form-control" name="birthday"
 										   value="{{ user.birthday.strftime('%Y-%m-%d') }}" />
+									{% else %}
+									<input type="date" class="form-control" name="birthday" />
+									{% endif %}
 								</div>
 								<div class="form-group">
 									<button type="submit">Lưu thông tin</button>
