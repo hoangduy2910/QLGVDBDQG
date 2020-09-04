@@ -44,47 +44,49 @@
                                 <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
                                 {% endif %}
                             </div>
-                            <div class="mu-league-detail-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Tên đội</th>
-                                                <th scope="col">Số điện thoại</th>
-                                                <th scope="col">Trạng thái</th>
-                                                <th scope="col">Hành động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for lc in league_club %}
-                                            <tr>
-                                                <td>{{ lc[1] }}</td>
-                                                <td>{{ lc[2] }}</td>
-                                                <td>
-                                                    <a class="status-{{ lc[5] }}">{{ lc[4] }}</a>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url_for('list_register',
-                                                            league_id=lc[0].league_id,
-                                                            status_id=status[1].id,
-                                                            club_id=lc[0].club_id) }}"
-                                                       class="status-{{ status[1].color }}">
-                                                        {{ status[1].name }}
-                                                    </a>
-                                                    |
-                                                    <a href="{{ url_for('list_register',
-                                                            league_id=lc[0].league_id,
-                                                            status_id=status[2].id,
-                                                            club_id=lc[0].club_id) }}"
-                                                       class="status-{{ status[2].color }}">
-                                                        {{ status[2].name }}
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="mu-league-detail-body table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Tên đội</th>
+                                            <th scope="col">Số lượng cầu thủ</th>
+                                            <th scope="col">Số điện thoại</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th scope="col">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for lc in league_club %}
+                                        <tr>
+                                            <td>{{ lc.club_id|get_club_name_by_club_id }}</td>
+                                            <td>{{ lc.club_id|get_total_player_by_club_id }}</td>
+                                            <td>{{ lc.club_id|get_club_phone_by_club_id }}</td>
+                                            <td>
+                                                <a class="status-{{ lc.status_id|get_status_color_by_status_id }}">
+                                                    {{ lc.status_id|get_status_name_by_status_id }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="{{ url_for('list_register',
+                                                        league_id=lc.league_id,
+                                                        status_id=status[1].id,
+                                                        club_id=lc.club_id) }}"
+                                                   class="status-{{ status[1].color }}">
+                                                    {{ status[1].name }}
+                                                </a>
+                                                |
+                                                <a href="{{ url_for('list_register',
+                                                        league_id=lc.league_id,
+                                                        status_id=status[2].id,
+                                                        club_id=lc.club_id) }}"
+                                                   class="status-{{ status[2].color }}">
+                                                    {{ status[2].name }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

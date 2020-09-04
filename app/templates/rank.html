@@ -48,7 +48,7 @@
                                 <table class="table" id="rank">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
+                                            <th scope="col">Hạng</th>
                                             <th scope="col">Tên đội</th>
                                             <th scope="col">Số trận</th>
                                             <th scope="col" id="tooltip">
@@ -57,17 +57,19 @@
                                                 <span class="badge badge-lose">T</span>
                                                 <span class="tooltip-text">Thắng - Hòa - Thua</span>
                                             </th>
+                                            <th scope="col">Hiệu số</th>
                                             <th scope="col">Điểm</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for club in league.clubs %}
+                                        {% for lc in league_club %}
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>{{ club.name }}</td>
-                                            <td>2</td>
-                                            <td>1 - 1 - 1</td>
-                                            <td>4</td>
+                                            <th scope="row">#</th>
+                                            <td>{{ lc.club_id|get_club_name_by_club_id }}</td>
+                                            <td>{{ lc.club_id|get_total_match_by_club_id_in_league(lc.league_id) }}</td>
+                                            <td>0 - 0 - 0</td>
+                                            <td>0</td>
+                                            <td>0</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

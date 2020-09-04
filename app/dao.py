@@ -163,12 +163,8 @@ def create_league_club(league_id, club_id, status_id):
 
 
 def read_league_club_by_league_id(league_id):
-    league_club = LeagueClub.query.filter(LeagueClub.league_id == league_id)
-    league_club = league_club.join(Club, LeagueClub.club_id == Club.id)
-    league_club = league_club.join(Status, LeagueClub.status_id == Status.id)
-    league_club = league_club.add_columns(Club.name, Club.phone, Status.id, Status.name, Status.color)
-
-    return league_club.all()
+    league_club = LeagueClub.query.filter(LeagueClub.league_id == league_id).all()
+    return league_club
 
 
 def update_status_club_in_league_club(league_id, club_id, status_id):

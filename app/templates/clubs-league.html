@@ -47,13 +47,18 @@
                             <div class="mu-league-detail-body">
                                 <div id="clubs-league">
                                     {% for lc in league_club %}
-                                        {% if lc[3] == 2  %}
+                                        {% if lc.status_id == 2  %}
                                         <a href="{{ url_for('club_detail') }}" class="mu-clubs-league-card">
                                             <div class="mu-clubs-league-card-image">
                                                 <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
                                             </div>
                                             <div class="mu-clubs-league-card-body">
-                                                <h5 class="text-center">{{ lc[1] }}</h5>
+                                                <h5 class="text-center">
+                                                    {{ lc.club_id|get_club_name_by_club_id }}
+                                                </h5>
+                                                <p class="text-center">
+                                                    Số lượng trận đấu: {{ lc.club_id|get_total_match_by_club_id }}
+                                                </p>
                                                 <div class="badge-group">
                                                     <span class="badge badge-win">0 thắng</span>
                                                     <span class="badge badge-draw">0 hòa</span>

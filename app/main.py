@@ -270,7 +270,10 @@ def rank(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
     check_date = dao.check_date_end_league(league.date_end)
-    return render_template('rank.html', league=league, cities=cities, check_date=check_date)
+
+    league_club = dao.read_league_club_by_league_id(league_id=league_id)
+
+    return render_template('rank.html', league=league, cities=cities, check_date=check_date, league_club=league_club)
 
 
 @app.route("/cac-doi-cua-giai-dau/<int:league_id>")
@@ -311,7 +314,7 @@ def list_register(league_id):
 @login_required
 def settings(league_id):
     cities = dao.read_city()
-    genders= dao.read_gender()
+    genders = dao.read_gender()
     league = dao.read_league_by_id(league_id)
     date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
     check_date = dao.check_date_end_league(league.date_end)
@@ -340,6 +343,42 @@ def settings(league_id):
 
     return render_template('settings.html', league=league, cities=cities, genders=genders,
                            msg=msg, err_msg=err_msg, date_now=date_now, check_date=check_date)
+
+
+# TEMPLATE FILTER
+@app.template_filter()
+def get_total_player_by_club_id(club_id):
+    return len(Club.query.get(club_id).players)
+
+
+@app.template_filter()
+def get_total_match_by_club_id(club_id):
+    return len(Result.query.filter(Result.club_id == club_id).all())
+
+
+@app.template_filter()
+def get_club_name_by_club_id(club_id):
+    return Club.query.get(club_id).name
+
+
+@app.template_filter()
+def get_club_phone_by_club_id(club_id):
+    return Club.query.get(club_id).phone
+
+
+@app.template_filter()
+def get_status_name_by_status_id(status_id):
+    return Status.query.get(status_id).name
+
+
+@app.template_filter()
+def get_status_color_by_status_id(status_id):
+    return Status.query.get(status_id).color
+
+
+@app.template_filter('get_total_match_by_club_id_in_league')
+def get_total_match_by_club_id_in_league(club_id, league_id):
+    return len(Result.query.filter(Result.league_id == league_id, Result.club_id == club_id).all())
 
 
 if __name__ == "__main__":

@@ -94,12 +94,6 @@ class TypePlayer(db.Model):
         return self.name
 
 
-# league_club = db.Table("league_club",
-#                        Column("league_id", Integer, ForeignKey('league.id'), primary_key=True),
-#                        Column("club_id", Integer, ForeignKey('club.id'), primary_key=True),
-#                        Column("status_id", Integer, ForeignKey('status.id')))
-
-
 class League(db.Model):
     __tablename__ = "league"
 
@@ -114,8 +108,6 @@ class League(db.Model):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     rounds = relationship('Round', backref='league', lazy=True)
     clubs = relationship('LeagueClub', backref='league', lazy=True)
-    # clubs = relationship('Club', secondary='league_club', lazy='subquery',
-    #                      backref=backref('league', lazy=True))
 
     def __str__(self):
         return self.name
@@ -135,8 +127,6 @@ class Club(db.Model):
     players = relationship('Player', backref='club', lazy=True)
     results = relationship('Result', backref='club', lazy=True)
     leagues = relationship('LeagueClub', backref='club', lazy=True)
-    # leagues = relationship('League', secondary='league_club', lazy='subquery',
-    #                        backref=backref('club', lazy=True))
 
     def __str__(self):
         return self.name
@@ -151,15 +141,6 @@ class Status(db.Model):
 
     def __str__(self):
         return self.name
-
-
-class LeagueClub(db.Model):
-    __tablename__ = "league_club"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
-    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
-    status_id = Column(Integer, ForeignKey(Status.id), nullable=False)
 
 
 class Player(db.Model):
@@ -199,7 +180,6 @@ class Match(db.Model):
     stadium = Column(String(255), nullable=False)
     date = Column(DateTime, nullable=False)
     round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
-    goals = relationship('Goal', backref='match', lazy=True)
 
     def __str__(self):
         return self.id + " - " + self.home.name + " - " + self.away.name
@@ -221,9 +201,10 @@ class Result(db.Model):
     __tablename__ = "result"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
     match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
-    type_result_id = Column(Integer, ForeignKey(TypeResult.id), nullable=False)
+    type_result_id = Column(Integer, ForeignKey(TypeResult.id), nullable=True)
 
     def __str__(self):
         return self.id + " - " + self.match_id + " - " + self.club_id + " - " + self.type_result_id
@@ -234,11 +215,21 @@ class Rule(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
-    number = Column(Integer, nullable=False)
+    total = Column(Integer, nullable=False)
     description = Column(String(255), nullable=True)
 
     def __str__(self):
-        return self.name + " - " + self.number
+        return self.name + " - " + self.total
+
+
+# MANY TO MANY
+class LeagueClub(db.Model):
+    __tablename__ = "league_club"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
+    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
+    status_id = Column(Integer, ForeignKey(Status.id), nullable=False)
 
 
 if __name__ == "__main__":
