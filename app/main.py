@@ -197,7 +197,8 @@ def create_league():
         date_end = request.form.get("date_end")
         user_id = current_user.id
 
-        league = dao.create_league(name=name, address=address, image=image, gender_id=int(gender_id), city_id=int(city_id),
+        league = dao.create_league(name=name, address=address, image=image, gender_id=int(gender_id),
+                                   city_id=int(city_id),
                                    date_begin=date_begin, date_end=date_end, user_id=int(user_id))
 
         return redirect(url_for('register_league', league_id=league.id))
@@ -206,9 +207,36 @@ def create_league():
                            date_now=date_now)
 
 
-@app.route("/chi-tiet-doi-bong")
-def club_detail():
-    return render_template('club-detail.html')
+@app.route("/chi-tiet-doi-bong<int:club_id>", methods=["get", "post"])
+def club_detail(club_id):
+    cities = dao.read_city()
+    genders = dao.read_gender()
+    levels = dao.read_level()
+    clubs = dao.read_club_by_id(club_id)
+
+    err_msg = ""
+    msg = ""
+
+    if request.method == "POSt":
+        if request.form.get("name") and request.form.get("phone") and request.form.get("address") \
+                and request.form.get("gender_id") and request.form.get("level_id"):
+            name = request.form.get("name")
+            phone = request.form.get("phone")
+            address = request.form.get("address")
+            gender_id = request.form.get("gender_id")
+            level_id = request.form.get("level_id")
+            image = ""
+            user_id = current_user.id
+
+        dao.update_club(name=name, phone=phone, address=address, gender_id=int(gender_id),
+                        level_id=int(level_id), image=image,
+                        user_id=int(user_id))
+        msg = "Cập nhật thông tin của đội bóng thành công !"
+    else:
+        err_msg = "Bạn phải nhập đầy đủ thông tin của giải đấu !"
+
+    return render_template('club-detail.html', levels=levels, cities=cities, genders=genders,
+                           clubs=clubs)
 
 
 @app.route("/cau-thu-cua-doi")
@@ -324,7 +352,7 @@ def settings(league_id):
 
     if request.method == "POST":
         if request.form.get("name") and request.form.get("address") and \
-           request.form.get("gender_id") and request.form.get("city_id"):
+                request.form.get("gender_id") and request.form.get("city_id"):
             name = request.form.get("name")
             address = request.form.get("address")
             image = ""
@@ -383,4 +411,5 @@ def get_total_match_by_club_id_in_league(club_id, league_id):
 
 if __name__ == "__main__":
     from app.admin import *
+
     app.run(debug=True)

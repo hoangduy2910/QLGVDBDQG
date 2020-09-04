@@ -127,6 +127,10 @@ def read_clubs_by_user_id(user_id):
     return User.query.get(user_id).clubs
 
 
+def read_club_by_id(club_id):
+    return Club.query.get(club_id)
+
+
 def read_club(keyword="", level_id=0, gender_id=0):
     clubs = Club.query
 
@@ -144,6 +148,20 @@ def read_club(keyword="", level_id=0, gender_id=0):
 
 def read_club_by_league_id(league_id):
     pass
+
+
+def update_club(user_id, name, phone, address, gender_id, level_id, image):
+    club = Club.query.get(user_id)
+
+    club.name = name
+    club.phone = phone
+    club.address = address
+    club.gender_id = gender_id
+    club.level_id = level_id
+    club.image = image
+
+    db.session.add(club)
+    db.session.commit()
 
 
 # LEAGUE CLUB
