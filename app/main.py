@@ -266,6 +266,7 @@ def schedule(league_id):
     cities = dao.read_city()
     clubs = dao.read_club_by_league_id(league_id)
     check_date = dao.check_date_end_league(league.date_end)
+    date_now = datetime.now()
     msg = ""
 
     if request.method == "POST":
@@ -274,14 +275,19 @@ def schedule(league_id):
             dao.update_league(league_id=league.id, name=league.name, address=league.address,
                               image=league.image, gender_id=league.gender_id,
                               city_id=league.city_id, date_begin=league.date_begin,
-                              date_end=league.date_end, user_id=league.user_id, has_scheduled=True)
-            msg = "Tạo lịch thi đấu thành công !"
+                              date_end=(date_now - timedelta(days=1)), user_id=league.user_id, has_scheduled=True)
+            msg = {
+                'alert': 'success',
+                'content': "Tạo lịch thi đấu thành công !"
+            }
         else:
-            msg = "Giải đấu đã có lịch thi đấu !"
+            msg = {
+                'alert': 'warning',
+                'content': "Giải đấu đã có lịch thi đấu !"
+            }
 
-        return redirect(url_for('schedule', league_id=league_id))
-
-    return render_template('schedule.html', league=league, cities=cities, check_date=check_date, msg=msg)
+    return render_template('schedule.html', league=league, cities=cities, check_date=check_date,
+                           msg=msg, date_now=date_now.strftime("%Y-%m-%d"))
 
 
 @app.route("/xep-hang/<int:league_id>")
@@ -386,7 +392,12 @@ def get_round_by_round_name(round_name, league_id):
                 }
                 matches.append(m)
             break
-    return jsonify({'round': round_name, 'matches': matches})
+    return jsonify({'user_id': league.user_id, 'round': round_name, 'matches': matches})
+
+
+@app.route("/api/update-date-competition/<int:match_id>")
+def get_round_by_round_name(match_id):
+    pass
 
 
 # TEMPLATE FILTER

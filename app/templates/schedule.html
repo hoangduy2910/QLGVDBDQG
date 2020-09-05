@@ -46,8 +46,8 @@
                             </div>
                             <div class="mu-league-detail-body table-responsive">
                                 {% if msg %}
-                                <div class="alert alert-success">
-                                    <span class="text-center">{{ msg }}</span>
+                                <div class="alert alert-{{ msg.alert }}">
+                                    <p class="text-center">{{ msg.content }}</p>
                                 </div>
                                 {% endif %}
                                 <form method="post" class="mu-schedule-nav">
@@ -65,7 +65,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p class="text-center">Tạo lịch thi đấu sẽ khóa danh sách đăng ký. Bạn có muốn tạo lịch thi đấu không ?</p>
+                                                    <p>Tạo lịch thi đấu sẽ <span style="color: red;">khóa danh sách đăng ký</span> và <span style="color: red;">kết thúc đăng ký giải đấu</span>. Bạn có muốn tạo lịch thi đấu không ?</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -88,8 +88,12 @@
                                         <tr>
                                             <th scope="col">Vòng đấu</th>
                                             <th scope="col">Đội 1</th>
-                                            <th scope="col">Ngày thi đấu</th>
+                                            <th scope="col">Tỉ số</th>
                                             <th scope="col">Đội 2</th>
+                                            <th scope="col">Ngày thi đấu</th>
+                                            {% if current_user.id == league.user_id  %}
+                                            <th scope="col">Hành động</th>
+                                            {% endif %}
                                         </tr>
                                     </thead>
                                     <tbody id="rounds">
@@ -98,12 +102,24 @@
                                             <tr>
                                                 <td>{{ round.name }}</th>
                                                 <td>{{ match.home|get_club_name_by_club_id }}</th>
+                                                <td>0 - 0</td>
+                                                <td>{{ match.away|get_club_name_by_club_id }}</th>
                                                 {% if match.date  %}
                                                 <td>{{ match.date }}</th>
                                                 {% else %}
-                                                <td>Chưa có ngày thi đấu</th>
+                                                    {% if current_user.id == league.user_id  %}
+                                                    <td>
+                                                        <input class="form-control" min="{{ date_now }}" type="date" />
+                                                    </td>
+                                                    {% else %}
+                                                    <td>Chưa có ngày thi đấu</th>
+                                                    {% endif %}
                                                 {% endif %}
-                                                <td>{{ match.away|get_club_name_by_club_id }}</th>
+                                                {% if current_user.id == league.user_id  %}
+                                                <td>
+                                                    <button class="btn btn-success">Cập nhật</button>
+                                                </td>
+                                                {% endif %}
                                             </tr>
                                             {% endfor %}
                                         {% endfor %}
@@ -136,9 +152,13 @@
 <script>
     $("#schedule-round").change(function() {
         var round_name = $("#schedule-round").val();
+        var user_id = parseInt({{ current_user.id }});
+        var league_user_id = parseInt({{ league.user_id }});
+
         if (round_name == 0) {
             window.location.reload();
         }
+
         $.ajax({
             accepts: {
                 mycustomtype: 'application/json'
@@ -146,17 +166,28 @@
             dataType: 'json',
             url: '/api/' + {{ league.id }} + '/round/' + round_name,
             success: (data) => {
+                console.log(user_id, league_user_id);
                 var str = "";
                 for (var m = 0; m < data.matches.length; m++) {
                     str += "<tr>";
-                        str += "<td>" + data.round + "</td>";
-                        str += "<td>" + data.matches[m].home + "</td>";
-                    if (data.matches[m].date) {
-                        str += "<td>" + data.matches[m].date + "</td>";
+                    str += "<td>" + data.round + "</td>";
+                    str += "<td>" + data.matches[m].home + "</td>";
+                    str += "<td>0 - 0</td>";
+                    str += "<td>" + data.matches[m].away + "</td>";
+
+                    if (user_id == league_user_id) {
+                        if (data.matches[m].date) {
+                            str += "<td>" + data.matches[m].date + "</td>";
+                        } else {
+                            str += '<td><input class="form-control" type="date" /></td>';
+                        }
                     } else {
                         str += "<td>Chưa có ngày thi đấu</td>";
                     }
-                    str += "<td>" + data.matches[m].away + "</td>";
+
+                    if (user_id == league_user_id) {
+                        str += '<td><button class="btn btn-success">Cập nhật</button></td>';
+                    }
                     str += "</tr>";
                 }
                 $("#rounds").html(str);
