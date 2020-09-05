@@ -28,7 +28,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </p>
-                                <p><i class="icon-people"></i> {{ league.clubs|length }} Đội</p>
+                                <p><i class="icon-people"></i> {{ league.id|get_total_club_of_league }} Đội</p>
                             </div>
                         </div>
                         <div class="mu-league-detail-content-body">
@@ -44,8 +44,76 @@
                                 <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
                                 {% endif %}
                             </div>
-                            <div class="mu-league-detail-body">
-                               
+                            <div class="mu-league-detail-body table-responsive">
+                                {% if msg %}
+                                <div class="alert alert-success">
+                                    <span class="text-center">{{ msg }}</span>
+                                </div>
+                                {% endif %}
+                                <form method="post" class="mu-schedule-nav">
+                                    {% if current_user.id == league.user_id  %}
+                                    <button type="button" class="btn btn-success mu-schedule-btn" data-toggle="modal" data-target="#exampleModal">
+                                        Tạo lịch thi đấu
+                                    </button>
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style="display: inline-block; color: green;">Tạo lịch thi đấu</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p class="text-center">Tạo lịch thi đấu sẽ khóa danh sách đăng ký. Bạn có muốn tạo lịch thi đấu không ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                    <button class="btn btn-success" type="submit">Tạo lịch thi đấu</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                     <select class="form-control mu-schedule-round" id="schedule-round">
+                                        <option value="0">Tất cả</option>
+                                        {% for round in league.rounds %}
+                                        <option value="{{ round.name }}">{{ round.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                                {% if league.rounds %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Vòng đấu</th>
+                                            <th scope="col">Đội 1</th>
+                                            <th scope="col">Ngày thi đấu</th>
+                                            <th scope="col">Đội 2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rounds">
+                                        {% for round in league.rounds %}
+                                            {% for match in round.matches %}
+                                            <tr>
+                                                <td>{{ round.name }}</th>
+                                                <td>{{ match.home|get_club_name_by_club_id }}</th>
+                                                {% if match.date  %}
+                                                <td>{{ match.date }}</th>
+                                                {% else %}
+                                                <td>Chưa có ngày thi đấu</th>
+                                                {% endif %}
+                                                <td>{{ match.away|get_club_name_by_club_id }}</th>
+                                            </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <div class="mu-no-clubs-area">
+                                    <h5>Hiện tại bạn chưa có lịch thi đấu !!!</h5>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -65,6 +133,37 @@
 {% block jquery %}
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    $("#schedule-round").change(function() {
+        var round_name = $("#schedule-round").val();
+        if (round_name == 0) {
+            window.location.reload();
+        }
+        $.ajax({
+            accepts: {
+                mycustomtype: 'application/json'
+            },
+            dataType: 'json',
+            url: '/api/' + {{ league.id }} + '/round/' + round_name,
+            success: (data) => {
+                var str = "";
+                for (var m = 0; m < data.matches.length; m++) {
+                    str += "<tr>";
+                        str += "<td>" + data.round + "</td>";
+                        str += "<td>" + data.matches[m].home + "</td>";
+                    if (data.matches[m].date) {
+                        str += "<td>" + data.matches[m].date + "</td>";
+                    } else {
+                        str += "<td>Chưa có ngày thi đấu</td>";
+                    }
+                    str += "<td>" + data.matches[m].away + "</td>";
+                    str += "</tr>";
+                }
+                $("#rounds").html(str);
+            }
+        })
+    })
+</script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <!-- Bootstrap -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

@@ -28,7 +28,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </p>
-                                <p><i class="icon-people"></i> {{ league.clubs|length }} Đội</p>
+                                <p><i class="icon-people"></i> {{ league.id|get_total_club_of_league }} Đội</p>
                             </div>
                         </div>
                         <div class="mu-league-detail-content-body">
@@ -52,7 +52,9 @@
                                             <th scope="col">Số lượng cầu thủ</th>
                                             <th scope="col">Số điện thoại</th>
                                             <th scope="col">Trạng thái</th>
+                                            {% if not league.has_scheduled %}
                                             <th scope="col">Hành động</th>
+                                            {% endif %}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,6 +68,7 @@
                                                     {{ lc.status_id|get_status_name_by_status_id }}
                                                 </a>
                                             </td>
+                                            {% if not league.has_scheduled %}
                                             <td>
                                                 <a href="{{ url_for('list_register',
                                                         league_id=lc.league_id,
@@ -83,6 +86,7 @@
                                                     {{ status[2].name }}
                                                 </a>
                                             </td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                     </tbody>

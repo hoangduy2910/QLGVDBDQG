@@ -68,9 +68,9 @@ def check_date_end_league(date_end):
     return False
 
 
-def create_league(name, address, image, gender_id, city_id, date_begin, date_end, user_id):
+def create_league(name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled):
     league = League(name=name, address=address, image=image, gender_id=gender_id, city_id=city_id,
-                    date_begin=date_begin, date_end=date_end, user_id=user_id)
+                    date_begin=date_begin, date_end=date_end, user_id=user_id, has_scheduled=has_scheduled)
 
     db.session.add(league)
     db.session.commit()
@@ -78,7 +78,7 @@ def create_league(name, address, image, gender_id, city_id, date_begin, date_end
     return league
 
 
-def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end, user_id):
+def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled):
     league = League.query.get(league_id)
 
     league.name = name
@@ -89,6 +89,7 @@ def update_league(league_id, name, address, image, gender_id, city_id, date_begi
     league.date_begin = date_begin
     league.date_end = date_end
     league.user_id = user_id
+    league.has_scheduled = has_scheduled
 
     db.session.add(league)
     db.session.commit()
@@ -143,7 +144,12 @@ def read_club(keyword="", level_id=0, gender_id=0):
 
 
 def read_club_by_league_id(league_id):
-    pass
+    return Club.query.join(LeagueClub, Club.id == LeagueClub.club_id)\
+        .filter(LeagueClub.league_id == league_id, LeagueClub.status_id == 2).all()
+
+
+def read_club_name_by_club_id(club_id):
+    return Club.query.get(club_id).name
 
 
 # LEAGUE CLUB
@@ -173,6 +179,50 @@ def update_status_club_in_league_club(league_id, club_id, status_id):
 
     db.session.add(league_club)
     db.session.commit()
+
+
+# ROUND
+def create_balanced_round_robin(league_id, clubs):
+    rounds = Round.query.filter(Round.league_id == league_id).all()
+    for r in rounds:
+        db.session.delete(r)
+        db.session.commit()
+
+    schedule = []
+    if len(clubs) % 2 == 1:
+        clubs = clubs + [None]
+    n = len(clubs)
+    map = list(range(n))
+    mid = n // 2
+    for i in range(n-1):
+        l1 = map[:mid]
+        l2 = map[mid:]
+        l2.reverse()
+        round = []
+        for j in range(mid):
+            t1 = clubs[l1[j]].id
+            t2 = clubs[l2[j]].id
+            if j == 0 and i % 2 == 1:
+                round.append((t2, t1))
+            else:
+                round.append((t1, t2))
+        schedule.append(round)
+        map = map[mid:-1] + map[:mid] + map[-1:]
+
+    # Tạo vòng đấu
+    for idx, rounds in enumerate(schedule):
+        r = Round(name=str(idx+1), league_id=league_id)
+        db.session.add(r)
+        db.session.commit()
+
+    # Tạo trận đấu thuộc vòng đấu
+    for idx, round in enumerate(schedule):
+        for match in round:
+            m = Match(home=match[0], away=match[1], date=None, round_id=idx+1, league_id=league_id)
+            db.session.add(m)
+            db.session.commit()
+
+    return schedule
 
 
 # STATUS

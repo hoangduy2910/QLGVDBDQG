@@ -106,8 +106,8 @@ class League(db.Model):
     date_begin = Column(DateTime, default=datetime.now())
     date_end = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    has_scheduled = Column(Boolean, default=False)
     rounds = relationship('Round', backref='league', lazy=True)
-    clubs = relationship('LeagueClub', backref='league', lazy=True)
 
     def __str__(self):
         return self.name
@@ -177,12 +177,9 @@ class Match(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     home = Column(Integer, ForeignKey(Club.id), nullable=False)
     away = Column(Integer, ForeignKey(Club.id), nullable=False)
-    stadium = Column(String(255), nullable=False)
-    date = Column(DateTime, nullable=False)
+    date = Column(DateTime, nullable=True)
     round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
-
-    def __str__(self):
-        return self.id + " - " + self.home.name + " - " + self.away.name
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
 
 
 class Goal(db.Model):
@@ -192,9 +189,6 @@ class Goal(db.Model):
     type_goal_id = Column(Integer, ForeignKey(TypeGoal.id), nullable=False)
     player_id = Column(Integer, ForeignKey(Player.id), nullable=False)
     match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
-
-    def __str__(self):
-        return self.id + " - " + self.player_id + " - " + self.match_id
 
 
 class Result(db.Model):
@@ -206,9 +200,6 @@ class Result(db.Model):
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
     type_result_id = Column(Integer, ForeignKey(TypeResult.id), nullable=True)
 
-    def __str__(self):
-        return self.id + " - " + self.match_id + " - " + self.club_id + " - " + self.type_result_id
-
 
 class Rule(db.Model):
     __tablename__ = "rule"
@@ -219,7 +210,7 @@ class Rule(db.Model):
     description = Column(String(255), nullable=True)
 
     def __str__(self):
-        return self.name + " - " + self.total
+        return self.name
 
 
 # MANY TO MANY

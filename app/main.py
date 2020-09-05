@@ -196,9 +196,12 @@ def create_league():
         date_begin = datetime.now()
         date_end = request.form.get("date_end")
         user_id = current_user.id
+        has_scheduled = False
 
-        league = dao.create_league(name=name, address=address, image=image, gender_id=int(gender_id), city_id=int(city_id),
-                                   date_begin=date_begin, date_end=date_end, user_id=int(user_id))
+        league = dao.create_league(name=name, address=address, image=image,
+                                   gender_id=int(gender_id), city_id=int(city_id),
+                                   date_begin=date_begin, date_end=date_end,
+                                   user_id=int(user_id), has_scheduled=has_scheduled)
 
         return redirect(url_for('register_league', league_id=league.id))
 
@@ -257,12 +260,28 @@ def register_league(league_id):
                            date_end=date_end, check_date=check_date, league_club=league_club)
 
 
-@app.route("/lich-thi-dau/<int:league_id>")
+@app.route("/lich-thi-dau/<int:league_id>", methods=["get", "post"])
 def schedule(league_id):
     league = dao.read_league_by_id(league_id)
     cities = dao.read_city()
+    clubs = dao.read_club_by_league_id(league_id)
     check_date = dao.check_date_end_league(league.date_end)
-    return render_template('schedule.html', league=league, cities=cities, check_date=check_date)
+    msg = ""
+
+    if request.method == "POST":
+        if not league.has_scheduled:
+            dao.create_balanced_round_robin(league_id=league_id, clubs=clubs)
+            dao.update_league(league_id=league.id, name=league.name, address=league.address,
+                              image=league.image, gender_id=league.gender_id,
+                              city_id=league.city_id, date_begin=league.date_begin,
+                              date_end=league.date_end, user_id=league.user_id, has_scheduled=True)
+            msg = "Tạo lịch thi đấu thành công !"
+        else:
+            msg = "Giải đấu đã có lịch thi đấu !"
+
+        return redirect(url_for('schedule', league_id=league_id))
+
+    return render_template('schedule.html', league=league, cities=cities, check_date=check_date, msg=msg)
 
 
 @app.route("/xep-hang/<int:league_id>")
@@ -333,9 +352,12 @@ def settings(league_id):
             date_begin = league.date_begin
             date_end = request.form.get("date_end")
             user_id = current_user.id
+            has_scheduled = False
 
-            dao.update_league(league_id=league_id, name=name, address=address, image=image, gender_id=int(gender_id),
-                              city_id=int(city_id), date_begin=date_begin, date_end=date_end, user_id=int(user_id))
+            dao.update_league(league_id=league_id, name=name, address=address,
+                              image=image, gender_id=int(gender_id),
+                              city_id=int(city_id), date_begin=date_begin,
+                              date_end=date_end, user_id=int(user_id), has_scheduled=has_scheduled)
             msg = "Cập nhật thông tin của giải đấu thành công !"
 
         else:
@@ -343,6 +365,28 @@ def settings(league_id):
 
     return render_template('settings.html', league=league, cities=cities, genders=genders,
                            msg=msg, err_msg=err_msg, date_now=date_now, check_date=check_date)
+
+
+# API
+@app.route("/api/<int:league_id>/round/<string:round_name>")
+def get_round_by_round_name(round_name, league_id):
+    league = dao.read_league_by_id(league_id)
+    round_name = int(round_name)
+    matches = []
+
+    for idx, round in enumerate(league.rounds):
+        if round_name == idx + 1:
+            for match in round.matches:
+                m = {
+                    'home': dao.read_club_name_by_club_id(match.home),
+                    'home_id': match.home,
+                    'away': dao.read_club_name_by_club_id(match.away),
+                    'away_id': match.away,
+                    'date': match.date
+                }
+                matches.append(m)
+            break
+    return jsonify({'round': round_name, 'matches': matches})
 
 
 # TEMPLATE FILTER
@@ -379,6 +423,11 @@ def get_status_color_by_status_id(status_id):
 @app.template_filter('get_total_match_by_club_id_in_league')
 def get_total_match_by_club_id_in_league(club_id, league_id):
     return len(Result.query.filter(Result.league_id == league_id, Result.club_id == club_id).all())
+
+
+@app.template_filter()
+def get_total_club_of_league(league_id):
+    return len(LeagueClub.query.filter(LeagueClub.league_id == league_id, LeagueClub.status_id == 2).all())
 
 
 if __name__ == "__main__":

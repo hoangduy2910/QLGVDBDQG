@@ -1512,6 +1512,28 @@ button:focus {
 
 
 /*--------------------*/
+/* SCHEDULE */
+/*--------------------*/
+.mu-schedule-nav {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.mu-schedule-btn, .mu-schedule-round {
+    margin: 5px;
+}
+
+.mu-schedule-btn {
+    flex-basis: 15%;
+}
+
+.mu-schedule-round {
+    flex-basis: 20%;
+}
+
+
+
+/*--------------------*/
 /* COUNTER */
 /*--------------------*/
 
@@ -1915,6 +1937,10 @@ button:focus {
     #clubs-league .mu-clubs-league-card {
         flex-basis: 85%;
     }
+
+    .mu-schedule-round {
+        flex-basis: 30%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1967,6 +1993,10 @@ button:focus {
 	.mu-achievements-match-body div, .mu-achievements-goal-body div {
         flex-basis: 100%;
     }
+
+    .mu-schedule-btn, .mu-schedule-round {
+        flex-basis: 50%;
+    }
 }
 
 
@@ -1997,6 +2027,15 @@ button:focus {
 
 	.mu-achievements-body {
         flex-basis: 70%;
+    }
+
+    .mu-schedule-nav {
+        flex-direction: column;
+    }
+
+    .mu-schedule-btn, .mu-schedule-round {
+        flex-basis: 100%;
+        margin: 5px 0;
     }
 
 }
