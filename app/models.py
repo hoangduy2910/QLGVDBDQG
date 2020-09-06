@@ -199,8 +199,8 @@ class Result(db.Model):
     league_id = Column(Integer, ForeignKey(League.id), nullable=False)
     match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
-    type_result_id = Column(Integer, ForeignKey(TypeResult.id), nullable=True)
-    score = Column(Integer, nullable=True, default=0)
+    type_result_id = Column(Integer, ForeignKey(TypeResult.id))
+    score = Column(Integer, default=0)
 
 
 class Rule(db.Model):

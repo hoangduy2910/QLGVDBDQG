@@ -387,8 +387,12 @@ def get_round_by_round_name(round_name, league_id):
                     'match_id': match.id,
                     'home': dao.read_club_name_by_club_id(match.home),
                     'home_id': match.home,
+                    'home_score': dao.get_score_by_league_club_match(league_id=league_id,
+                                                                     match_id=match.id, club_id=match.home),
                     'away': dao.read_club_name_by_club_id(match.away),
                     'away_id': match.away,
+                    'away_score': dao.get_score_by_league_club_match(league_id=league_id,
+                                                                     match_id=match.id, club_id=match.away),
                     'date': match.date,
                     'time': str(match.time)
                 }
@@ -407,6 +411,15 @@ def update_date_match(match_id, date, time):
 def match_detail_by_match_id(match_id):
     url = url_for('match_detail', match_id=match_id)
     return jsonify({'url': url})
+
+
+@app.route("/api/update-result-score-match/<int:league_id>/<int:match_id>/"
+           "<int:home_id>/<int:home_score>/<int:away_id>/<int:away_score>")
+def update_result_score_match(league_id, match_id, home_id, home_score, away_id, away_score):
+    dao.update_result_score_match(league_id=league_id, match_id=match_id,
+                                  home_id=home_id, home_score=home_score,
+                                  away_id=away_id, away_score=away_score)
+    return jsonify({'status': 'success'})
 
 
 # TEMPLATE FILTER
@@ -448,6 +461,28 @@ def get_total_match_by_club_id_in_league(club_id, league_id):
 @app.template_filter()
 def get_total_club_of_league(league_id):
     return len(LeagueClub.query.filter(LeagueClub.league_id == league_id, LeagueClub.status_id == 2).all())
+
+
+@app.template_filter('get_score_league_club_match')
+def get_score_league_club_match(match_id, league_id, club_id):
+    return Result.query.filter(Result.league_id == league_id,
+                               Result.club_id == club_id,
+                               Result.match_id == match_id).first().score
+
+
+@app.template_filter()
+def get_win_result_club(club_id):
+    return len(Result.query.filter(Result.club_id == club_id, Result.type_result_id == 1).all())
+
+
+@app.template_filter()
+def get_draw_result_club(club_id):
+    return len(Result.query.filter(Result.club_id == club_id, Result.type_result_id == 2).all())
+
+
+@app.template_filter()
+def get_lose_result_club(club_id):
+    return len(Result.query.filter(Result.club_id == club_id, Result.type_result_id == 3).all())
 
 
 if __name__ == "__main__":

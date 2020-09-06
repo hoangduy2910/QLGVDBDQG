@@ -224,10 +224,26 @@ def create_balanced_round_robin(league_id, clubs):
                 db.session.add(m)
                 db.session.commit()
 
+    # Tạo kết quả của mỗi trận đấu
+    matches = read_match_by_league_id(league_id=league_id)
+    for match in matches:
+        home_result = Result(league_id=match.league_id, match_id=match.id, club_id=match.home,
+                             type_result_id=None, score=0)
+        away_result = Result(league_id=match.league_id, match_id=match.id, club_id=match.away,
+                             type_result_id=None, score=0)
+
+        db.session.add(home_result)
+        db.session.add(away_result)
+        db.session.commit()
+
     return schedule
 
 
 # MATCH
+def read_match_by_league_id(league_id):
+    return Match.query.filter(Match.league_id == league_id).all()
+
+
 def update_date_match(match_id, date, time):
     m = Match.query.get(match_id)
     m.date = datetime.strptime(date, '%Y-%m-%d')
@@ -235,6 +251,42 @@ def update_date_match(match_id, date, time):
 
     db.session.add(m)
     db.session.commit()
+
+
+# RESULT
+def update_result_score_match(league_id, match_id, home_id, home_score, away_id, away_score):
+    home_result = Result.query.filter(Result.league_id == league_id,
+                                      Result.match_id == match_id,
+                                      Result.club_id == home_id).first()
+    away_result = Result.query.filter(Result.league_id == league_id,
+                                      Result.match_id == match_id,
+                                      Result.club_id == away_id).first()
+
+    # 1-Thắng 2-Hòa 3-Thua
+    if home_score > away_score:
+        home_result.type_result_id = 1
+        away_result.type_result_id = 3
+    elif home_score == away_score:
+        home_result.type_result_id = 2
+        away_result.type_result_id = 2
+    else:
+        home_result.type_result_id = 3
+        away_result.type_result_id = 1
+
+    home_result.score = home_score
+    away_result.score = away_score
+
+    db.session.add(home_result)
+    db.session.commit()
+
+    db.session.add(away_result)
+    db.session.commit()
+
+
+def get_score_by_league_club_match(league_id, match_id, club_id):
+    return Result.query.filter(Result.league_id == league_id,
+                               Result.match_id == match_id,
+                               Result.club_id == club_id).first().score
 
 
 # STATUS

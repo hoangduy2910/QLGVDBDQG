@@ -60,9 +60,9 @@
                                                     Số lượng trận đấu: {{ lc.club_id|get_total_match_by_club_id }}
                                                 </p>
                                                 <div class="badge-group">
-                                                    <span class="badge badge-win">0 thắng</span>
-                                                    <span class="badge badge-draw">0 hòa</span>
-                                                    <span class="badge badge-lose">0 thua</span>
+                                                    <span class="badge badge-win">{{ lc.club_id|get_win_result_club }} thắng</span>
+                                                    <span class="badge badge-draw">{{ lc.club_id|get_draw_result_club }} hòa</span>
+                                                    <span class="badge badge-lose">{{ lc.club_id|get_lose_result_club }} thua</span>
                                                 </div>
                                             </div>
                                         </a>
