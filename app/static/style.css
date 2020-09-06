@@ -1531,6 +1531,38 @@ button:focus {
     flex-basis: 20%;
 }
 
+.mu-schedule-score {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.mu-schedule-score h5, h4 {
+    margin: 0;
+}
+
+.mu-schedule-score-home-name, .mu-schedule-score-away-name {
+    flex-basis: 20%
+
+}
+
+.mu-schedule-score-home-name {
+    margin-right: 10px;
+}
+
+.mu-schedule-score-away-name {
+    margin-left: 10px;
+}
+
+.mu-schedule-score-home, .mu-schedule-score-away {
+    flex-basis: 15%
+
+}
+
+.mu-schedule-score-center {
+    flex-basis: 5%
+
+}
 
 
 /*--------------------*/
@@ -1996,6 +2028,15 @@ button:focus {
 
     .mu-schedule-btn, .mu-schedule-round {
         flex-basis: 50%;
+    }
+
+    .mu-schedule-score {
+        flex-direction: column;
+    }
+
+    .mu-schedule-score div {
+        margin: 0;
+        margin-bottom: 10px;
     }
 }
 

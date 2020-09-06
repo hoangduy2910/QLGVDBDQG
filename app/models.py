@@ -1,6 +1,6 @@
 from app import db
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean, Time
 from sqlalchemy.orm import relationship, backref
 from datetime import datetime
 import enum
@@ -175,9 +175,10 @@ class Match(db.Model):
     __tablename__ = "match"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    home = Column(Integer, ForeignKey(Club.id), nullable=False)
-    away = Column(Integer, ForeignKey(Club.id), nullable=False)
+    home = Column(Integer, ForeignKey(Club.id), nullable=True)
+    away = Column(Integer, ForeignKey(Club.id), nullable=True)
     date = Column(DateTime, nullable=True)
+    time = Column(Time, nullable=True)
     round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
     league_id = Column(Integer, ForeignKey(League.id), nullable=False)
 
@@ -199,6 +200,7 @@ class Result(db.Model):
     match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
     type_result_id = Column(Integer, ForeignKey(TypeResult.id), nullable=True)
+    score = Column(Integer, nullable=True, default=0)
 
 
 class Rule(db.Model):

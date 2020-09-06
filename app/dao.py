@@ -200,14 +200,15 @@ def create_balanced_round_robin(league_id, clubs):
         l2.reverse()
         round = []
         for j in range(mid):
-            t1 = clubs[l1[j]].id
-            t2 = clubs[l2[j]].id
+            t1 = clubs[l1[j]]
+            t2 = clubs[l2[j]]
             if j == 0 and i % 2 == 1:
                 round.append((t2, t1))
             else:
                 round.append((t1, t2))
         schedule.append(round)
         map = map[mid:-1] + map[:mid] + map[-1:]
+
 
     # Tạo vòng đấu
     for idx, rounds in enumerate(schedule):
@@ -218,11 +219,22 @@ def create_balanced_round_robin(league_id, clubs):
     # Tạo trận đấu thuộc vòng đấu
     for idx, round in enumerate(schedule):
         for match in round:
-            m = Match(home=match[0], away=match[1], date=None, round_id=idx+1, league_id=league_id)
-            db.session.add(m)
-            db.session.commit()
+            if match[0] and match[1]:
+                m = Match(home=match[0].id, away=match[1].id, date=None, round_id=idx+1, league_id=league_id)
+                db.session.add(m)
+                db.session.commit()
 
     return schedule
+
+
+# MATCH
+def update_date_match(match_id, date, time):
+    m = Match.query.get(match_id)
+    m.date = datetime.strptime(date, '%Y-%m-%d')
+    m.time = time
+
+    db.session.add(m)
+    db.session.commit()
 
 
 # STATUS

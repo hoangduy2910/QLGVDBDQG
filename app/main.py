@@ -276,15 +276,10 @@ def schedule(league_id):
                               image=league.image, gender_id=league.gender_id,
                               city_id=league.city_id, date_begin=league.date_begin,
                               date_end=(date_now - timedelta(days=1)), user_id=league.user_id, has_scheduled=True)
-            msg = {
-                'alert': 'success',
-                'content': "Tạo lịch thi đấu thành công !"
-            }
+
+            return redirect(url_for('schedule', league_id=league_id))
         else:
-            msg = {
-                'alert': 'warning',
-                'content': "Giải đấu đã có lịch thi đấu !"
-            }
+            msg = "Giải đấu đã có lịch thi đấu !"
 
     return render_template('schedule.html', league=league, cities=cities, check_date=check_date,
                            msg=msg, date_now=date_now.strftime("%Y-%m-%d"))
@@ -373,6 +368,11 @@ def settings(league_id):
                            msg=msg, err_msg=err_msg, date_now=date_now, check_date=check_date)
 
 
+@app.route("/chi-tiet-tran-dau/<int:match_id>", methods=["get", "post"])
+def match_detail(match_id):
+    return render_template('match-detail.html')
+
+
 # API
 @app.route("/api/<int:league_id>/round/<string:round_name>")
 def get_round_by_round_name(round_name, league_id):
@@ -384,20 +384,29 @@ def get_round_by_round_name(round_name, league_id):
         if round_name == idx + 1:
             for match in round.matches:
                 m = {
+                    'match_id': match.id,
                     'home': dao.read_club_name_by_club_id(match.home),
                     'home_id': match.home,
                     'away': dao.read_club_name_by_club_id(match.away),
                     'away_id': match.away,
-                    'date': match.date
+                    'date': match.date,
+                    'time': str(match.time)
                 }
                 matches.append(m)
             break
     return jsonify({'user_id': league.user_id, 'round': round_name, 'matches': matches})
 
 
-@app.route("/api/update-date-competition/<int:match_id>")
-def get_round_by_round_name(match_id):
-    pass
+@app.route("/api/update-date-match/<int:match_id>/<string:date>/<string:time>")
+def update_date_match(match_id, date, time):
+    dao.update_date_match(match_id=match_id, date=date, time=time)
+    return jsonify({'status': 'success'})
+
+
+@app.route("/api/match-detail/<int:match_id>")
+def match_detail_by_match_id(match_id):
+    url = url_for('match_detail', match_id=match_id)
+    return jsonify({'url': url})
 
 
 # TEMPLATE FILTER

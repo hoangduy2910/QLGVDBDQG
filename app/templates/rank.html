@@ -63,14 +63,16 @@
                                     </thead>
                                     <tbody>
                                         {% for lc in league_club %}
-                                        <tr>
-                                            <th scope="row">#</th>
-                                            <td>{{ lc.club_id|get_club_name_by_club_id }}</td>
-                                            <td>{{ lc.club_id|get_total_match_by_club_id_in_league(lc.league_id) }}</td>
-                                            <td>0 - 0 - 0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
+                                            {% if lc.status_id == 2 %}
+                                            <tr>
+                                                <th scope="row">#</th>
+                                                <td>{{ lc.club_id|get_club_name_by_club_id }}</td>
+                                                <td>{{ lc.club_id|get_total_match_by_club_id_in_league(lc.league_id) }}</td>
+                                                <td>0 - 0 - 0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            </tr>
+                                            {% endif %}
                                         {% endfor %}
                                     </tbody>
                                 </table>
