@@ -188,8 +188,7 @@ def create_league_club(league_id, club_id, status_id):
 
 
 def read_league_club_by_league_id(league_id):
-    league_club = LeagueClub.query.filter(LeagueClub.league_id == league_id).all()
-    return league_club
+    return LeagueClub.query.filter(LeagueClub.league_id == league_id).all()
 
 
 def update_status_club_in_league_club(league_id, club_id, status_id):
@@ -344,10 +343,10 @@ def get_goal_difference_by_league_club(league_id, club_id):
 
 
 def get_point_league_club(league_id, club_id):
-    point = 0
     results = Result.query.filter(Result.league_id == league_id,
                                   Result.club_id == club_id).all()
 
+    point = 0
     for result in results:
         if result.type_result_id == 1:
             point = point + 3
@@ -355,6 +354,33 @@ def get_point_league_club(league_id, club_id):
             point = point + 1
 
     return point
+
+
+def read_league_club_by_rank(league_id):
+    clubs = []
+    league_club = LeagueClub.query.filter(LeagueClub.league_id == league_id).all()
+    for lc in league_club:
+        if lc.status_id == 2:
+            goal_difference = get_goal_difference_by_league_club(league_id=league_id, club_id=lc.club_id)
+            point = get_point_league_club(league_id=league_id, club_id=lc.club_id)
+            club = {
+                'club_id': lc.club_id,
+                'goal_difference': goal_difference,
+                'point': point
+            }
+            clubs.append(club)
+
+    rank = sorted(
+        clubs,
+        key=lambda c: (c['point'], c['goal_difference']),
+        reverse=True
+    )
+
+    for idx, r in enumerate(rank):
+        r['rank'] = idx + 1
+        r['league_id'] = league_id
+
+    return rank
 
 
 # PLAYER

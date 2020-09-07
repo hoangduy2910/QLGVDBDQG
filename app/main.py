@@ -336,9 +336,7 @@ def rank(league_id):
     league = dao.read_league_by_id(league_id)
     check_date = dao.check_date_end_league(league.date_end)
 
-    league_club = dao.read_league_club_by_league_id(league_id=league_id)
-
-    print(dao.get_point_league_club(league_id=league_id, club_id=1))
+    league_club = dao.read_league_club_by_rank(league_id=league_id)
 
     return render_template('rank.html', league=league, cities=cities, check_date=check_date, league_club=league_club)
 
