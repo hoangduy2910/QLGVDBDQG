@@ -1,32 +1,3 @@
-
-/*
-Template Name: Biziness	
-Author: MarkUps
-Author URI: http://www.markups.io/
-Version: 1.0
-*/
-
-
-/* Table of Content
-==================================================
-#BASIC TYPOGRAPHY
-#HEADER	
-#MENU 
-#FEATURED SLIDER 
-#TYPE COMPETITION
-#LEAGUES
-#CLUBS
-#PROFILE
-#MY LEAGUE
-#MY CLUB
-#COUNTER
-#TUTORIAL
-#FOOTER
-#LOGIN AND REGISTER FORM
-#RESPONSIVE STYLE
-*/
-
-
 /*--------------------*/
 /* BASIC TYPOGRAPHY */
 /*--------------------*/
@@ -174,6 +145,10 @@ button {
 button:focus {
 	outline: none;
 	border: none;
+}
+
+section > div.container {
+    width: 85%;
 }
 
 /*Wordpress default class*/
@@ -733,14 +708,15 @@ button:focus {
 
 .mu-clubs-group-card {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
 .mu-clubs-card {
-    flex-basis: 20%;
+    flex-basis: 17%;
     border: 1px solid #3fc35f;
     border-radius: 5px;
-    margin: 20px;
+    margin: 15px;
     padding: 15px;
     transition: .2s;
 }
@@ -1313,7 +1289,7 @@ button:focus {
 }
 
 .mu-league-detail-body table thead {
-    background-color: #eee;
+    background-color: #cccccc;
 }
 
 .mu-league-detail-body table th, tr, td {
@@ -1387,6 +1363,7 @@ button:focus {
 #clubs-league {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 #clubs-league .mu-clubs-league-card {
@@ -1510,6 +1487,90 @@ button:focus {
     border-radius: 5px;
 }
 
+
+/*--------------------*/
+/* SCHEDULE */
+/*--------------------*/
+.mu-schedule-nav {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.mu-schedule-btn, .mu-schedule-round {
+    margin: 5px;
+}
+
+.mu-schedule-btn {
+    flex-basis: 15%;
+}
+
+.mu-schedule-round {
+    flex-basis: 20%;
+}
+
+.mu-schedule-score {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.mu-schedule-score h5, h4 {
+    margin: 0;
+}
+
+.mu-schedule-score-home-name, .mu-schedule-score-away-name {
+    flex-basis: 20%
+
+}
+
+.mu-schedule-score-home-name {
+    margin-right: 10px;
+}
+
+.mu-schedule-score-away-name {
+    margin-left: 10px;
+}
+
+.mu-schedule-score-home, .mu-schedule-score-away {
+    flex-basis: 15%
+
+}
+
+.mu-schedule-score-center {
+    flex-basis: 5%
+
+}
+
+#rounds tr:hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+
+#rounds td {
+    padding: 5px;
+    margin: 0;
+}
+
+#rounds input:focus {
+    border: 1px solid blue;
+}
+
+#rounds .btn-date-match:focus {
+    border: none;
+    outline: none;
+}
+
+#rounds .match-score {
+    display: flex;
+    justify-content: center;
+    width: 150px;
+    margin: 0 auto;
+}
+
+#rounds h5 {
+    flex-basis: 5%;
+    margin: 0 5px;
+}
 
 /*--------------------*/
 /* COUNTER */
@@ -1721,6 +1782,14 @@ button:focus {
 	.navbar-default .mu-menu li a {
 		margin: 10px 12px 5px;
 	}
+
+	.mu-clubs-card {
+	    flex-basis: 20%;
+	}
+
+	#sidebar a {
+        padding-left: 20px;
+	}
 }
 
 @media (max-width: 991px) {
@@ -1915,6 +1984,10 @@ button:focus {
     #clubs-league .mu-clubs-league-card {
         flex-basis: 85%;
     }
+
+    .mu-schedule-round {
+        flex-basis: 30%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1967,6 +2040,19 @@ button:focus {
 	.mu-achievements-match-body div, .mu-achievements-goal-body div {
         flex-basis: 100%;
     }
+
+    .mu-schedule-btn, .mu-schedule-round {
+        flex-basis: 50%;
+    }
+
+    .mu-schedule-score {
+        flex-direction: column;
+    }
+
+    .mu-schedule-score div {
+        margin: 0;
+        margin-bottom: 10px;
+    }
 }
 
 
@@ -1997,6 +2083,15 @@ button:focus {
 
 	.mu-achievements-body {
         flex-basis: 70%;
+    }
+
+    .mu-schedule-nav {
+        flex-direction: column;
+    }
+
+    .mu-schedule-btn, .mu-schedule-round {
+        flex-basis: 100%;
+        margin: 5px 0;
     }
 
 }

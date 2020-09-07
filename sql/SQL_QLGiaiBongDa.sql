@@ -13,25 +13,6 @@ insert into db_qlgiaibongda.gender (name) values ('Nam'), ('Nữ');
 /* Trình độ */
 insert into db_qlgiaibongda.level (name) values ('Chuyên nghiệp'), ('Bán chuyên'), ('Cao cấp'), ('Trung cấp'), ('Vui');
 
-/* Trạng thái xét duyệt */
-insert into db_qlgiaibongda.status (name, color) values ('Đang duyệt', 'primary'), ('Chấp nhận', 'success'), ('Từ chối', 'danger');
-
-/* Giải đấu */
-insert into db_qlgiaibongda.league values (1, 'Bóng Đá Nam OU', '217 Lý Thường Kiệt', '', 1, 31, NOW(), NOW() + INTERVAL 1 DAY, 2);
-
-/* Đội bóng*/
-insert into db_qlgiaibongda.club values (1, 'DH17TH02', '1231231231', 'HCM', '', 1, 4, 3), (2, 'DH17TH03', '4565464564', 'HCM', '', 1, 4, 4);
-
-/* Đội bóng tham gia giải đấu */
-insert into db_qlgiaibongda.league_club values (1, 1, 1, 2), (2, 1, 2, 2);
-
-/* Người dùng */
-insert into db_qlgiaibongda.user (name, username, password, phone, birthday, active, user_role) values
-('admin', 'admin', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-01-01', 1, 2),
-('user1', 'user1', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-01-01', 1, 1),
-('user2', 'user2', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1),
-('user3', 'user3', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1);
-
 /* Các tỉnh thành */
 insert into db_qlgiaibongda.city (name) values
 ('An Giang'),
@@ -96,4 +77,44 @@ insert into db_qlgiaibongda.city (name) values
 ('Tuyên Quang'),
 ('Vĩnh Long'),
 ('Vĩnh Phúc'),
-('Yên Bái')
+('Yên Bái');
+
+/* Trạng thái xét duyệt */
+insert into db_qlgiaibongda.status (name, color) values ('Đang duyệt', 'primary'), ('Chấp nhận', 'success'), ('Từ chối', 'danger');
+
+/* Người dùng */
+insert into db_qlgiaibongda.user (name, username, password, phone, birthday, active, user_role) values
+('admin', 'admin', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-01-01', 1, 2),
+('user1', 'user1', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-01-01', 1, 1),
+('user2', 'user2', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1),
+('user3', 'user3', '202cb962ac59075b964b07152d234b70', '1234567891', '1998-02-02', 1, 1);
+
+/* Giải đấu */
+insert into db_qlgiaibongda.league (name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled) values
+('Bóng Đá Nam OU', '217 Lý Thường Kiệt', '', 1, 31, NOW(), NOW() + INTERVAL 1 DAY, 2, False);
+
+/* Đội bóng*/
+insert into db_qlgiaibongda.club (name, phone, address, image, gender_id, level_id, user_id) values
+('DH17TH01', '1231231231', 'HCM', '', 1, 4, 3), 
+('DH17TH02', '4565464564', 'HCM', '', 1, 4, 3),
+('DH17TH03', '4565464564', 'HCM', '', 1, 4, 3),
+('DH17TH04', '4565464564', 'HCM', '', 1, 4, 3),
+('DH17TH05', '4565464564', 'HCM', '', 1, 4, 3),
+('DH17TK01', '4565464564', 'HCM', '', 1, 4, 4),
+('DH17TK02', '4565464564', 'HCM', '', 1, 4, 4),
+('DH17TK03', '4565464564', 'HCM', '', 1, 4, 4),
+('DH17TK04', '4565464564', 'HCM', '', 1, 4, 4),
+('DH17TK05', '4565464564', 'HCM', '', 1, 4, 4);
+
+/* Đội bóng tham gia giải đấu */
+insert into db_qlgiaibongda.league_club (league_id, club_id, status_id) values 
+(1, 1, 1), 
+(1, 2, 1),
+(1, 3, 1),
+(1, 4, 1),
+(1, 5, 1),
+(1, 6, 1),
+(1, 7, 1),
+(1, 8, 1),
+(1, 9, 1),
+(1, 10, 1);

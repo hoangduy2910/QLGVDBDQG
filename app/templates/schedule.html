@@ -28,7 +28,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </p>
-                                <p><i class="icon-people"></i> {{ league.clubs|length }} Đội</p>
+                                <p><i class="icon-people"></i> {{ league.id|get_total_club_of_league }} Đội</p>
                             </div>
                         </div>
                         <div class="mu-league-detail-content-body">
@@ -44,8 +44,170 @@
                                 <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
                                 {% endif %}
                             </div>
-                            <div class="mu-league-detail-body">
-                               
+                            <div class="mu-league-detail-body table-responsive">
+                                {% if msg %}
+                                <div class="alert alert-warning">
+                                    <p class="text-center">{{ msg }}</p>
+                                </div>
+                                {% endif %}
+                                <form method="post" class="mu-schedule-nav">
+                                    {% if current_user.id == league.user_id  %}
+                                    <button type="button" class="btn btn-success mu-schedule-btn" data-toggle="modal" data-target="#createSchedule">
+                                        Tạo lịch thi đấu
+                                    </button>
+                                    <div class="modal fade" id="createSchedule" tabindex="-1" aria-labelledby="createScheduleLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="createScheduleLabel" style="display: inline-block; color: green;">Tạo lịch thi đấu</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Tạo lịch thi đấu sẽ <span style="color: red;">khóa danh sách đăng ký</span> và <span style="color: red;">kết thúc đăng ký giải đấu</span>. Bạn có muốn tạo lịch thi đấu không ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                    <button class="btn btn-success" type="submit">Tạo lịch thi đấu</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                     <select class="form-control mu-schedule-round" id="schedule-round">
+                                        <option value="0">Tất cả</option>
+                                        {% for round in league.rounds %}
+                                        <option value="{{ round.name }}">{{ round.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                                {% if league.rounds %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Vòng</th>
+                                            <th scope="col">Đội 1</th>
+                                            <th scope="col">Tỉ số</th>
+                                            <th scope="col">Đội 2</th>
+                                            <th scope="col">Ngày thi đấu</th>
+                                            <th scope="col">Giờ thi đấu</th>
+                                            {% if current_user.id == league.user_id  %}
+                                            <th scope="col">Cập nhật ngày giờ</th>
+                                            <th scope="col">Cập nhật tỉ số</th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rounds">
+                                        {% for round in league.rounds %}
+                                            {% for match in round.matches %}
+                                            <tr onclick="matchDetail({{ match.id }})">
+                                                <td>{{ round.name }}</td>
+                                                <td id="match-home-{{ match.home }}">{{ match.home|get_club_name_by_club_id }}</td>
+                                                {% if current_user.id == league.user_id %}
+                                                <td>
+                                                    <div class="match-score">
+                                                        <div class="match-home-score">
+                                                            <input class="form-control"
+                                                                   id="input-score-match-home-{{ match.id }}"
+                                                                   value="{{ match.id|get_score_league_club_match(league.id, match.home) }}" min="0" type="number" />
+                                                        </div>
+                                                        <div>
+                                                            <h5>:</h5>
+                                                        </div>
+                                                        <div class="match-away-score">
+                                                            <input class="form-control"
+                                                                   id="input-score-match-away-{{ match.id }}"
+                                                                   value="{{ match.id|get_score_league_club_match(league.id, match.away) }}" min="0" type="number" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {% else %}
+                                                <td>
+                                                    {{ match.id|get_score_league_club_match(league.id, match.home) }} - {{ match.id|get_score_league_club_match(league.id, match.away) }}
+                                                </td>
+                                                {% endif %}
+                                                <td id="match-away-{{ match.away }}">{{ match.away|get_club_name_by_club_id }}</td>
+                                                {% if match.date  %}
+                                                    {% if current_user.id == league.user_id %}
+                                                    <td>
+                                                        <input
+                                                            id="input-date-match-{{ match.id }}"
+                                                            class="form-control"
+                                                            min="{{ date_now }}"
+                                                            type="date"
+                                                            value="{{ match.date.strftime('%Y-%m-%d') }}"/>
+                                                    </td>
+                                                    {% else %}
+                                                    <td>{{ match.date.strftime('%d-%m-%Y') }}</td>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if current_user.id == league.user_id  %}
+                                                    <td>
+                                                        <input
+                                                            id="input-date-match-{{ match.id }}"
+                                                            class="form-control"
+                                                            min="{{ date_now }}"
+                                                            type="date" />
+                                                    </td>
+                                                    {% else %}
+                                                    <td>Chưa có ngày thi đấu</td>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                {% if match.time and match.time != "None" %}
+                                                    {% if current_user.id == league.user_id  %}
+                                                    <td>
+                                                        <input
+                                                            id="input-time-match-{{ match.id }}"
+                                                            class="form-control"
+                                                            type="time"
+                                                            value="{{ match.time }}"/>
+                                                    </td>
+                                                    {% else %}
+                                                    <td>{{ match.time.strftime("%H:%M") }}</td>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if current_user.id == league.user_id  %}
+                                                    <td>
+                                                        <input
+                                                            id="input-time-match-{{ match.id }}"
+                                                            class="form-control"
+                                                            type="time" />
+                                                    </td>
+                                                    {% else %}
+                                                    <td>Chưa có giờ thi đấu</td>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                {% if current_user.id == league.user_id  %}
+                                                <td>
+                                                    <input
+                                                        type="button"
+                                                        value="Cập nhật ngày giờ"
+                                                        class="btn btn-success btn-date-match"
+                                                        id="btn-date-match-{{ match.id }}"
+                                                        onclick="updateDateTimeMatch({{ match.id }})">
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        type="button"
+                                                        value="Cập nhật tỉ số"
+                                                        class="btn btn-success btn-date-match"
+                                                        id="btn-score-match-{{ match.id }}"
+                                                        onclick="updateScoreMatch({{ match.id }}, {{ match.home }}, {{ match.away }})">
+                                                </td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <div class="mu-no-clubs-area">
+                                    <h5>Hiện tại bạn chưa có lịch thi đấu !!!</h5>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -65,6 +227,169 @@
 {% block jquery %}
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    $("#schedule-round").change(function() {
+        var round_name = $("#schedule-round").val();
+        var user_id = parseInt({{ current_user.id }});
+        var league_user_id = parseInt({{ league.user_id }});
+
+        if (round_name == 0) {
+            window.location.reload();
+        }
+
+        $.ajax({
+            accepts: {
+                mycustomtype: 'application/json'
+            },
+            dataType: 'json',
+            url: '/api/' + {{ league.id }} + '/round/' + round_name,
+            success: (data) => {
+                console.log(data);
+                var str = "";
+                for (var m = 0; m < data.matches.length; m++) {
+                    str += "<tr onclick='matchDetail(" + data.matches[m].match_id + ")'>";
+                    str += "<td>" + data.round + "</td>";
+                    str += "<td>" + data.matches[m].home + "</td>";
+
+                    /* Score */
+                    if (user_id == league_user_id) {
+                        str += "<td>";
+                        str += '<div class="match-score">';
+                        str += '<input class="form-control match-home-score" id="input-score-match-home-' + data.matches[m].match_id + '" value="' + data.matches[m].home_score + '" min="0" type="number" />';
+                        str += '<h5>:</h5>';
+                        str += '<input class="form-control match-away-score" id="input-score-match-away-' + data.matches[m].match_id + '" value="' + data.matches[m].away_score + '" min="" type="number" />';
+                        str += '</div>';
+                        str += "</td>";
+                    } else {
+                        str += '<td>0 - 0</td>';
+                    }
+
+                    str += "<td>" + data.matches[m].away + "</td>";
+
+                    /* Date */
+                    if (data.matches[m].date) {
+                        var date_format = formatDate(data.matches[m].date);
+                        if (user_id == league_user_id) {
+                            str += '<td><input id="input-date-match-' + data.matches[m].match_id + '" class="form-control" value="' + date_format + '" type="date" min="' + formatDate() + '" /></td>';
+                        } else {
+                            date_format = date_format.split("-");
+                            str += '<td>' + date_format[2]+ "-" + date_format[1]+ "-" + date_format[0] + '</td>';
+                        }
+                    } else {
+                        if (user_id == league_user_id) {
+                            str += '<td><input id="input-date-match-' + data.matches[m].match_id + '" min="' + formatDate() + '" class="form-control" type="date" /></td>';
+                        } else {
+                            str += '<td>Chưa có ngày thi đấu</td>';
+                        }
+                    }
+
+                    /* Time */
+                    if (data.matches[m].time && data.matches[m].time != "None") {
+                        if (user_id == league_user_id) {
+                            time_format = data.matches[m].time;
+                            str += '<td><input id="input-time-match-' + data.matches[m].match_id + '" class="form-control" value="' + time_format + '" type="time" /></td>';
+                        } else {
+                            str += '<td>' + data.matches[m].time + '</td>';
+                        }
+                    } else {
+                        if (user_id == league_user_id) {
+                            str += '<td><input id="input-time-match-' + data.matches[m].match_id + '" class="form-control" type="time" /></td>';
+                        } else {
+                            str += '<td>Chưa có giờ thi đấu</td>';
+                        }
+                    }
+
+                    if (user_id == league_user_id) {
+                        str += '<td><button class="btn btn-success" id="btn-date-match-' + data.matches[m].match_id + '" onclick="updateDateTimeMatch(' + data.matches[m].match_id + ')">Cập nhật ngày giờ</button></td>';
+                        str += '<td><button class="btn btn-success" id="btn-score-match-' + data.matches[m].match_id + '" onclick="updateScoreMatch(' + data.matches[m].match_id + ',' + data.matches[m].home_id + ',' + data.matches[m].away_id + ')">Cập nhật tỉ số</button></td>';
+                    }
+                    str += "</tr>";
+                }
+                $("#rounds").html(str);
+            }
+        })
+    })
+
+    function matchDetail(match_id) {
+        $.ajax({
+            accepts: {
+                mycustomtype: 'application/json'
+            },
+            dataType: 'json',
+            url: '/api/match-detail/' + match_id,
+            success: (data) => {
+                if ($("#input-date-match-" + match_id).is(":focus") || $("#input-time-match-" + match_id).is(":focus") || $("#btn-date-match-" + match_id).is(":focus") || $("#input-score-match-home-" + match_id).is(":focus") || $("#input-score-match-away-" + match_id).is(":focus") || $("#btn-score-match-" + match_id).is(":focus")) {
+                    return;
+                } else {
+                    window.location.href = data.url;
+                }
+            }
+        })
+    }
+
+    function formatDate(date) {
+        var date_format;
+        if (date)
+            date_format = new Date(date).toISOString().split('T')[0];
+        else
+            date_format = new Date().toISOString().split('T')[0];
+        return date_format;
+    }
+
+    function updateDateTimeMatch(match_id) {
+        date = $("#input-date-match-" + match_id).val();
+        time = $("#input-time-match-" + match_id).val();
+
+        if (date) {
+            if (time) {
+                $.ajax({
+                    accepts: {
+                        mycustomtype: 'application/json'
+                    },
+                    dataType: 'json',
+                    url: '/api/update-date-match/' + match_id + '/' + date + '/' + time,
+                    success: (data) => {
+                        $("#input-date-match-" + match_id).css("border", "1px solid green");
+                        $("#input-time-match-" + match_id).css("border", "1px solid green");
+
+                        $.ajax({
+                            accepts: {
+                                mycustomtype: 'application/json'
+                            },
+                            dataType: 'json',
+                            url: '/api/update-date-match/' + match_id + '/' + date + '/' + time,
+                            success: (data) => {
+                                $("#input-date-match-" + match_id).css("border", "1px solid green");
+                                $("#input-time-match-" + match_id).css("border", "1px solid green");
+                            }
+                        })
+                    }
+                })
+            } else {
+                $("#input-time-match-" + match_id).css("border", "1px solid red");
+            }
+        } else {
+            $("#input-date-match-" + match_id).css("border", "1px solid red");
+        }
+    }
+
+    function updateScoreMatch(match_id, home_id, away_id) {
+        scoreHome = $("#input-score-match-home-" + match_id).val();
+        scoreAway = $("#input-score-match-away-" + match_id).val();
+
+         $.ajax({
+            accepts: {
+                mycustomtype: 'application/json'
+            },
+            dataType: 'json',
+            url: '/api/update-result-score-match/' + {{ league.id }} + '/' + match_id + '/' + home_id + '/' + scoreHome + '/' + away_id + '/' + scoreAway,
+            success: (data) => {
+                $("#input-score-match-home-" + match_id).css("border", "1px solid green");
+                $("#input-score-match-away-" + match_id).css("border", "1px solid green");
+            }
+        })
+    }
+</script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <!-- Bootstrap -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

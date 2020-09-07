@@ -68,9 +68,9 @@ def check_date_end_league(date_end):
     return False
 
 
-def create_league(name, address, image, gender_id, city_id, date_begin, date_end, user_id):
+def create_league(name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled):
     league = League(name=name, address=address, image=image, gender_id=gender_id, city_id=city_id,
-                    date_begin=date_begin, date_end=date_end, user_id=user_id)
+                    date_begin=date_begin, date_end=date_end, user_id=user_id, has_scheduled=has_scheduled)
 
     db.session.add(league)
     db.session.commit()
@@ -78,7 +78,7 @@ def create_league(name, address, image, gender_id, city_id, date_begin, date_end
     return league
 
 
-def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end, user_id):
+def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled):
     league = League.query.get(league_id)
 
     league.name = name
@@ -89,6 +89,7 @@ def update_league(league_id, name, address, image, gender_id, city_id, date_begi
     league.date_begin = date_begin
     league.date_end = date_end
     league.user_id = user_id
+    league.has_scheduled = has_scheduled
 
     db.session.add(league)
     db.session.commit()
@@ -147,7 +148,12 @@ def read_club(keyword="", level_id=0, gender_id=0):
 
 
 def read_club_by_league_id(league_id):
-    pass
+    return Club.query.join(LeagueClub, Club.id == LeagueClub.club_id)\
+        .filter(LeagueClub.league_id == league_id, LeagueClub.status_id == 2).all()
+
+
+def read_club_name_by_club_id(club_id):
+    return Club.query.get(club_id).name
 
 
 def update_club(user_id, name, phone, address, gender_id, level_id, image):
@@ -191,6 +197,114 @@ def update_status_club_in_league_club(league_id, club_id, status_id):
 
     db.session.add(league_club)
     db.session.commit()
+
+
+# ROUND
+def create_balanced_round_robin(league_id, clubs):
+    rounds = Round.query.filter(Round.league_id == league_id).all()
+    for r in rounds:
+        db.session.delete(r)
+        db.session.commit()
+
+    schedule = []
+    if len(clubs) % 2 == 1:
+        clubs = clubs + [None]
+    n = len(clubs)
+    map = list(range(n))
+    mid = n // 2
+    for i in range(n-1):
+        l1 = map[:mid]
+        l2 = map[mid:]
+        l2.reverse()
+        round = []
+        for j in range(mid):
+            t1 = clubs[l1[j]]
+            t2 = clubs[l2[j]]
+            if j == 0 and i % 2 == 1:
+                round.append((t2, t1))
+            else:
+                round.append((t1, t2))
+        schedule.append(round)
+        map = map[mid:-1] + map[:mid] + map[-1:]
+
+
+    # Tạo vòng đấu
+    for idx, rounds in enumerate(schedule):
+        r = Round(name=str(idx+1), league_id=league_id)
+        db.session.add(r)
+        db.session.commit()
+
+    # Tạo trận đấu thuộc vòng đấu
+    for idx, round in enumerate(schedule):
+        for match in round:
+            if match[0] and match[1]:
+                m = Match(home=match[0].id, away=match[1].id, date=None, round_id=idx+1, league_id=league_id)
+                db.session.add(m)
+                db.session.commit()
+
+    # Tạo kết quả của mỗi trận đấu
+    matches = read_match_by_league_id(league_id=league_id)
+    for match in matches:
+        home_result = Result(league_id=match.league_id, match_id=match.id, club_id=match.home,
+                             type_result_id=None, score=0)
+        away_result = Result(league_id=match.league_id, match_id=match.id, club_id=match.away,
+                             type_result_id=None, score=0)
+
+        db.session.add(home_result)
+        db.session.add(away_result)
+        db.session.commit()
+
+    return schedule
+
+
+# MATCH
+def read_match_by_league_id(league_id):
+    return Match.query.filter(Match.league_id == league_id).all()
+
+
+def update_date_match(match_id, date, time):
+    m = Match.query.get(match_id)
+    m.date = datetime.strptime(date, '%Y-%m-%d')
+    m.time = time
+
+    db.session.add(m)
+    db.session.commit()
+
+
+# RESULT
+def update_result_score_match(league_id, match_id, home_id, home_score, away_id, away_score):
+    home_result = Result.query.filter(Result.league_id == league_id,
+                                      Result.match_id == match_id,
+                                      Result.club_id == home_id).first()
+    away_result = Result.query.filter(Result.league_id == league_id,
+                                      Result.match_id == match_id,
+                                      Result.club_id == away_id).first()
+
+    # 1-Thắng 2-Hòa 3-Thua
+    if home_score > away_score:
+        home_result.type_result_id = 1
+        away_result.type_result_id = 3
+    elif home_score == away_score:
+        home_result.type_result_id = 2
+        away_result.type_result_id = 2
+    else:
+        home_result.type_result_id = 3
+        away_result.type_result_id = 1
+
+    home_result.score = home_score
+    away_result.score = away_score
+
+    db.session.add(home_result)
+    db.session.commit()
+
+    db.session.add(away_result)
+    db.session.commit()
+
+
+def get_score_by_league_club_match(league_id, match_id, club_id):
+    return Result.query.filter(Result.league_id == league_id,
+                               Result.match_id == match_id,
+                               Result.club_id == club_id).first().score
 
 
 # STATUS

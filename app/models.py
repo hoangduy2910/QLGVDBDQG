@@ -1,6 +1,6 @@
 from app import db
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean, Time
 from sqlalchemy.orm import relationship, backref
 from datetime import datetime
 import enum
@@ -106,8 +106,8 @@ class League(db.Model):
     date_begin = Column(DateTime, default=datetime.now())
     date_end = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    has_scheduled = Column(Boolean, default=False)
     rounds = relationship('Round', backref='league', lazy=True)
-    clubs = relationship('LeagueClub', backref='league', lazy=True)
 
     def __str__(self):
         return self.name
@@ -175,14 +175,12 @@ class Match(db.Model):
     __tablename__ = "match"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    home = Column(Integer, ForeignKey(Club.id), nullable=False)
-    away = Column(Integer, ForeignKey(Club.id), nullable=False)
-    stadium = Column(String(255), nullable=False)
-    date = Column(DateTime, nullable=False)
+    home = Column(Integer, ForeignKey(Club.id), nullable=True)
+    away = Column(Integer, ForeignKey(Club.id), nullable=True)
+    date = Column(DateTime, nullable=True)
+    time = Column(Time, nullable=True)
     round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
-
-    def __str__(self):
-        return self.id + " - " + self.home.name + " - " + self.away.name
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
 
 
 class Goal(db.Model):
@@ -193,9 +191,6 @@ class Goal(db.Model):
     player_id = Column(Integer, ForeignKey(Player.id), nullable=False)
     match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
 
-    def __str__(self):
-        return self.id + " - " + self.player_id + " - " + self.match_id
-
 
 class Result(db.Model):
     __tablename__ = "result"
@@ -204,10 +199,8 @@ class Result(db.Model):
     league_id = Column(Integer, ForeignKey(League.id), nullable=False)
     match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
-    type_result_id = Column(Integer, ForeignKey(TypeResult.id), nullable=True)
-
-    def __str__(self):
-        return self.id + " - " + self.match_id + " - " + self.club_id + " - " + self.type_result_id
+    type_result_id = Column(Integer, ForeignKey(TypeResult.id))
+    score = Column(Integer, default=0)
 
 
 class Rule(db.Model):
@@ -219,7 +212,7 @@ class Rule(db.Model):
     description = Column(String(255), nullable=True)
 
     def __str__(self):
-        return self.name + " - " + self.total
+        return self.name
 
 
 # MANY TO MANY
