@@ -19,10 +19,10 @@
                 <div class="mu-achievements-area">
                     <div class="mu-achievements-content">
                         <div id="sidebar">
-                            <a href="{{ url_for('club_detail') }}"><i class="icon-info"></i><span>Đội bóng</span></a>
-                            <a href="{{ url_for('players_club') }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
-                            <a href="{{ url_for('leagues_club') }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
-                            <a href="{{ url_for('achievements') }}"><i class="icon-chart"></i><span>Thành tích</span></a>
+                            <a href="{{ url_for('club_detail', club_id=club.id) }}"><i class="icon-info"></i><span>Đội bóng</span></a>
+                            <a href="{{ url_for('players_club', club_id=club.id) }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
+                            <a href="{{ url_for('leagues_club', club_id=club.id) }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
+                            <a href="{{ url_for('achievements', club_id=club.id) }}"><i class="icon-chart"></i><span>Thành tích</span></a>
                         </div>
                         <div class="mu-achievements-body">
                             <h4>Thống kê thành tích</h4>

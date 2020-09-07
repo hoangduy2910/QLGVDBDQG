@@ -52,14 +52,14 @@
                                 {% endif %}
                                 <form method="post" class="mu-schedule-nav">
                                     {% if current_user.id == league.user_id  %}
-                                    <button type="button" class="btn btn-success mu-schedule-btn" data-toggle="modal" data-target="#createSchedule">
+                                    <button type="button" class="btn btn-primary mu-schedule-btn" data-toggle="modal" data-target="#createSchedule">
                                         Tạo lịch thi đấu
                                     </button>
                                     <div class="modal fade" id="createSchedule" tabindex="-1" aria-labelledby="createScheduleLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="createScheduleLabel" style="display: inline-block; color: green;">Tạo lịch thi đấu</h5>
+                                                    <h5 class="modal-title" id="createScheduleLabel" style="display: inline-block; color: blue;">Tạo lịch thi đấu</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -69,7 +69,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                    <button class="btn btn-success" type="submit">Tạo lịch thi đấu</button>
+                                                    <button class="btn btn-primary" type="submit">Tạo lịch thi đấu</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -93,8 +93,8 @@
                                             <th scope="col">Ngày thi đấu</th>
                                             <th scope="col">Giờ thi đấu</th>
                                             {% if current_user.id == league.user_id  %}
-                                            <th scope="col">Cập nhật ngày giờ</th>
-                                            <th scope="col">Cập nhật tỉ số</th>
+                                            <th scope="col">Ngày giờ</th>
+                                            <th scope="col">Tỉ số</th>
                                             {% endif %}
                                         </tr>
                                     </thead>
@@ -349,8 +349,8 @@
                     dataType: 'json',
                     url: '/api/update-date-match/' + match_id + '/' + date + '/' + time,
                     success: (data) => {
-                        $("#input-date-match-" + match_id).css("border", "1px solid green");
-                        $("#input-time-match-" + match_id).css("border", "1px solid green");
+                        $("#input-date-match-" + match_id).css("border", "2px solid green");
+                        $("#input-time-match-" + match_id).css("border", "2px solid green");
 
                         $.ajax({
                             accepts: {
@@ -359,17 +359,17 @@
                             dataType: 'json',
                             url: '/api/update-date-match/' + match_id + '/' + date + '/' + time,
                             success: (data) => {
-                                $("#input-date-match-" + match_id).css("border", "1px solid green");
-                                $("#input-time-match-" + match_id).css("border", "1px solid green");
+                                $("#input-date-match-" + match_id).css("border", "2px solid green");
+                                $("#input-time-match-" + match_id).css("border", "2px solid green");
                             }
                         })
                     }
                 })
             } else {
-                $("#input-time-match-" + match_id).css("border", "1px solid red");
+                $("#input-time-match-" + match_id).css("border", "2px solid red");
             }
         } else {
-            $("#input-date-match-" + match_id).css("border", "1px solid red");
+            $("#input-date-match-" + match_id).css("border", "2px solid red");
         }
     }
 
@@ -384,8 +384,8 @@
             dataType: 'json',
             url: '/api/update-result-score-match/' + {{ league.id }} + '/' + match_id + '/' + home_id + '/' + scoreHome + '/' + away_id + '/' + scoreAway,
             success: (data) => {
-                $("#input-score-match-home-" + match_id).css("border", "1px solid green");
-                $("#input-score-match-away-" + match_id).css("border", "1px solid green");
+                $("#input-score-match-home-" + match_id).css("border", "2px solid green");
+                $("#input-score-match-away-" + match_id).css("border", "2px solid green");
             }
         })
     }

@@ -18,12 +18,12 @@
 			<div class="col-md-12">
 				<div class="mu-my-club-area">
 					<h2>Đội bóng của tôi</h2>
-					<a href="{{ url_for('create_club') }}">Tạo đội bóng</a>
+					<a class="btn btn-primary" href="{{ url_for('create_club') }}">Tạo đội bóng</a>
 					{% if clubs %}
 					<div class="mu-clubs-area">
 						<div class="mu-clubs-group-card">
 							{% for c in clubs %}
-							<a href="{{ url_for('club_detail') }}" class="mu-clubs-card">
+							<a href="{{ url_for('club_detail', club_id=c.id) }}" class="mu-clubs-card">
 								<img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
 								<div class="mu-clubs-card-body">
 									<h4 class="text-center">{{ c.name }}</h4>

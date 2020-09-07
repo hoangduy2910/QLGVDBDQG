@@ -19,25 +19,32 @@
                 <div class="mu-leagues-club-area">
                     <div class="mu-leagues-club-content">
                         <div id="sidebar">
-                            <a href="{{ url_for('club_detail') }}"><i class="icon-info"></i><span>Đội bóng</span></a>
-                            <a href="{{ url_for('players_club') }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
-                            <a href="{{ url_for('leagues_club') }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
-                            <a href="{{ url_for('achievements') }}"><i class="icon-chart"></i><span>Thành tích</span></a>
+                            <a href="{{ url_for('club_detail', club_id=club.id) }}"><i class="icon-info"></i><span>Đội bóng</span></a>
+                            <a href="{{ url_for('players_club', club_id=club.id) }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
+                            <a href="{{ url_for('leagues_club', club_id=club.id) }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
+                            <a href="{{ url_for('achievements', club_id=club.id) }}"><i class="icon-chart"></i><span>Thành tích</span></a>
                         </div>
                         <div class="mu-leagues-club-body">
                             <h4>Các giải đấu</h4>
-                            <div class="mu-leagues-club-group-card">
-                                <a href="{{ url_for('index') }}" class="mu-leagues-club-card">
-                                    <div class="mu-mu-leagues-card-image">
-                                        <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}">
-                                    </div>
-                                    <div class="mu-leagues-club-card-body">
-                                        <h5>Tên giải đấu</h5>
-                                        <p>Số đội tham gia: <span>0</span></p>
-                                    </div>
-                                </a>
-
+                            {% if club.leagues %}
+                                {% for l in club.leagues %}
+                                <div class="mu-leagues-club-group-card">
+                                    <a href="{{ url_for('schedule', league_id=l.league_id) }}" class="mu-leagues-club-card">
+                                        <div class="mu-leagues-club-card-image">
+                                            <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}">
+                                        </div>
+                                        <div class="mu-leagues-club-card-body">
+                                            <h5>{{ l.league_id|get_league_name_by_league_id }}</h5>
+                                            <p>Số đội tham gia: <span>{{ l.league_id|get_total_club_of_league }}</span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                            <div class="alert alert-info" style="margin: 20px;">
+                                <h3>Hiện tại đội chưa tham gia giải đấu nào !!!</h3>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

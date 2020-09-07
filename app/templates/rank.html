@@ -68,9 +68,15 @@
                                                 <th scope="row">#</th>
                                                 <td>{{ lc.club_id|get_club_name_by_club_id }}</td>
                                                 <td>{{ lc.club_id|get_total_match_by_club_id_in_league(lc.league_id) }}</td>
-                                                <td>0 - 0 - 0</td>
-                                                <td>0</td>
-                                                <td>0</td>
+                                                <td>
+                                                    <span>{{ lc.club_id|get_win_result_league_club(lc.league_id) }}</span>
+                                                    -
+                                                    <span>{{ lc.club_id|get_draw_result_league_club(lc.league_id) }}</span>
+                                                    -
+                                                    <span>{{ lc.club_id|get_lose_result_league_club(lc.league_id) }}</span>
+                                                </td>
+                                                <td>{{ lc.club_id|get_goal_difference_league_club(lc.league_id) }}</td>
+                                                <td>{{ lc.club_id|get_point_league_club(lc.league_id) }}</td>
                                             </tr>
                                             {% endif %}
                                         {% endfor %}

@@ -48,7 +48,7 @@
                                 <div id="clubs-league">
                                     {% for lc in league_club %}
                                         {% if lc.status_id == 2  %}
-                                        <a href="{{ url_for('club_detail') }}" class="mu-clubs-league-card">
+                                        <a href="{{ url_for('club_detail', club_id=lc.club_id) }}" class="mu-clubs-league-card">
                                             <div class="mu-clubs-league-card-image">
                                                 <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
                                             </div>
@@ -60,9 +60,15 @@
                                                     Số lượng trận đấu: {{ lc.club_id|get_total_match_by_club_id }}
                                                 </p>
                                                 <div class="badge-group">
-                                                    <span class="badge badge-win">{{ lc.club_id|get_win_result_club }} thắng</span>
-                                                    <span class="badge badge-draw">{{ lc.club_id|get_draw_result_club }} hòa</span>
-                                                    <span class="badge badge-lose">{{ lc.club_id|get_lose_result_club }} thua</span>
+                                                    <span class="badge badge-win">
+                                                        {{ lc.club_id|get_win_result_league_club(lc.league_id) }} thắng
+                                                    </span>
+                                                    <span class="badge badge-draw">
+                                                        {{ lc.club_id|get_draw_result_league_club(lc.league_id) }} hòa
+                                                    </span>
+                                                    <span class="badge badge-lose">
+                                                        {{ lc.club_id|get_lose_result_league_club(lc.league_id) }} thua
+                                                    </span>
                                                 </div>
                                             </div>
                                         </a>

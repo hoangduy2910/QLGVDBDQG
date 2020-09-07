@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+{% block style_header %}
+    class="mu-fixed-nav" style="background-color: #3fc35f;"
+{% endblock %}
+
+{% block slider %}
+{% endblock %}
+
+{% block main %}
+<section id="mu-create-player">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="mu-create-player-area">
+                    <h2>Tạo cầu thủ</h2>
+                    <form class="mu-create-player-form" method="post">
+                        <div class="mu-create-player-content">
+                            <div class="mu-create-player-image">
+                                <img src="{{ url_for('static', filename='images/default_user.png') }}">
+                            </div>
+                            <div class="mu-create-player-form-body">
+                                <div class="form-group">
+                                    <label>Tên cầu thủ</label>
+                                    <input type="text" class="form-control" name="name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Ngày sinh</label>
+                                    <input type="date" class="form-control" name="birthday" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Số điện thoại</label>
+                                    <input type="text" class="form-control" maxlength="10" name="phone" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Loại cầu thủ</label>
+                                    <select class="form-control" name="type_player_id">
+                                        {% for tp in type_player %}
+                                        <option value="{{ tp.id }}">{{ tp.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit">Tạo cầu thủ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block jquery %}
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Slick slider -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- Custom js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+{% endblock %}

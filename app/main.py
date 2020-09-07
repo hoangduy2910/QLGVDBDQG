@@ -209,56 +209,74 @@ def create_league():
                            date_now=date_now)
 
 
-@app.route("/chi-tiet-doi-bong<int:club_id>", methods=["get", "post"])
+@app.route("/them-cau-thu/<int:club_id>", methods=["get", "post"])
+@login_required
+def create_player(club_id):
+    type_player = dao.read_type_player()
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        birthday = request.form.get("birthday")
+        phone = request.form.get("phone")
+        image = ""
+        type_player_id = request.form.get("type_player_id")
+        club_id = club_id
+
+        dao.create_player(name=name, birthday=birthday, phone=phone, image=image,
+                          type_player_id=type_player_id, club_id=club_id)
+
+        return redirect(url_for('players_club', club_id=club_id))
+
+    return render_template('create-player.html', type_player=type_player)
+
+
+@app.route("/chi-tiet-doi-bong/<int:club_id>", methods=["get", "post"])
 def club_detail(club_id):
     cities = dao.read_city()
     genders = dao.read_gender()
     levels = dao.read_level()
-    clubs = dao.read_club_by_id(club_id)
-
-    err_msg = ""
+    club = dao.read_club_by_id(club_id)
     msg = ""
 
-    if request.method == "POSt":
-        if request.form.get("name") and request.form.get("phone") and request.form.get("address") \
-                and request.form.get("gender_id") and request.form.get("level_id"):
-            name = request.form.get("name")
-            phone = request.form.get("phone")
-            address = request.form.get("address")
-            gender_id = request.form.get("gender_id")
-            level_id = request.form.get("level_id")
-            image = ""
-            user_id = current_user.id
+    if request.method == "POST":
+        name = request.form.get("name")
+        phone = request.form.get("phone")
+        address = request.form.get("address")
+        image = ""
+        gender_id = request.form.get("gender_id")
+        level_id = request.form.get("level_id")
+        user_id = current_user.id
 
-        dao.update_club(name=name, phone=phone, address=address, gender_id=int(gender_id),
-                        level_id=int(level_id), image=image,
-                        user_id=int(user_id))
+        dao.update_club(club_id=club_id, name=name, phone=phone, address=address, image=image,
+                        gender_id=int(gender_id), level_id=int(level_id), user_id=int(user_id))
         msg = "Cập nhật thông tin của đội bóng thành công !"
-    else:
-        err_msg = "Bạn phải nhập đầy đủ thông tin của giải đấu !"
 
-    return render_template('club-detail.html', levels=levels, cities=cities, genders=genders,
-                           clubs=clubs)
+    return render_template('club-detail.html', levels=levels, cities=cities, genders=genders, club=club, msg=msg)
 
 
-@app.route("/cau-thu-cua-doi")
-def players_club():
-    return render_template('players-club.html')
+@app.route("/cau-thu-cua-doi/<int:club_id>")
+def players_club(club_id):
+    club = dao.read_club_by_id(club_id)
+    return render_template('players-club.html', club=club)
 
 
-@app.route("/giai-dau-cua-doi")
-def leagues_club():
-    return render_template('leagues-club.html')
+@app.route("/giai-dau-cua-doi/<int:club_id>")
+def leagues_club(club_id):
+    club = dao.read_club_by_id(club_id)
+    return render_template('leagues-club.html', club=club)
 
 
-@app.route("/thanh-tich-cua-doi")
-def achievements():
-    return render_template('achievements.html')
+@app.route("/thanh-tich-cua-doi/<int:club_id>")
+def achievements(club_id):
+    club = dao.read_club_by_id(club_id)
+    return render_template('achievements.html', club=club)
 
 
-@app.route("/chi-tiet-cau-thu")
-def player_detail():
-    return render_template('player-detail.html')
+@app.route("/chi-tiet-cau-thu/<int:player_id>")
+def player_detail(player_id):
+    player = dao.read_player_by_player_id(player_id)
+    type_player = dao.read_type_player()
+    return render_template('player-detail.html', player=player, type_player=type_player)
 
 
 @app.route("/dang-ky-thi-dau/<int:league_id>", methods=["get", "post"])
@@ -319,6 +337,8 @@ def rank(league_id):
     check_date = dao.check_date_end_league(league.date_end)
 
     league_club = dao.read_league_club_by_league_id(league_id=league_id)
+
+    print(dao.get_point_league_club(league_id=league_id, club_id=1))
 
     return render_template('rank.html', league=league, cities=cities, check_date=check_date, league_club=league_club)
 
@@ -440,6 +460,12 @@ def match_detail_by_match_id(match_id):
     return jsonify({'url': url})
 
 
+@app.route("/api/player-detail/<int:player_id>")
+def player_detail_by_player_id(player_id):
+    url = url_for('player_detail', player_id=player_id)
+    return jsonify({'url': url})
+
+
 @app.route("/api/update-result-score-match/<int:league_id>/<int:match_id>/"
            "<int:home_id>/<int:home_score>/<int:away_id>/<int:away_score>")
 def update_result_score_match(league_id, match_id, home_id, home_score, away_id, away_score):
@@ -510,6 +536,62 @@ def get_draw_result_club(club_id):
 @app.template_filter()
 def get_lose_result_club(club_id):
     return len(Result.query.filter(Result.club_id == club_id, Result.type_result_id == 3).all())
+
+
+@app.template_filter('get_win_result_league_club')
+def get_win_result_league_club(club_id, league_id):
+    return len(Result.query.filter(Result.league_id == league_id,
+                                   Result.club_id == club_id,
+                                   Result.type_result_id == 1).all())
+
+
+@app.template_filter('get_draw_result_league_club')
+def get_draw_result_league_club(club_id, league_id):
+    return len(Result.query.filter(Result.league_id == league_id,
+                                   Result.club_id == club_id,
+                                   Result.type_result_id == 2).all())
+
+
+@app.template_filter('get_lose_result_league_club')
+def get_lose_result_league_club(club_id, league_id):
+    return len(Result.query.filter(Result.league_id == league_id,
+                                   Result.club_id == club_id,
+                                   Result.type_result_id == 3).all())
+
+
+@app.template_filter()
+def get_level_name_by_level_id(level_id):
+    return Level.query.get(level_id).name
+
+
+@app.template_filter()
+def get_gender_name_by_gender_id(gender_id):
+    return Gender.query.get(gender_id).name
+
+
+@app.template_filter()
+def get_league_name_by_league_id(league_id):
+    return League.query.get(league_id).name
+
+
+@app.template_filter()
+def get_type_player_name_by_type_player_id(type_player_id):
+    return TypePlayer.query.get(type_player_id).name
+
+
+@app.template_filter()
+def get_total_goal_by_player_id(player_id):
+    return len(Player.query.get(player_id).goals)
+
+
+@app.template_filter('get_goal_difference_league_club')
+def get_goal_difference_league_club(club_id, league_id):
+    return dao.get_goal_difference_by_league_club(league_id=league_id, club_id=club_id)
+
+
+@app.template_filter('get_point_league_club')
+def get_point_league_club(club_id, league_id):
+    return dao.get_point_league_club(league_id=league_id, club_id=club_id)
 
 
 if __name__ == "__main__":

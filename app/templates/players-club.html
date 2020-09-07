@@ -19,44 +19,45 @@
                 <div class="mu-players-area">
                     <div class="mu-players-content">
                         <div id="sidebar">
-                            <a href="{{ url_for('club_detail') }}"><i class="icon-info"></i><span>Đội bóng</span></a>
-                            <a href="{{ url_for('players_club') }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
-                            <a href="{{ url_for('leagues_club') }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
-                            <a href="{{ url_for('achievements') }}"><i class="icon-chart"></i><span>Thành tích</span></a>
+                            <a href="{{ url_for('club_detail', club_id=club.id) }}"><i class="icon-info"></i><span>Đội bóng</span></a>
+                            <a href="{{ url_for('players_club', club_id=club.id) }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
+                            <a href="{{ url_for('leagues_club', club_id=club.id) }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
+                            <a href="{{ url_for('achievements', club_id=club.id) }}"><i class="icon-chart"></i><span>Thành tích</span></a>
                         </div>
                         <div class="mu-players-body table-responsive">
                             <h4>Các cầu thủ</h4>
+                            {% if club.user_id == current_user.id %}
+                            <a class="btn btn-primary"
+                               href="{{ url_for('create_player', club_id=club.id) }}">Thêm cầu thủ</a>
+                            {% endif %}
+                            {% if club.players %}
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">STT</th>
                                         <th scope="col">Tên cầu thủ</th>
+                                        <th scope="col">Ngày sinh</th>
+                                        <th scope="col">Số điện thoại</th>
                                         <th scope="col">Loại cầu thủ</th>
                                         <th scope="col">Tổng số bàn thắng</th>
-                                        <th scope="col">Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Nguyễn Văn A</td>
-                                        <td>Trong nước</td>
-                                        <td>10</td>
-                                        <td>
-                                            <a href="{{ url_for('player_detail') }}" class="btn">Chi tiết</a>
-                                        </td>
+                                    {% for player in club.players %}
+                                    <tr id="player-{{ player.id }}" onclick="playerDetail({{ player.id }})">
+                                        <td>{{ player.name }}</td>
+                                        <td>{{ player.birthday.strftime('%d-%m-%Y') }}</td>
+                                        <td>{{ player.phone }}</td>
+                                        <td>{{ player.type_player_id|get_type_player_name_by_type_player_id }}</td>
+                                        <td>{{ player.id|get_total_goal_by_player_id }}</td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Nguyễn Bình B</td>
-                                        <td>Trong nước</td>
-                                        <td>8</td>
-                                        <td>
-                                            <a href="{{ url_for('player_detail') }}" class="btn">Chi tiết</a>
-                                        </td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
+                            {% else %}
+                            <div class="alert alert-info" style="margin: 20px;">
+                                <h3>Hiện tại đội chưa có cầu thủ nào !!!</h3>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -72,6 +73,20 @@
 {% block jquery %}
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    function playerDetail(player_id) {
+        $.ajax({
+            accepts: {
+                mycustomtype: 'application/json'
+            },
+            dataType: 'json',
+            url: '/api/player-detail/' + player_id,
+            success: (data) => {
+                window.location.href = data.url;
+            }
+        })
+    }
+</script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <!-- Bootstrap -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

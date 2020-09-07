@@ -156,15 +156,16 @@ def read_club_name_by_club_id(club_id):
     return Club.query.get(club_id).name
 
 
-def update_club(user_id, name, phone, address, gender_id, level_id, image):
-    club = Club.query.get(user_id)
+def update_club(club_id, name, phone, address, image, gender_id, level_id, user_id):
+    club = Club.query.get(club_id)
 
     club.name = name
     club.phone = phone
+    club.image = image
     club.address = address
     club.gender_id = gender_id
     club.level_id = level_id
-    club.image = image
+    club.user_id = user_id
 
     db.session.add(club)
     db.session.commit()
@@ -307,6 +308,68 @@ def get_score_by_league_club_match(league_id, match_id, club_id):
                                Result.club_id == club_id).first().score
 
 
+def get_goal_difference_by_league_club(league_id, club_id):
+    score_win = 0
+    score_lose = 0
+
+    matches_home = Match.query.filter(Match.league_id == league_id, Match.home == club_id).all()
+    for match in matches_home:
+        result_home = Result.query.filter(Result.league_id == league_id,
+                                          Result.match_id == match.id,
+                                          Result.club_id == match.home).first()
+        result_away = Result.query.filter(Result.league_id == league_id,
+                                          Result.match_id == match.id,
+                                          Result.club_id == match.away).first()
+        if result_home.score > result_away.score:
+            score_win = score_win + (result_home.score - result_away.score)
+        elif result_home.score < result_home.score:
+            score_lose = score_lose + (result_home.score - result_away.score)
+
+    matches_away = Match.query.filter(Match.league_id == league_id, Match.away == club_id).all()
+    for match in matches_away:
+        result_away = Result.query.filter(Result.league_id == league_id,
+                                          Result.match_id == match.id,
+                                          Result.club_id == match.away).first()
+        result_home = Result.query.filter(Result.league_id == league_id,
+                                          Result.match_id == match.id,
+                                          Result.club_id == match.home).first()
+
+        if result_away.score > result_home.score:
+            score_win = score_win + (result_away.score - result_home.score)
+        elif result_away.score < result_home.score:
+            score_lose = score_lose + (result_away.score - result_home.score)
+
+    goal_difference = score_win + score_lose
+    return goal_difference
+
+
+def get_point_league_club(league_id, club_id):
+    point = 0
+    results = Result.query.filter(Result.league_id == league_id,
+                                  Result.club_id == club_id).all()
+
+    for result in results:
+        if result.type_result_id == 1:
+            point = point + 3
+        elif result.type_result_id == 2:
+            point = point + 1
+
+    return point
+
+
+# PLAYER
+def create_player(name, birthday, phone, image, type_player_id, club_id):
+    player = Player(name=name, birthday=birthday, phone=phone, image=image,
+                    type_player_id=type_player_id, club_id=club_id)
+
+    db.session.add(player)
+    db.session.commit()
+
+
+def read_player_by_player_id(player_id):
+    return Player.query.get(player_id)
+
+
 # STATUS
 def read_status():
     return Status.query.all()
@@ -325,3 +388,8 @@ def read_level():
 # GENDER
 def read_gender():
     return Gender.query.all()
+
+
+# TYPE PLAYER
+def read_type_player():
+    return TypePlayer.query.all()

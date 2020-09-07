@@ -149,6 +149,7 @@ button:focus {
 
 section > div.container {
     width: 85%;
+    margin-bottom: 50px;
 }
 
 /*Wordpress default class*/
@@ -810,18 +811,13 @@ section > div.container {
 	width: 100%;
 }
 
+.mu-my-club-area a {
+    padding: 10px;
+}
+
 .mu-my-club-area h2 {
     color: #3fc35f;
     margin-bottom: 50px;
-}
-
-.mu-my-club-area > a {
-    text-decoration: none;
-    background-color: #3fc35f;
-    color: white;
-    padding: 10px;
-    margin-top: 20px;
-    border-radius: 5px;
 }
 
 .mu-no-clubs-area {
@@ -860,13 +856,8 @@ section > div.container {
     margin-bottom: 50px;
 }
 
-.mu-my-league-area > a {
-    text-decoration: none;
-    background-color: #3fc35f;
-    color: white;
+.mu-my-league-area a {
     padding: 10px;
-    margin-top: 20px;
-    border-radius: 5px;
 }
 
 .mu-no-leagues-area {
@@ -991,6 +982,61 @@ section > div.container {
 
 
 /*--------------------*/
+/* CREATE PLAYER */
+/*--------------------*/
+
+#mu-create-player {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-create-player-area {
+    display: inline;
+	float: left;
+	padding-top: 150px;
+	width: 100%;
+}
+
+.mu-create-player-area h2 {
+    color: #3fc35f;
+    margin-bottom: 15px;
+}
+
+.mu-create-player-content {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #2F323A;
+    padding: 10px;
+}
+
+.mu-create-player-image {
+    flex-basis: 30%;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #3fc35f;
+}
+
+.mu-create-player-image > img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.mu-create-player-form-body {
+    flex-basis: 60%;
+}
+
+.mu-create-player-form-body button {
+    padding: 10px;
+    margin-top: 5px;
+    color: white;
+    background-color: #3fc35f;
+    border-radius: 5px;
+}
+
+
+/*--------------------*/
 /* SIDEBAR */
 /*--------------------*/
 
@@ -1093,14 +1139,24 @@ section > div.container {
 
 .mu-players-body {
     flex-basis: 100%;
+    padding: 20px;
+}
+
+.mu-players-body a {
+    margin-bottom: 20px;
 }
 
 .mu-players-body table thead {
-    background: #eee;
+    background-color: #cccccc;
 }
 
 .mu-players-body table th, tr, td {
     text-align: center;
+}
+
+.mu-players-body table tbody tr:hover {
+    background-color: #eee;
+    cursor: pointer;
 }
 
 .mu-players-body table a {
@@ -1148,7 +1204,7 @@ section > div.container {
 }
 
 .mu-leagues-club-card {
-    flex-basis: 30%;
+    flex-basis: 20%;
     padding: 10px;
     margin: 20px 10px;
     border: 1px solid #3fc35f;
@@ -1316,11 +1372,16 @@ section > div.container {
 /* RANK */
 /*--------------------*/
 #rank thead {
-    background: #eee;
+    background-color: #cccccc;
 }
 
 #rank th, tr, td {
     text-align: center;
+}
+
+#rank tbody tr:hover {
+    background-color: #eee;
+    cursor: pointer;
 }
 
 #rank .tooltip {

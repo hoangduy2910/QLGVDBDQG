@@ -19,36 +19,90 @@
                 <div class="mu-club-detail-area">
                     <div class="mu-club-detail-content">
                         <div id="sidebar">
-                            <a href="{{ url_for('club_detail') }}"><i class="icon-info"></i><span>Đội bóng</span></a>
-                            <a href="{{ url_for('players_club') }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
-                            <a href="{{ url_for('leagues_club') }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
-                            <a href="{{ url_for('achievements') }}"><i class="icon-chart"></i><span>Thành tích</span></a>
+                            <a href="{{ url_for('club_detail', club_id=club.id) }}"><i class="icon-info"></i><span>Đội bóng</span></a>
+                            <a href="{{ url_for('players_club', club_id=club.id) }}"><i class="icon-people"></i><span>Cầu thủ</span></a>
+                            <a href="{{ url_for('leagues_club', club_id=club.id) }}"><i class="icon-trophy"></i><span>Giải đấu</span></a>
+                            <a href="{{ url_for('achievements', club_id=club.id) }}"><i class="icon-chart"></i><span>Thành tích</span></a>
                         </div>
                         <div class="mu-club-detail-body">
-                            <h4>Thông tin đội bóng</h4>
+                            <form method="post">
+                                {% if msg %}
+                                <div class="alert alert-success">
+                                    <p class="text-center">{{ msg }}</p>
+                                </div>
+                                {% endif %}
+                                <h4>Thông tin đội bóng</h4>
+                                {% if club.user_id == current_user.id %}
+                                <div class="mu-club-detail-image">
+                                    <img src="{{ url_for('static', filename='images/default_football_club.png') }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tên đội</label>
+                                    <input type="text" class="form-control" name="name" value="{{ club.name }}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Số điện thoại</label>
+                                    <input type="text" class="form-control" name="phone" value="{{ club.phone }}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Địa chỉ</label>
+                                    <input type="text" class="form-control" name="address" value="{{ club.address }}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Giới tính</label>
+                                    <select class="form-control" name="gender_id" required>
+                                        {% for gender in genders %}
+                                            {% if gender.id|int == club.gender_id|int %}
+                                            <option value="{{ gender.id }}" selected>{{ gender.name }}</option>
+                                            {% else %}
+                                            <option value="{{ gender.id }}">{{ gender.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Trình độ</label>
+                                    <select class="form-control" name="level_id" required>
+                                        {% for level in levels %}
+                                            {% if level.id|int == club.level_id|int %}
+                                            <option value="{{ level.id }}" selected>{{ level.name }}</option>
+                                            {% else %}
+                                            <option value="{{ level.id }}">{{ level.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-success" value="Cập nhật" />
+                                </div>
+                            </form>
+                            {% else %}
                             <div class="mu-club-detail-image">
                                 <img src="{{ url_for('static', filename='images/default_football_club.png') }}">
                             </div>
                             <div class="form-group">
                                 <label>Tên đội</label>
-                                <input type="text" class="form-control" name="name" readonly />
+                                <input type="text" class="form-control" name="name" value="{{ club.name }}" readonly />
                             </div>
                             <div class="form-group">
                                 <label>Số điện thoại</label>
-                                <input type="text" class="form-control" name="phone" readonly />
+                                <input type="text" class="form-control" name="phone" value="{{ club.phone }}" readonly />
                             </div>
                             <div class="form-group">
                                 <label>Địa chỉ</label>
-                                <input type="text" class="form-control" name="address" readonly />
+                                <input type="text" class="form-control" name="address" value="{{ club.address }}" readonly />
                             </div>
                             <div class="form-group">
                                 <label>Giới tính</label>
-                                <input type="text" class="form-control" name="gender" readonly />
+                                <input type="text" class="form-control" name="phone"
+                                       value="{{ club.gender_id|get_gender_name_by_gender_id }}" readonly />
                             </div>
                             <div class="form-group">
                                 <label>Trình độ</label>
-                                <input type="text" class="form-control" name="level" readonly />
+                                <input type="text" class="form-control" name="phone"
+                                       value="{{ club.level_id|get_level_name_by_level_id }}" readonly />
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
