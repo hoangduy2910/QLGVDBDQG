@@ -12,6 +12,89 @@
 {% endblock %}
 
 {% block main %}
+<section id="mu-profile">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="mu-profile-area">
+					<h2>Thông tin cầu thủ</h2>
+					{% if msg %}
+					<div class="alert alert-success" role="alert">
+						<div class="text-center">{{ msg }}</div>
+					</div>
+					{% endif %}
+					<div class="mu-profile-content">
+						{% if user.id == current_user.id %}
+						<div class="mu-profile-image">
+							<img src="{{ url_for('static', filename='images/default_user.png') }}">
+						</div>
+						<div class="mu-profile-form">
+							<form method="post">
+								<div class="form-group">
+									<label>Họ và tên</label>
+									<input type="text" class="form-control" name="name" value="{{ player.name }}" required />
+								</div>
+								<div class="form-group">
+									<label>Số điện thoại</label>
+									<input type="text" class="form-control" maxlength="10" name="phone" value="{{ player.phone }}" required />
+								</div>
+								<div class="form-group">
+									<label>Ngày sinh</label>
+									{% if player.birthday %}
+									<input type="date" class="form-control" name="birthday"
+										   value="{{ player.birthday.strftime('%Y-%m-%d') }}" required />
+									{% else %}
+									<input type="date" class="form-control" name="birthday" required />
+									{% endif %}
+								</div>
+                                <div>
+                                    <label>Loại cầu thủ</label>
+                                    <select class="form-control" name="type_player_id">
+                                        {% for tp in type_player %}
+                                            {% if tp.id == player.type_player_id %}
+                                            <option value="{{ tp.id }}" selected>{{ tp.name }}</option>
+                                            {% else %}
+                                            <option value="{{ tp.id }}">{{ tp.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+								<div class="form-group">
+									<button type="submit">Lưu thông tin</button>
+								</div>
+							</form>
+						</div>
+						{% else %}
+						<div class="mu-profile-image">
+							<img src="{{ url_for('static', filename='images/default_user.png') }}">
+						</div>
+						<div class="mu-profile-form">
+							<div class="form-group">
+								<label>Họ và tên</label>
+								<input type="text" class="form-control" name="name" value="{{ player.name }}" readonly />
+							</div>
+							<div class="form-group">
+								<label>Số điện thoại</label>
+								<input type="number" class="form-control" name="phone" value="{{ player.phone }}" readonly />
+							</div>
+							<div class="form-group">
+								<label>Ngày sinh</label>
+								<input type="text" class="form-control"
+									   value="{{ player.birthday.strftime('%Y-%m-%d') }}"  readonly />
+							</div>
+							<div>
+								<label>Loại cầu thủ</label>
+								<input type="text" class="form-control"
+									   value="{{ player.type_player_id|get_type_player_name_by_type_player_id }}"  readonly />
+							</div>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock %}
 
 {% block footer %}

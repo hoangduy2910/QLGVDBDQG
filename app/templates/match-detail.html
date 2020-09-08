@@ -9,6 +9,128 @@
 {% endblock %}
 
 {% block slider %}
+<section id="mu-match-detail">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="mu-match-detail-area">
+                    <div class="mu-match-detail-content">
+                        <div class="mu-match-detail-content-goal">
+                            <div class="mu-match-detail-content-goal-header">
+                                <h5>{{ match.home|get_club_name_by_club_id }} VS {{ match.away|get_club_name_by_club_id }}</h5>
+                            </div>
+                            <div class="mu-match-detail-content-goal-sub-header">
+                                <h3>{{ match.league_id|get_league_name_by_league_id }}</h3>
+                                <p class="text-center">
+                                    {{ match.time.strftime("%H:%M") }} - {{ match.date.strftime("%d-%m-%Y") }}
+                                </p>
+                            </div>
+                            <div class="mu-match-detail-content-goal-body">
+                                <div class="mu-match-detail-content-goal-home">
+                                    <div class="mu-match-detail-content-goal-home-image">
+                                        <img src="{{ url_for('static', filename='images/default_football_club.png') }}">
+                                    </div>
+                                    <div class="mu-match-detail-content-goal-home-name">
+                                        <h3>{{ match.home|get_club_name_by_club_id }}</h3>
+                                    </div>
+                                </div>
+                                <div class="mu-match-detail-content-goal-home-away">
+                                    <p>
+                                        {{ match.id|get_score_league_club_match(match.league_id, match.home) }}
+                                        -
+                                        {{ match.id|get_score_league_club_match(match.league_id, match.away) }}
+                                    </p>
+                                </div>
+                                <div class="mu-match-detail-content-goal-away">
+                                    <div class="mu-match-detail-content-goal-away-image">
+                                        <img src="{{ url_for('static', filename='images/default_football_club.png') }}">
+                                    </div>
+                                    <div class="mu-match-detail-content-goal-away-name">
+                                        <h3>{{ match.away|get_club_name_by_club_id }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mu-match-detail-content-achievement">
+                            <div class="mu-match-detail-content-achievement-header">
+                                <h5>Thống kê</h5>
+                            </div>
+                            <div class="mu-match-detail-content-achievement-body">
+                                <h5>{{ match.home|get_club_name_by_club_id }}</h5>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Thắng</th>
+                                                <th scope="col">Hòa</th>
+                                                <th scope="col">Thua</th>
+                                                <th scope="col">Hiệu số</th>
+                                                <th scope="col">Điểm</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ match.home|get_win_result_league_club(match.league_id) }}</td>
+                                                <td>{{ match.home|get_draw_result_league_club(match.league_id) }}</td>
+                                                <td>{{ match.home|get_lose_result_league_club(match.league_id) }}</td>
+                                                <td>{{ match.home|get_goal_difference_league_club(match.league_id) }}</td>
+                                                <td>{{ match.home|get_point_league_club(match.league_id) }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h5>{{ match.away|get_club_name_by_club_id }}</h5>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Thắng</th>
+                                                <th scope="col">Hòa</th>
+                                                <th scope="col">Thua</th>
+                                                <th scope="col">Hiệu số</th>
+                                                <th scope="col">Điểm</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ match.away|get_win_result_league_club(match.league_id) }}</td>
+                                                <td>{{ match.away|get_draw_result_league_club(match.league_id) }}</td>
+                                                <td>{{ match.away|get_lose_result_league_club(match.league_id) }}</td>
+                                                <td>{{ match.away|get_goal_difference_league_club(match.league_id) }}</td>
+                                                <td>{{ match.away|get_point_league_club(match.league_id) }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mu-match-detail-content-player">
+                        <div class="mu-match-detail-content-player-header">
+                            <h5>Chi tiết</h5>
+                        </div>
+                        <div class="mu-match-detail-content-player-body">
+                            <div class="timeline">
+                                <div class="container left">
+                                    <div class="content">
+                                        <h5>2017</h5>
+                                        <p>Lorem ipsum..</p>
+                                    </div>
+                                </div>
+                                <div class="container right">
+                                    <div class="content">
+                                        <h5>2016</h5>
+                                        <p>Lorem ipsum..</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block main %}

@@ -778,7 +778,9 @@ section > div.container {
 .mu-profile-image img {
     border: 1px solid #3fc35f;
     border-radius: 50%;
-    transform: translate(25%, 25%);
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
 }
 
 .mu-profile-form {
@@ -792,7 +794,6 @@ section > div.container {
     margin-top: 10px;
     border-radius: 5px;
 }
-
 
 /*--------------------*/
 /* MY CLUB */
@@ -1297,7 +1298,6 @@ section > div.container {
 /*--------------------*/
 /* LEAGUE DETAIL */
 /*--------------------*/
-
 #mu-league-detail {
     display: inline;
 	float: left;
@@ -1518,7 +1518,6 @@ section > div.container {
 /*--------------------*/
 /* SETTINGS */
 /*--------------------*/
-
 .mu-settings-league-content {
     display: flex;
     flex-direction: column;
@@ -1632,6 +1631,131 @@ section > div.container {
     flex-basis: 5%;
     margin: 0 5px;
 }
+
+
+/*--------------------*/
+/* MATCH DETAIL */
+/*--------------------*/
+#mu-match-detail {
+    display: inline;
+	float: left;
+	width: 100%;
+}
+
+.mu-match-detail-area {
+    display: inline;
+	float: left;
+	padding-top: 150px;
+	width: 100%;
+}
+
+.mu-match-detail-content {
+    display: flex;
+    justify-content: center
+}
+
+.mu-match-detail-content-goal {
+    flex-basis: 55%;
+    margin-right: 20px;
+}
+
+.mu-match-detail-content-achievement {
+    flex-basis: 40%;
+}
+
+.mu-match-detail-content-goal,
+.mu-match-detail-content-achievement,
+.mu-match-detail-content-player {
+    border: 1px solid #3fc35f;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.mu-match-detail-content-goal-header h5,
+.mu-match-detail-content-achievement-header h5,
+.mu-match-detail-content-player h5 {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+
+.mu-match-detail-content-goal-header,
+.mu-match-detail-content-achievement-header,
+.mu-match-detail-content-player-header {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    background-color: #3fc35f;
+    text-transform: uppercase;
+}
+
+.mu-match-detail-content-goal-body {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.mu-match-detail-content-goal div {
+    flex-basis: 30%;
+}
+
+.mu-match-detail-content-achievement-body {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.mu-match-detail-content-achievement-body div {
+    flex-basis: 100%;
+}
+
+.mu-match-detail-content-goal-home, mu-match-detail-content-goal-away {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.mu-match-detail-content-goal-home-image, .mu-match-detail-content-goal-away-image {
+    margin-bottom: 20px;
+}
+
+.mu-match-detail-content-goal-home-image img, .mu-match-detail-content-goal-away-image img {
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+.mu-match-detail-content-goal-home-name, .mu-match-detail-content-goal-away-name {
+    color: #3fc35f;
+}
+
+.mu-match-detail-content-goal-home-away p {
+    font-size: 70px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.mu-match-detail-content-achievement-body table {
+    border: 1px solid #cccccc;
+}
+
+.mu-match-detail-content-achievement-body table thead {
+    background-color: #cccccc;
+}
+
+.mu-match-detail-content-achievement-body table th, td {
+    text-align: center;
+}
+
+.mu-match-detail-content-player {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
 
 /*--------------------*/
 /* COUNTER */
@@ -1851,6 +1975,10 @@ section > div.container {
 	#sidebar a {
         padding-left: 20px;
 	}
+
+	.mu-match-detail-content-goal-home-away p {
+        font-size: 50px;
+    }
 }
 
 @media (max-width: 991px) {
@@ -1906,9 +2034,7 @@ section > div.container {
     }
 
     .mu-profile-image > img {
-        margin-bottom: 30px;
-        width: 30%;
-        transform: translate(110%, 0%);
+        margin-bottom: 50px;
     }
 
     .mu-create-club-content {
@@ -1941,6 +2067,14 @@ section > div.container {
 
     #clubs-league .mu-clubs-league-card {
         flex-basis: 40%;
+    }
+
+    .mu-match-detail-content {
+        flex-direction: column;
+    }
+
+    .mu-match-detail-content-goal {
+        margin: 20px 0;
     }
 }
 
@@ -2049,6 +2183,7 @@ section > div.container {
     .mu-schedule-round {
         flex-basis: 30%;
     }
+
 }
 
 @media (max-width: 480px) {
@@ -2113,6 +2248,22 @@ section > div.container {
     .mu-schedule-score div {
         margin: 0;
         margin-bottom: 10px;
+    }
+
+    .mu-match-detail-content-goal-home, .mu-match-detail-content-goal-away {
+        flex-basis: 20%;
+    }
+
+    .mu-match-detail-content-goal-home h3, .mu-match-detail-content-goal-away h3 {
+        font-size: 20px;
+    }
+
+    .mu-match-detail-content-goal-home-away {
+        flex-basis: 30%;
+    }
+
+    .mu-match-detail-content-goal-home-away p {
+        font-size: 35px;
     }
 }
 

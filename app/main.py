@@ -262,8 +262,9 @@ def players_club(club_id):
 
 @app.route("/giai-dau-cua-doi/<int:club_id>")
 def leagues_club(club_id):
-    club = dao.read_club_by_id(club_id)
-    return render_template('leagues-club.html', club=club)
+    club = dao.read_club_by_id(club_id=club_id)
+    league_club = dao.read_club_in_league_club(club_id=club_id)
+    return render_template('leagues-club.html', league_club=league_club, club=club)
 
 
 @app.route("/thanh-tich-cua-doi/<int:club_id>")
@@ -272,11 +273,27 @@ def achievements(club_id):
     return render_template('achievements.html', club=club)
 
 
-@app.route("/chi-tiet-cau-thu/<int:player_id>")
+@app.route("/chi-tiet-cau-thu/<int:player_id>", methods=["get", "post"])
 def player_detail(player_id):
     player = dao.read_player_by_player_id(player_id)
     type_player = dao.read_type_player()
-    return render_template('player-detail.html', player=player, type_player=type_player)
+    user = dao.get_user_by_club_id(player.club_id)
+    msg = ""
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        phone = request.form.get("phone")
+        birthday = request.form.get("birthday")
+        image = ""
+        type_player_id = request.form.get("type_player_id")
+        club_id = player.club_id
+
+        dao.update_player(player_id=player.id, name=name, phone=phone, birthday=birthday,
+                          image=image, type_player_id=type_player_id, club_id=club_id)
+
+        msg = "Cập nhật cầu thủ thành công !!!"
+
+    return render_template('player-detail.html', player=player, user=user, type_player=type_player, msg=msg)
 
 
 @app.route("/dang-ky-thi-dau/<int:league_id>", methods=["get", "post"])
@@ -415,7 +432,8 @@ def settings(league_id):
 
 @app.route("/chi-tiet-tran-dau/<int:match_id>", methods=["get", "post"])
 def match_detail(match_id):
-    return render_template('match-detail.html')
+    match = dao.read_match_by_match_id(match_id)
+    return render_template('match-detail.html', match=match)
 
 
 # API

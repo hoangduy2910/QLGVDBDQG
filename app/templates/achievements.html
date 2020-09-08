@@ -34,19 +34,19 @@
                                     <div class="mu-achievements-match-body">
                                         <div>
                                             <p>Tổng số trận</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_total_match_by_club_id }}</h3>
                                         </div>
                                         <div>
                                             <p>Số trận thắng</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_win_result_club }}</h3>
                                         </div>
                                         <div>
                                             <p>Số trận hòa</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_draw_result_club }}</h3>
                                         </div>
                                         <div>
                                             <p>Số trận thua</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_lose_result_club }}</h3>
                                         </div>
                                     </div>
                                 </div>

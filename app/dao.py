@@ -57,6 +57,11 @@ def update_profile(user_id, name, phone, birthday):
     db.session.commit()
 
 
+def get_user_by_club_id(club_id):
+    club = Club.query.get(club_id)
+    return User.query.get(club.user_id)
+
+
 # LEAGUE
 def check_date_end_league(date_end):
     date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
@@ -199,6 +204,11 @@ def update_status_club_in_league_club(league_id, club_id, status_id):
     db.session.commit()
 
 
+def read_club_in_league_club(club_id):
+    return LeagueClub.query.filter(LeagueClub.club_id == club_id,
+                                   LeagueClub.status_id == 2).all()
+
+
 # ROUND
 def create_balanced_round_robin(league_id, clubs):
     rounds = Round.query.filter(Round.league_id == league_id).all()
@@ -260,6 +270,10 @@ def create_balanced_round_robin(league_id, clubs):
 # MATCH
 def read_match_by_league_id(league_id):
     return Match.query.filter(Match.league_id == league_id).all()
+
+
+def read_match_by_match_id(match_id):
+    return Match.query.get(match_id)
 
 
 def update_date_match(match_id, date, time):
@@ -387,6 +401,20 @@ def read_league_club_by_rank(league_id):
 def create_player(name, birthday, phone, image, type_player_id, club_id):
     player = Player(name=name, birthday=birthday, phone=phone, image=image,
                     type_player_id=type_player_id, club_id=club_id)
+
+    db.session.add(player)
+    db.session.commit()
+
+
+def update_player(player_id, name, birthday, phone, image, type_player_id, club_id):
+    player = Player.query.get(player_id)
+
+    player.name = name
+    player.birthday = birthday
+    player.phone = phone
+    player.image = image
+    player.type_player_id = type_player_id
+    player.club_id = club_id
 
     db.session.add(player)
     db.session.commit()

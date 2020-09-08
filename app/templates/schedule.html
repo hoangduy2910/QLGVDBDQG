@@ -244,7 +244,6 @@
             dataType: 'json',
             url: '/api/' + {{ league.id }} + '/round/' + round_name,
             success: (data) => {
-                console.log(data);
                 var str = "";
                 for (var m = 0; m < data.matches.length; m++) {
                     str += "<tr onclick='matchDetail(" + data.matches[m].match_id + ")'>";
@@ -261,7 +260,7 @@
                         str += '</div>';
                         str += "</td>";
                     } else {
-                        str += '<td>0 - 0</td>';
+                        str += '<td>' + data.matches[m].home_score + ' - ' + data.matches[m].away_score + '</td>';
                     }
 
                     str += "<td>" + data.matches[m].away + "</td>";

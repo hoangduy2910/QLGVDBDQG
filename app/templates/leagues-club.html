@@ -26,16 +26,16 @@
                         </div>
                         <div class="mu-leagues-club-body">
                             <h4>Các giải đấu</h4>
-                            {% if club.leagues %}
-                                {% for l in club.leagues %}
+                            {% if league_club %}
+                                {% for lc in league_club %}
                                 <div class="mu-leagues-club-group-card">
-                                    <a href="{{ url_for('schedule', league_id=l.league_id) }}" class="mu-leagues-club-card">
+                                    <a href="{{ url_for('schedule', league_id=lc.league_id) }}" class="mu-leagues-club-card">
                                         <div class="mu-leagues-club-card-image">
                                             <img src="{{ url_for('static', filename='images/football-colorful.jpg') }}">
                                         </div>
                                         <div class="mu-leagues-club-card-body">
-                                            <h5>{{ l.league_id|get_league_name_by_league_id }}</h5>
-                                            <p>Số đội tham gia: <span>{{ l.league_id|get_total_club_of_league }}</span></p>
+                                            <h5>{{ lc.league_id|get_league_name_by_league_id }}</h5>
+                                            <p>Số đội tham gia: <span>{{ lc.league_id|get_total_club_of_league }}</span></p>
                                         </div>
                                     </a>
                                 </div>
