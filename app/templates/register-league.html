@@ -46,9 +46,15 @@
                             </div>
                             <div class="mu-league-detail-body">
                                 <div class="mu-register-league">
+                                    {% if msg %}
+                                    <div class="alert alert-warning">
+                                        <p class="text-center">{{ msg }}</p>
+                                    </div>
+                                    {% endif %}
                                     <div class="mu-register-league-text">
                                         <div class="text-center">
                                             Giải cho phép đăng ký đến hết ngày <span>{{ league.date_end.strftime("%d/%m/%Y") }}</span>
+                                            - Giải đấu yêu cầu số lượng cầu thủ tối thiểu là <span>{{ league.min_player }}</span>
                                         </div>
                                     </div>
                                     <div class="mu-register-league-counter">
@@ -87,7 +93,9 @@
                                                                 </option>
                                                                 {% for club in current_user.clubs %}
                                                                     {% if club.id not in league_club %}
-                                                                    <option value="{{ club.id }}">{{ club.name }}</option>
+                                                                    <option value="{{ club.id }}">
+                                                                        {{ club.name }} ({{ club.id|get_total_player_by_club_id }} cầu thủ)
+                                                                    </option>
                                                                     {% endif %}
                                                                 {% endfor %}
                                                             </select>

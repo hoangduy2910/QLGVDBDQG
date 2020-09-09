@@ -99,6 +99,24 @@
                                                        min="{{ date_now }}" value="{{ league.date_end.strftime('%Y-%m-%d') }}" required />
                                             </div>
                                             <div class="form-group">
+                                                <label>Số lượng cầu thủ mỗi đội</label>
+                                                <input type="number" class="form-control" name="min_player" min="0" value="{{ league.min_player }}" required />
+                                            </div>
+                                            <div class="form-group mu-create-league-point">
+                                                <div>
+                                                    <label>Điểm số thắng</label>
+                                                    <input type="number" class="form-control" name="win_point" min="0" value="{{ league.win_point }}" required />
+                                                </div>
+                                                <div>
+                                                    <label>Điểm số hòa</label>
+                                                    <input type="number" class="form-control" name="draw_point" min="0" value="{{ league.draw_point }}" required />
+                                                </div>
+                                                <div>
+                                                    <label>Điểm số thua</label>
+                                                    <input type="number" class="form-control" name="lose_point" min="0" value="{{ league.lose_point }}" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <button type="submit">Cập nhật</button>
                                             </div>
                                         </div>

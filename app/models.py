@@ -1,7 +1,7 @@
 from app import db
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean, Time
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
 
@@ -107,6 +107,10 @@ class League(db.Model):
     date_end = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     has_scheduled = Column(Boolean, default=False)
+    min_player = Column(Integer, nullable=False)
+    win_point = Column(Integer, nullable=False)
+    draw_point = Column(Integer, nullable=False)
+    lose_point = Column(Integer, nullable=False)
     rounds = relationship('Round', backref='league', lazy=True)
 
     def __str__(self):

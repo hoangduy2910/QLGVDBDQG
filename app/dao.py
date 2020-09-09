@@ -78,9 +78,11 @@ def check_date_end_league(date_end):
     return False
 
 
-def create_league(name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled):
+def create_league(name, address, image, gender_id, city_id, date_begin, date_end,
+                  user_id, has_scheduled, min_player, win_point, draw_point, lose_point):
     league = League(name=name, address=address, image=image, gender_id=gender_id, city_id=city_id,
-                    date_begin=date_begin, date_end=date_end, user_id=user_id, has_scheduled=has_scheduled)
+                    date_begin=date_begin, date_end=date_end, user_id=user_id, has_scheduled=has_scheduled,
+                    min_player=min_player, win_point=win_point, draw_point=draw_point, lose_point=lose_point)
 
     db.session.add(league)
     db.session.commit()
@@ -88,7 +90,8 @@ def create_league(name, address, image, gender_id, city_id, date_begin, date_end
     return league
 
 
-def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled):
+def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end,
+                  user_id, has_scheduled, min_player, win_point, draw_point, lose_point):
     league = League.query.get(league_id)
 
     league.name = name
@@ -100,6 +103,10 @@ def update_league(league_id, name, address, image, gender_id, city_id, date_begi
     league.date_end = date_end
     league.user_id = user_id
     league.has_scheduled = has_scheduled
+    league.min_player = min_player
+    league.win_point = win_point
+    league.draw_point = draw_point
+    league.lose_point = lose_point
 
     db.session.add(league)
     db.session.commit()
@@ -129,6 +136,12 @@ def get_league_name_by_league_id(league_id):
     return League.query.get(league_id).name
 
 
+def check_point_win_draw_lose(win_point, draw_point, lose_point):
+    if win_point > draw_point > lose_point:
+        return True
+    return False
+
+
 # CLUB
 def create_club(name, phone, address, image, gender_id, level_id, user_id):
     club = Club(name=name, phone=phone, address=address, image=image,
@@ -136,6 +149,8 @@ def create_club(name, phone, address, image, gender_id, level_id, user_id):
 
     db.session.add(club)
     db.session.commit()
+
+    return club
 
 
 def read_clubs_by_user_id(user_id):
@@ -257,7 +272,6 @@ def create_balanced_round_robin(league_id, clubs):
                 round.append((t1, t2))
         schedule.append(round)
         map = map[mid:-1] + map[:mid] + map[-1:]
-
 
     # Tạo vòng đấu
     for idx, rounds in enumerate(schedule):

@@ -709,7 +709,6 @@ section > div.container {
 
 .mu-clubs-group-card {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -979,6 +978,15 @@ section > div.container {
     color: white;
     background-color: #3fc35f;
     border-radius: 5px;
+}
+
+.mu-create-league-point {
+    display: flex;
+}
+
+.mu-create-league-point div {
+    flex-basis: 33%;
+    margin-right: 5px;
 }
 
 
@@ -2326,6 +2334,14 @@ section > div.container {
 
     .timeline-right .date h4, .timeline-left .date h4 {
         float: left;
+    }
+
+    .mu-create-league-point {
+        flex-direction: column;
+    }
+
+    .mu-create-league-point div {
+        margin-bottom: 10px;
     }
 }
 

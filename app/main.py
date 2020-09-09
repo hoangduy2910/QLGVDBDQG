@@ -168,14 +168,14 @@ def create_club():
         level_id = request.form.get("level_id")
         user_id = current_user.id
 
-        dao.create_club(name=name, phone=phone, address=address, image=image,
-                        gender_id=int(gender_id), level_id=int(level_id), user_id=user_id)
+        club = dao.create_club(name=name, phone=phone, address=address, image=image,
+                               gender_id=int(gender_id), level_id=int(level_id), user_id=user_id)
 
         next_page = request.args.get('next')
         if next_page:
             return redirect(next_page)
 
-        return redirect(url_for('club_detail'))
+        return redirect(url_for('club_detail', club_id=club.id))
 
     return render_template("create-club.html", levels=levels, genders=genders)
 
@@ -186,6 +186,7 @@ def create_league():
     genders = dao.read_gender()
     cities = dao.read_city()
     date_now = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    msg = ""
 
     if request.method == "POST":
         name = request.form.get("name")
@@ -197,16 +198,23 @@ def create_league():
         date_end = request.form.get("date_end")
         user_id = current_user.id
         has_scheduled = False
-        
-        league = dao.create_league(name=name, address=address, image=image,
-                                   gender_id=int(gender_id), city_id=int(city_id),
-                                   date_begin=date_begin, date_end=date_end,
-                                   user_id=int(user_id), has_scheduled=has_scheduled)
+        min_player = request.form.get("min_player")
+        win_point = request.form.get("win_point")
+        draw_point = request.form.get("draw_point")
+        lose_point = request.form.get("lose_point")
 
-        return redirect(url_for('register_league', league_id=league.id))
+        if dao.check_point_win_draw_lose(win_point=int(win_point), draw_point=int(draw_point),
+                                         lose_point=int(lose_point)):
+            league = dao.create_league(name=name, address=address, image=image, gender_id=int(gender_id),
+                                       city_id=int(city_id), date_begin=date_begin, date_end=date_end,
+                                       user_id=int(user_id), has_scheduled=has_scheduled, min_player=int(min_player),
+                                       win_point=int(win_point), draw_point=int(draw_point), lose_point=int(lose_point))
 
-    return render_template("create-league.html", genders=genders, cities=cities,
-                           date_now=date_now)
+            return redirect(url_for('register_league', league_id=league.id))
+        else:
+            msg = "Điểm thắng phải lớn hơn điểm hòa và điểm hòa phải lớn hơn điểm thua !!!"
+
+    return render_template("create-league.html", genders=genders, cities=cities, date_now=date_now, msg=msg)
 
 
 @app.route("/them-cau-thu/<int:club_id>", methods=["get", "post"])
@@ -301,6 +309,7 @@ def register_league(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
     league_club = dao.get_club_id_in_league_club_by_league_id(league_id)
+    msg = ""
 
     check_date = False
     date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
@@ -314,12 +323,15 @@ def register_league(league_id):
         club_id = request.form.get("club_id")
         status_id = 1
 
-        dao.create_league_club(league_id=league_id, club_id=int(club_id), status_id=status_id)
+        if league.min_player <= dao.get_total_player_by_club_id(club_id=int(club_id)):
+            dao.create_league_club(league_id=league_id, club_id=int(club_id), status_id=status_id)
 
-        return redirect(url_for('register_league', league_id=league_id))
+            return redirect(url_for('register_league', league_id=league_id))
+        else:
+            msg = "Số cầu thủ tối thiểu của mỗi đội là: " + str(league.min_player)
 
     return render_template('register-league.html', league=league, cities=cities, date_now=date_now,
-                           date_end=date_end, check_date=check_date, league_club=league_club)
+                           date_end=date_end, check_date=check_date, league_club=league_club, msg=msg)
 
 
 @app.route("/lich-thi-dau/<int:league_id>", methods=["get", "post"])
@@ -337,7 +349,9 @@ def schedule(league_id):
             dao.update_league(league_id=league.id, name=league.name, address=league.address,
                               image=league.image, gender_id=league.gender_id,
                               city_id=league.city_id, date_begin=league.date_begin,
-                              date_end=(date_now - timedelta(days=1)), user_id=league.user_id, has_scheduled=True)
+                              date_end=(date_now - timedelta(days=1)), user_id=league.user_id,
+                              has_scheduled=True, min_player=league.min_player, win_point=league.win_point,
+                              draw_point=league.draw_point, lose_point=league.lose_point)
 
             return redirect(url_for('schedule', league_id=league_id))
         else:
@@ -416,11 +430,19 @@ def settings(league_id):
             date_end = request.form.get("date_end")
             user_id = current_user.id
             has_scheduled = False
+            min_player = request.form.get("min_player")
+            win_point = request.form.get("win_point")
+            draw_point = request.form.get("draw_point")
+            lose_point = request.form.get("lose_point")
 
-            dao.update_league(league_id=league_id, name=name, address=address,
-                              image=image, gender_id=int(gender_id),
-                              city_id=int(city_id), date_begin=date_begin,
-                              date_end=date_end, user_id=int(user_id), has_scheduled=has_scheduled)
+            if dao.check_point_win_draw_lose(win_point=int(win_point), draw_point=int(draw_point),
+                                             lose_point=int(lose_point)):
+                dao.update_league(league_id=league_id, name=name, address=address, image=image,
+                                  gender_id=int(gender_id), city_id=int(city_id), date_begin=date_begin,
+                                  date_end=date_end, user_id=int(user_id), has_scheduled=has_scheduled,
+                                  min_player=int(min_player), win_point=int(win_point),
+                                  draw_point=int(draw_point), lose_point=int(lose_point))
+
             msg = "Cập nhật thông tin của giải đấu thành công !"
 
         else:

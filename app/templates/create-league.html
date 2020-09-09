@@ -19,7 +19,7 @@
 				<div class="mu-create-league-area">
                     <h2>Tạo giải đấu</h2>
                     {% if msg %}
-					<div class="alert alert-success" role="alert">
+					<div class="alert alert-warning" role="alert">
 						<div class="text-center">{{ msg }}</div>
 					</div>
 					{% endif %}
@@ -56,6 +56,24 @@
                                 <div class="form-group">
                                     <label>Hạn chót đăng ký</label>
                                     <input type="date" class="form-control" name="date_end" min="{{ date_now }}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Số lượng cầu thủ tối thiểu mỗi đội</label>
+                                    <input type="number" class="form-control" name="min_player" min="{{ min_player }}" required />
+                                </div>
+                                <div class="form-group mu-create-league-point">
+                                    <div>
+                                        <label>Điểm số thắng</label>
+                                        <input type="number" class="form-control" name="win_point" min="{{ win_point }}" required />
+                                    </div>
+                                    <div>
+                                        <label>Điểm số hòa</label>
+                                        <input type="number" class="form-control" name="draw_point" min="{{ draw_point }}" required />
+                                    </div>
+                                    <div>
+                                        <label>Điểm số thua</label>
+                                        <input type="number" class="form-control" name="lose_point" min="{{ lose_point }}" required />
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit">Tạo giải đấu</button>
