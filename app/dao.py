@@ -79,10 +79,10 @@ def check_date_end_league(date_end):
 
 
 def create_league(name, address, image, gender_id, city_id, date_begin, date_end,
-                  user_id, has_scheduled, min_player, win_point, draw_point, lose_point):
+                  user_id, has_scheduled, win_point, draw_point, lose_point):
     league = League(name=name, address=address, image=image, gender_id=gender_id, city_id=city_id,
                     date_begin=date_begin, date_end=date_end, user_id=user_id, has_scheduled=has_scheduled,
-                    min_player=min_player, win_point=win_point, draw_point=draw_point, lose_point=lose_point)
+                    win_point=win_point, draw_point=draw_point, lose_point=lose_point)
 
     db.session.add(league)
     db.session.commit()
@@ -91,7 +91,7 @@ def create_league(name, address, image, gender_id, city_id, date_begin, date_end
 
 
 def update_league(league_id, name, address, image, gender_id, city_id, date_begin, date_end,
-                  user_id, has_scheduled, min_player, win_point, draw_point, lose_point):
+                  user_id, has_scheduled, win_point, draw_point, lose_point):
     league = League.query.get(league_id)
 
     league.name = name
@@ -103,7 +103,6 @@ def update_league(league_id, name, address, image, gender_id, city_id, date_begi
     league.date_end = date_end
     league.user_id = user_id
     league.has_scheduled = has_scheduled
-    league.min_player = min_player
     league.win_point = win_point
     league.draw_point = draw_point
     league.lose_point = lose_point
@@ -619,3 +618,30 @@ def get_type_goal_name_by_type_goal_id(type_goal_id):
 
 def get_total_goal_by_player_id(player_id):
     return len(Player.query.get(player_id).goals)
+
+
+# RULE
+def create_rule(min_age, max_age, min_player, max_player, max_foreign_player, league_id):
+    rule = Rule(min_age=min_age, max_age=max_age, min_player=min_player, max_player=max_player,
+                max_foreign_player=max_foreign_player, league_id=league_id)
+
+    db.session.add(rule)
+    db.session.commit()
+
+
+def update_rule(min_age, max_age, min_player, max_player, max_foreign_player, league_id):
+    rule = Rule.query.filter(Rule.league_id == league_id).first()
+
+    rule.min_age = min_age
+    rule.max_age = max_age
+    rule.min_player = min_player
+    rule.max_player = max_player
+    rule.max_foreign_player = max_foreign_player
+    rule.league_id = league_id
+
+    db.session.add(rule)
+    db.session.commit()
+
+
+def get_rules_by_league_id(league_id):
+    return Rule.query.filter(Rule.league_id == league_id).first()

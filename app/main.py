@@ -198,7 +198,6 @@ def create_league():
         date_end = request.form.get("date_end")
         user_id = current_user.id
         has_scheduled = False
-        min_player = request.form.get("min_player")
         win_point = request.form.get("win_point")
         draw_point = request.form.get("draw_point")
         lose_point = request.form.get("lose_point")
@@ -207,10 +206,10 @@ def create_league():
                                          lose_point=int(lose_point)):
             league = dao.create_league(name=name, address=address, image=image, gender_id=int(gender_id),
                                        city_id=int(city_id), date_begin=date_begin, date_end=date_end,
-                                       user_id=int(user_id), has_scheduled=has_scheduled, min_player=int(min_player),
-                                       win_point=int(win_point), draw_point=int(draw_point), lose_point=int(lose_point))
+                                       user_id=int(user_id), has_scheduled=has_scheduled, win_point=int(win_point),
+                                       draw_point=int(draw_point), lose_point=int(lose_point))
 
-            return redirect(url_for('register_league', league_id=league.id))
+            return redirect(url_for('create_rule', league_id=league.id))
         else:
             msg = "Điểm thắng phải lớn hơn điểm hòa và điểm hòa phải lớn hơn điểm thua !!!"
 
@@ -236,6 +235,26 @@ def create_player(club_id):
         return redirect(url_for('players_club', club_id=club_id))
 
     return render_template('create-player.html', type_player=type_player)
+
+
+@app.route("/tao-quy-dinh-giai-dau/<int:league_id>", methods=["get", "post"])
+@login_required
+def create_rule(league_id):
+    league = dao.read_league_by_id(league_id)
+    if request.method == "POST":
+        min_age = request.form.get("min_age")
+        max_age = request.form.get("max_age")
+        min_player = request.form.get("min_player")
+        max_player = request.form.get("max_player")
+        max_foreign_player = request.form.get("max_foreign_player")
+
+        rule = dao.create_rule(min_age=int(min_age), max_age=int(max_age), min_player=int(min_player),
+                               max_player=int(max_player), max_foreign_player=int(max_foreign_player),
+                               league_id=int(league_id))
+
+        return render_template('register-league.html', league_id=league_id, league=league, rule=rule)
+
+    return render_template('create-rule.html', league_id=league_id)
 
 
 @app.route("/chi-tiet-doi-bong/<int:club_id>", methods=["get", "post"])
@@ -309,6 +328,7 @@ def register_league(league_id):
     cities = dao.read_city()
     league = dao.read_league_by_id(league_id)
     league_club = dao.get_club_id_in_league_club_by_league_id(league_id)
+    rule = dao.get_rules_by_league_id(league_id)
     msg = ""
 
     check_date = False
@@ -323,14 +343,11 @@ def register_league(league_id):
         club_id = request.form.get("club_id")
         status_id = 1
 
-        if league.min_player <= dao.get_total_player_by_club_id(club_id=int(club_id)):
-            dao.create_league_club(league_id=league_id, club_id=int(club_id), status_id=status_id)
+        dao.create_league_club(league_id=league_id, club_id=int(club_id), status_id=status_id)
 
-            return redirect(url_for('register_league', league_id=league_id))
-        else:
-            msg = "Số cầu thủ tối thiểu của mỗi đội là: " + str(league.min_player)
+        return redirect(url_for('register_league', league_id=league_id))
 
-    return render_template('register-league.html', league=league, cities=cities, date_now=date_now,
+    return render_template('register-league.html', league=league, rule=rule, cities=cities, date_now=date_now,
                            date_end=date_end, check_date=check_date, league_club=league_club, msg=msg)
 
 
@@ -350,7 +367,7 @@ def schedule(league_id):
                               image=league.image, gender_id=league.gender_id,
                               city_id=league.city_id, date_begin=league.date_begin,
                               date_end=(date_now - timedelta(days=1)), user_id=league.user_id,
-                              has_scheduled=True, min_player=league.min_player, win_point=league.win_point,
+                              has_scheduled=True, win_point=league.win_point,
                               draw_point=league.draw_point, lose_point=league.lose_point)
 
             return redirect(url_for('schedule', league_id=league_id))
@@ -430,7 +447,6 @@ def settings(league_id):
             date_end = request.form.get("date_end")
             user_id = current_user.id
             has_scheduled = False
-            min_player = request.form.get("min_player")
             win_point = request.form.get("win_point")
             draw_point = request.form.get("draw_point")
             lose_point = request.form.get("lose_point")
@@ -440,8 +456,7 @@ def settings(league_id):
                 dao.update_league(league_id=league_id, name=name, address=address, image=image,
                                   gender_id=int(gender_id), city_id=int(city_id), date_begin=date_begin,
                                   date_end=date_end, user_id=int(user_id), has_scheduled=has_scheduled,
-                                  min_player=int(min_player), win_point=int(win_point),
-                                  draw_point=int(draw_point), lose_point=int(lose_point))
+                                  win_point=int(win_point), draw_point=int(draw_point), lose_point=int(lose_point))
 
             msg = "Cập nhật thông tin của giải đấu thành công !"
 
@@ -450,6 +465,30 @@ def settings(league_id):
 
     return render_template('settings.html', league=league, cities=cities, genders=genders,
                            msg=msg, err_msg=err_msg, date_now=date_now, check_date=check_date)
+
+
+@app.route("/quy-dinh-giai-dau/<int:league_id>", methods=["get", "post"])
+def rules(league_id):
+    league = dao.read_league_by_id(league_id)
+    rules = dao.get_rules_by_league_id(league_id)
+    cities = dao.read_city()
+    check_date = dao.check_date_end_league(league.date_end)
+    msg = ""
+
+    if request.method == "POST":
+        min_age = request.form.get("min_age")
+        max_age = request.form.get("max_age")
+        min_player = request.form.get("min_player")
+        max_player = request.form.get("max_player")
+        max_foreign_player = request.form.get("max_foreign_player")
+
+        dao.update_rule(min_age=int(min_age), max_age=int(max_age), min_player=int(min_player),
+                        max_player=int(max_player), max_foreign_player=int(max_foreign_player),
+                        league_id=int(league_id))
+
+        msg = "Cập nhật quy định giải đấu thành công !!!"
+
+    return render_template('rules.html', league=league, rules=rules, cities=cities, check_date=check_date, msg=msg)
 
 
 @app.route("/chi-tiet-tran-dau/<int:match_id>", methods=["get", "post"])

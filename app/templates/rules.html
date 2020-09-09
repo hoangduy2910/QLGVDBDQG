@@ -1,0 +1,138 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+{% block style_header %}
+    class="mu-fixed-nav" style="background-color: #3fc35f;"
+{% endblock %}
+
+{% block slider %}
+<section id="mu-league-detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-league-detail-area">
+                    <div class="mu-league-detail-content">
+                        <div class="mu-league-detail-content-header">
+                            <div class="mu-league-detail-content-header-image">
+                                <img src="/static/images/default_football_league.png">
+                            </div>
+                            <div class="mu-league-detail-content-header-body">
+                                <h6>{{ league.name }}</h6>
+                                <p>
+                                    {% for city in cities %}
+                                        {% if city.id == league.city_id %}
+                                        <span>{{ league.address }} | {{ city.name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p><i class="icon-people"></i> {{ league.id|get_total_club_of_league }} Đội</p>
+                            </div>
+                        </div>
+                        <div class="mu-league-detail-content-body">
+                            <div id="sidebar">
+                                {% if check_date %}
+                                <a href="{{ url_for('register_league', league_id=league.id) }}"><i class="icon-clock"></i><span>Đăng ký giải đấu</span></a>
+                                {% endif %}
+                                <a href="{{ url_for('schedule', league_id=league.id) }}"><i class="icon-calendar"></i><span>Lịch thi đấu</span></a>
+                                <a href="{{ url_for('rank', league_id=league.id) }}"><i class="icon-trophy"></i><span>Bảng xếp hạng</span></a>
+                                <a href="{{ url_for('clubs_league', league_id=league.id) }}"><i class="icon-people"></i><span>Đội bóng</span></a>
+                                {% if current_user.id == league.user_id %}
+                                <a href="{{ url_for('list_register', league_id=league.id) }}"><i class="icon-list"></i><span>Danh sách đăng ký</span></a>
+                                <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
+                                {% endif %}
+                                <a href="{{ url_for('rules', league_id=league.id) }}"><i class="icon-note"></i><span>Quy định</span></a>
+                            </div>
+                            <div class="mu-league-detail-body">
+                                {% if current_user.id == league.user_id %}
+                                {% if msg %}
+                                <div class="alert alert-success">
+                                    <p class="text-center">{{ msg }}</p>
+                                </div>
+                                {% endif %}
+                                <form class="mu-settings-league-form" method="post">
+                                    <div class="mu-settings-league-content">
+                                        <div class="mu-settings-league-image">
+                                            <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tuổi tối thiểu của cầu thủ</label>
+                                            <input type="number" min="0" class="form-control" name="min_age" value="{{ rules.min_age }}" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tuổi tối đa của cầu thủ</label>
+                                            <input type="number" min="0" class="form-control" name="max_age" value="{{ rules.max_age }}" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Số lượng cầu thủ tối thiểu</label>
+                                            <input type="number" min="0" class="form-control" name="min_player" value="{{ rules.min_player }}" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Số lượng cầu thủ tối đa</label>
+                                            <input type="number" min="0" class="form-control" name="max_player" value="{{ rules.max_player }}" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Số lượng cầu thủ nước ngoài tối đa</label>
+                                            <input type="number" min="0" class="form-control" name="max_foreign_player" value="{{ rules.max_foreign_player }}" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-success" type="submit">Cập nhật</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                {% else %}
+                                <div class="mu-settings-league-content">
+                                    <div class="mu-settings-league-image">
+                                        <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tuổi tối thiểu của cầu thủ</label>
+                                        <input type="number" min="0" class="form-control" name="min_age" value="{{ rules.min_age }}" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tuổi tối đa của cầu thủ</label>
+                                        <input type="number" min="0" class="form-control" name="max_age" value="{{ rules.max_age }}" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Số lượng cầu thủ tối thiểu</label>
+                                        <input type="number" min="0" class="form-control" name="min_player" value="{{ rules.min_player }}" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Số lượng cầu thủ tối đa</label>
+                                        <input type="number" min="0" class="form-control" name="max_player" value="{{ rules.max_player }}" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Số lượng cầu thủ nước ngoài tối đa</label>
+                                        <input type="number" min="0" class="form-control" name="max_foreign_player" value="{{ rules.max_foreign_player }}" readonly />
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block main %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block jquery %}
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Slick slider -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- Custom js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+{% endblock %}

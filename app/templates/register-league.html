@@ -43,6 +43,7 @@
                                 <a href="{{ url_for('list_register', league_id=league.id) }}"><i class="icon-list"></i><span>Danh sách đăng ký</span></a>
                                 <a href="{{ url_for('settings', league_id=league.id) }}"><i class="icon-settings"></i><span>Tùy chỉnh</span></a>
                                 {% endif %}
+                                <a href="{{ url_for('rules', league_id=league.id) }}"><i class="icon-note"></i><span>Quy định</span></a>
                             </div>
                             <div class="mu-league-detail-body">
                                 <div class="mu-register-league">
@@ -53,8 +54,14 @@
                                     {% endif %}
                                     <div class="mu-register-league-text">
                                         <div class="text-center">
-                                            Giải cho phép đăng ký đến hết ngày <span>{{ league.date_end.strftime("%d/%m/%Y") }}</span>
-                                            - Giải đấu yêu cầu số lượng cầu thủ tối thiểu là <span>{{ league.min_player }}</span>
+                                            Giải cho phép đăng ký đến hết ngày
+                                            <span style="font-weight: 700;">{{ league.date_end.strftime("%d/%m/%Y") }}</span>
+                                        </div>
+                                        <div class="text-center">
+                                            Giải đấu yêu cầu số lượng cầu thủ tối thiểu của mỗi đội là
+                                            <span style="font-weight: 700;">{{ rule.min_player }}</span>
+                                            và tối đa của mỗi đội là
+                                            <span style="font-weight: 700;">{{ rule.max_player }}</span>
                                         </div>
                                     </div>
                                     <div class="mu-register-league-counter">

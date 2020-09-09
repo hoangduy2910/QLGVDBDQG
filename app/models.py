@@ -107,7 +107,6 @@ class League(db.Model):
     date_end = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     has_scheduled = Column(Boolean, default=False)
-    min_player = Column(Integer, nullable=False)
     win_point = Column(Integer, nullable=False)
     draw_point = Column(Integer, nullable=False)
     lose_point = Column(Integer, nullable=False)
@@ -216,9 +215,12 @@ class Rule(db.Model):
     __tablename__ = "rule"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    total = Column(Integer, nullable=False)
-    description = Column(String(255), nullable=True)
+    min_age = Column(Integer, nullable=False, default=16)
+    max_age = Column(Integer, nullable=False, default=40)
+    min_player = Column(Integer, nullable=False, default=15)
+    max_player = Column(Integer, nullable=False, default=22)
+    max_foreign_player = Column(Integer, nullable=False, default=3)
+    league_id = Column(Integer, ForeignKey(League.id), nullable=False)
 
     def __str__(self):
         return self.name

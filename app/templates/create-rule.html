@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+{% block style_header %}
+    class="mu-fixed-nav" style="background-color: #3fc35f;"
+{% endblock %}
+
+{% block slider %}
+{% endblock %}
+
+{% block main %}
+<section id="mu-create-league">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="mu-create-league-area">
+                    <h2>Quy định</h2>
+                    <form class="mu-create-league-form" method="post">
+                        <div class="mu-create-league-content">
+                            <div class="mu-create-league-form-body">
+                                <div class="mu-create-league-image">
+                                    <img src="{{ url_for('static', filename='images/default_football_league.png') }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tuổi tối thiểu của cầu thủ</label>
+                                    <input type="number" min="0" class="form-control" name="min_age" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Tuổi tối đa của cầu thủ</label>
+                                    <input type="number" min="0" class="form-control" name="max_age" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Số lượng cầu thủ tối thiểu</label>
+                                    <input type="number" min="0" class="form-control" name="min_player" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Số lượng cầu thủ tối đa</label>
+                                    <input type="number" min="0" class="form-control" name="max_player" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Số lượng cầu thủ nước ngoài tối đa</label>
+                                    <input type="number" min="0" class="form-control" name="max_foreign_player" required />
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit">Cập nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block jquery %}
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Slick slider -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- Custom js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}"></script>
+{% endblock %}
