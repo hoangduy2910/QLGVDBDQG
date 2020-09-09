@@ -22,7 +22,17 @@
                             <div class="mu-match-detail-content-goal-sub-header">
                                 <h3>{{ match.league_id|get_league_name_by_league_id }}</h3>
                                 <p class="text-center">
-                                    {{ match.time.strftime("%H:%M") }} - {{ match.date.strftime("%d-%m-%Y") }}
+                                    {% if match.time %}
+                                        {{ match.time.strftime("%H:%M") }}
+                                    {% else %}
+                                        Chưa có giờ thi đấu
+                                    {% endif %}
+                                    -
+                                    {% if match.date %}
+                                        {{ match.date.strftime("%d-%m-%Y") }}
+                                    {% else %}
+                                        Chưa có ngày thi đấu
+                                    {% endif %}
                                 </p>
                             </div>
                             <div class="mu-match-detail-content-goal-body">
@@ -35,11 +45,109 @@
                                     </div>
                                 </div>
                                 <div class="mu-match-detail-content-goal-home-away">
+                                    {% if current_user.id == user.id %}
+                                        {% if match.time and match.date %}
+                                        <div style="text-align: center;">
+                                            {% if not match.is_ended %}
+                                            <button
+                                                style="margin-bottom: 5px;"
+                                                class="btn btn-primary" data-toggle="modal" data-target="#updateScore">
+                                                Cập nhật
+                                            </button>
+                                            {% endif %}
+                                            <button
+                                                style="margin-bottom: 5px;"
+                                                class="btn btn-danger" data-toggle="modal" data-target="#endMatch">
+                                                Kết thúc
+                                            </button>
+                                        </div>
+                                        {% endif %}
+
+                                    <!-- Modal Update Score -->
+                                    <form method="post">
+                                        <div class="modal fade" id="updateScore" tabindex="-1" aria-labelledby="updateScoreLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="updateScoreLabel" style="display: inline-block; color: blue;">Cập nhật tỉ số</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>Đội</label>
+                                                            <select class="form-control" id="club-id" name="club_id" required>
+                                                                <option value="0" id="choose-club">Chọn đội</option>
+                                                                <option value="{{ match.home }}">
+                                                                    {{ match.home|get_club_name_by_club_id }}
+                                                                </option>
+                                                                <option value="{{ match.away }}">
+                                                                    {{ match.away|get_club_name_by_club_id }}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Cầu thủ ghi bàn</label>
+                                                            <select class="form-control" id="players-club" name="player_id" required>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Thời gian ghi bàn</label>
+                                                            <input type="time" class="form-control" name="time" required />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Loại bàn thắng</label>
+                                                            <select class="form-control" name="type_goal_id" required>
+                                                                {% for tg in type_goal%}
+                                                                <option value="{{ tg.id }}">{{ tg.name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                        <button class="btn btn-primary">Cập nhật</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- End Modal Update Score -->
+
+                                    <!-- Modal End Match -->
+                                    <div class="modal fade" id="endMatch" tabindex="-1" aria-labelledby="endMatchLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="endMatchLabel" style="display: inline-block; color: red;">Kết thúc trận đấu</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Kết thúc trận đấu sẽ <span style="color: red;">cập nhật kết quả trận đấu, điểm, hiệu số</span>. Bạn có chắc muốn kết thúc trận đấu ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                    <button class="btn btn-danger" onclick="endMatch({{ match.id }})">Kết thúc</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Modal End Match -->
                                     <p>
                                         {{ match.id|get_score_league_club_match(match.league_id, match.home) }}
                                         -
                                         {{ match.id|get_score_league_club_match(match.league_id, match.away) }}
                                     </p>
+                                    {% else %}
+                                    <p>
+                                        {{ match.id|get_score_league_club_match(match.league_id, match.home) }}
+                                        -
+                                        {{ match.id|get_score_league_club_match(match.league_id, match.away) }}
+                                    </p>
+                                    {% endif %}
                                 </div>
                                 <div class="mu-match-detail-content-goal-away">
                                     <div class="mu-match-detail-content-goal-away-image">
@@ -105,27 +213,57 @@
                             </div>
                         </div>
                     </div>
+                    {% if goals %}
                     <div class="mu-match-detail-content-player">
                         <div class="mu-match-detail-content-player-header">
                             <h5>Chi tiết</h5>
                         </div>
                         <div class="mu-match-detail-content-player-body">
                             <div class="timeline">
-                                <div class="container left">
-                                    <div class="content">
-                                        <h5>2017</h5>
-                                        <p>Lorem ipsum..</p>
-                                    </div>
-                                </div>
-                                <div class="container right">
-                                    <div class="content">
-                                        <h5>2016</h5>
-                                        <p>Lorem ipsum..</p>
-                                    </div>
-                                </div>
+                                <ul>
+                                    {% for goal in goals %}
+                                        {% if goal.club_id == match.home %}
+                                            {% if goal.type_goal_id == 2 %}
+                                            <li class="timeline-right">
+                                                <div class="content">
+                                                    <h5>{{ goal.club_id|get_club_name_by_club_id }}</h5>
+                                                    <p>{{ goal.player_name }} ({{ goal.type_goal_name }})</p>
+                                                </div>
+                                                <div class="point"></div>
+                                                <div class="date">
+                                                    <h4>{{ goal.time }}</h4>
+                                                </div>
+                                            </li>
+                                            {% else %}
+                                            <li class="timeline-left">
+                                                <div class="content">
+                                                    <h5>{{ goal.club_id|get_club_name_by_club_id }}</h5>
+                                                    <p>{{ goal.player_name }} ({{ goal.type_goal_name }})</p>
+                                                </div>
+                                                <div class="point"></div>
+                                                <div class="date">
+                                                    <h4>{{ goal.time }}</h4>
+                                                </div>
+                                            </li>
+                                            {% endif %}
+                                        {% else %}
+                                        <li class="timeline-right">
+                                            <div class="content">
+                                                <h5>{{ goal.club_id|get_club_name_by_club_id }}</h5>
+                                                <p>{{ goal.player_name }} ({{ goal.type_goal_name }})</p>
+                                            </div>
+                                            <div class="point"></div>
+                                            <div class="date">
+                                                <h4>{{ goal.time }}</h4>
+                                            </div>
+                                        </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -142,6 +280,44 @@
 {% block jquery %}
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    $("#club-id").change(function() {
+        var club_id = $("#club-id").val();
+        $("#choose-club").css('display', 'none');
+        if (club_id != 0) {
+             $("#club").css("border", "2px solid #66afe9");
+             $.ajax({
+                accepts: {
+                    mycustomtype: 'application/json'
+                },
+                dataType: 'json',
+                url: '/api/get-players-of-club/' + club_id,
+                success: (data) => {
+                    str = "";
+                    for (var p = 0; p < data.players.length; p++) {
+                        str += '<option value="' + data.players[p].player_id + '">' + data.players[p].name + '</option>';
+                    }
+                    $("#players-club").html(str);
+                }
+             })
+        } else {
+            $("#club").css("border", "2px solid red")
+        }
+    })
+
+    function endMatch(match_id) {
+        $.ajax({
+            accepts: {
+                mycustomtype: 'application/json'
+            },
+            dataType: 'json',
+            url: '/api/end-match/' + match_id,
+            success: (data) => {
+                window.location.href = data.url;
+            }
+        })
+    }
+</script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <!-- Bootstrap -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

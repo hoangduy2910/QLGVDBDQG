@@ -57,19 +57,19 @@
                                     <div class="mu-achievements-goal-body">
                                         <div>
                                             <p>Trực tiếp</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_normal_goals_by_club_id }}</h3>
                                         </div>
                                         <div>
                                             <p>Phản lưới nhà</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_own_goals_by_club_id }}</h3>
                                         </div>
                                         <div>
                                             <p>Đá phạt</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_free_kick_goals_by_club_id }}</h3>
                                         </div>
                                         <div>
                                             <p>Đấ phạt đền</p>
-                                            <h3>0</h3>
+                                            <h3>{{ club.id|get_penalty_goals_by_club_id }}</h3>
                                         </div>
                                     </div>
                                 </div>

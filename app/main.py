@@ -235,7 +235,7 @@ def club_detail(club_id):
     cities = dao.read_city()
     genders = dao.read_gender()
     levels = dao.read_level()
-    club = dao.read_club_by_id(club_id)
+    club = dao.read_club_by_club_id(club_id)
     msg = ""
 
     if request.method == "POST":
@@ -256,20 +256,20 @@ def club_detail(club_id):
 
 @app.route("/cau-thu-cua-doi/<int:club_id>")
 def players_club(club_id):
-    club = dao.read_club_by_id(club_id)
+    club = dao.read_club_by_club_id(club_id)
     return render_template('players-club.html', club=club)
 
 
 @app.route("/giai-dau-cua-doi/<int:club_id>")
 def leagues_club(club_id):
-    club = dao.read_club_by_id(club_id=club_id)
+    club = dao.read_club_by_club_id(club_id=club_id)
     league_club = dao.read_club_in_league_club(club_id=club_id)
     return render_template('leagues-club.html', league_club=league_club, club=club)
 
 
 @app.route("/thanh-tich-cua-doi/<int:club_id>")
 def achievements(club_id):
-    club = dao.read_club_by_id(club_id)
+    club = dao.read_club_by_club_id(club_id)
     return render_template('achievements.html', club=club)
 
 
@@ -433,7 +433,28 @@ def settings(league_id):
 @app.route("/chi-tiet-tran-dau/<int:match_id>", methods=["get", "post"])
 def match_detail(match_id):
     match = dao.read_match_by_match_id(match_id)
-    return render_template('match-detail.html', match=match)
+    user = dao.get_user_by_league_id(league_id=match.league_id)
+    type_goal = dao.read_type_goal()
+    goals = dao.get_goals_by_match_id(match_id=match_id)
+
+    if request.method == "POST":
+        club_id = request.form.get("club_id")
+        player_id = request.form.get("player_id")
+        time = request.form.get("time")
+        type_goal_id = request.form.get("type_goal_id")
+        match_id = match_id
+
+        dao.create_goal(time=time, type_goal_id=int(type_goal_id), player_id=int(player_id),
+                        club_id=int(club_id), match_id=int(match_id))
+
+        if int(type_goal_id) == 2:
+            dao.update_score_league_club(league_id=match.league_id, match_id=match_id, club_id=match.away)
+        else:
+            dao.update_score_league_club(league_id=match.league_id, match_id=match_id, club_id=club_id)
+
+        return redirect(url_for('match_detail', match_id=match_id))
+
+    return render_template('match-detail.html', match=match, user=user, type_goal=type_goal, goals=goals)
 
 
 # API
@@ -457,7 +478,8 @@ def get_round_by_round_name(round_name, league_id):
                     'away_score': dao.get_score_by_league_club_match(league_id=league_id,
                                                                      match_id=match.id, club_id=match.away),
                     'date': match.date,
-                    'time': str(match.time)
+                    'time': str(match.time),
+                    'is_ended': match.is_ended
                 }
                 matches.append(m)
             break
@@ -482,122 +504,127 @@ def player_detail_by_player_id(player_id):
     return jsonify({'url': url})
 
 
-@app.route("/api/update-result-score-match/<int:league_id>/<int:match_id>/"
-           "<int:home_id>/<int:home_score>/<int:away_id>/<int:away_score>")
-def update_result_score_match(league_id, match_id, home_id, home_score, away_id, away_score):
-    dao.update_result_score_match(league_id=league_id, match_id=match_id,
-                                  home_id=home_id, home_score=home_score,
-                                  away_id=away_id, away_score=away_score)
-    return jsonify({'status': 'success'})
+@app.route("/api/get-players-of-club/<int:club_id>")
+def get_players_of_club(club_id):
+    club = dao.read_club_by_club_id(club_id=club_id)
+    players = club.players
+    players_json = []
+    for player in players:
+        p = {
+            'player_id': player.id,
+            'name': player.name
+        }
+        players_json.append(p)
+
+    return jsonify({'players': players_json})
+
+
+@app.route("/api/end-match/<int:match_id>")
+def end_match_league_club(match_id):
+    dao.end_match_league_club(match_id)
+    url = url_for('match_detail', match_id=match_id)
+    return jsonify({'url': url})
 
 
 # TEMPLATE FILTER
 @app.template_filter()
 def get_total_player_by_club_id(club_id):
-    return len(Club.query.get(club_id).players)
+    return dao.get_total_player_by_club_id(club_id)
 
 
 @app.template_filter()
 def get_total_match_by_club_id(club_id):
-    return len(Result.query.filter(Result.club_id == club_id).all())
-
-
-@app.template_filter()
-def get_club_name_by_club_id(club_id):
-    return Club.query.get(club_id).name
-
-
-@app.template_filter()
-def get_club_phone_by_club_id(club_id):
-    return Club.query.get(club_id).phone
-
-
-@app.template_filter()
-def get_status_name_by_status_id(status_id):
-    return Status.query.get(status_id).name
-
-
-@app.template_filter()
-def get_status_color_by_status_id(status_id):
-    return Status.query.get(status_id).color
+    return dao.get_total_match_by_club_id(club_id)
 
 
 @app.template_filter('get_total_match_by_club_id_in_league')
 def get_total_match_by_club_id_in_league(club_id, league_id):
-    return len(Result.query.filter(Result.league_id == league_id, Result.club_id == club_id).all())
+    return dao.get_total_match_by_club_id_in_league(club_id, league_id)
 
 
 @app.template_filter()
 def get_total_club_of_league(league_id):
-    return len(LeagueClub.query.filter(LeagueClub.league_id == league_id, LeagueClub.status_id == 2).all())
+    return dao.get_total_club_of_league(league_id)
+
+
+@app.template_filter()
+def get_club_name_by_club_id(club_id):
+    return dao.get_club_name_by_club_id(club_id)
+
+
+@app.template_filter()
+def get_club_phone_by_club_id(club_id):
+    return dao.get_club_phone_by_club_id(club_id)
+
+
+@app.template_filter()
+def get_status_name_by_status_id(status_id):
+    return dao.get_status_name_by_status_id(status_id)
+
+
+@app.template_filter()
+def get_status_color_by_status_id(status_id):
+    return dao.get_status_color_by_status_id(status_id)
 
 
 @app.template_filter('get_score_league_club_match')
 def get_score_league_club_match(match_id, league_id, club_id):
-    return Result.query.filter(Result.league_id == league_id,
-                               Result.club_id == club_id,
-                               Result.match_id == match_id).first().score
+    return dao.get_score_league_club_match(match_id, league_id, club_id)
 
 
 @app.template_filter()
 def get_win_result_club(club_id):
-    return len(Result.query.filter(Result.club_id == club_id, Result.type_result_id == 1).all())
+    return dao.get_win_result_club(club_id)
 
 
 @app.template_filter()
 def get_draw_result_club(club_id):
-    return len(Result.query.filter(Result.club_id == club_id, Result.type_result_id == 2).all())
+    return dao.get_draw_result_club(club_id)
 
 
 @app.template_filter()
 def get_lose_result_club(club_id):
-    return len(Result.query.filter(Result.club_id == club_id, Result.type_result_id == 3).all())
+    return dao.get_lose_result_club(club_id)
 
 
 @app.template_filter('get_win_result_league_club')
 def get_win_result_league_club(club_id, league_id):
-    return len(Result.query.filter(Result.league_id == league_id,
-                                   Result.club_id == club_id,
-                                   Result.type_result_id == 1).all())
+    return dao.get_win_result_league_club(club_id, league_id)
 
 
 @app.template_filter('get_draw_result_league_club')
 def get_draw_result_league_club(club_id, league_id):
-    return len(Result.query.filter(Result.league_id == league_id,
-                                   Result.club_id == club_id,
-                                   Result.type_result_id == 2).all())
+    return dao.get_draw_result_league_club(club_id, league_id)
 
 
 @app.template_filter('get_lose_result_league_club')
 def get_lose_result_league_club(club_id, league_id):
-    return len(Result.query.filter(Result.league_id == league_id,
-                                   Result.club_id == club_id,
-                                   Result.type_result_id == 3).all())
+    return dao.get_lose_result_league_club(club_id, league_id)
 
 
 @app.template_filter()
 def get_level_name_by_level_id(level_id):
-    return Level.query.get(level_id).name
+    return dao.get_level_name_by_level_id(level_id)
 
 
 @app.template_filter()
 def get_gender_name_by_gender_id(gender_id):
-    return Gender.query.get(gender_id).name
+    return dao.get_gender_name_by_gender_id(gender_id)
 
 
 @app.template_filter()
 def get_league_name_by_league_id(league_id):
-    return League.query.get(league_id).name
+    return dao.get_league_name_by_league_id(league_id)
 
 
 @app.template_filter()
 def get_type_player_name_by_type_player_id(type_player_id):
-    return TypePlayer.query.get(type_player_id).name
+    return dao.get_type_player_name_by_type_player_id(type_player_id)
 
 
 @app.template_filter()
 def get_total_goal_by_player_id(player_id):
-    return len(Player.query.get(player_id).goals)
+    return dao.get_total_goal_by_player_id(player_id)
 
 
 @app.template_filter('get_goal_difference_league_club')
@@ -608,6 +635,36 @@ def get_goal_difference_league_club(club_id, league_id):
 @app.template_filter('get_point_league_club')
 def get_point_league_club(club_id, league_id):
     return dao.get_point_league_club(league_id=league_id, club_id=club_id)
+
+
+@app.template_filter()
+def get_player_name_by_player_id(player_id):
+    return dao.get_player_name_by_player_id(player_id)
+
+
+@app.template_filter()
+def get_type_goal_name_by_type_goal_id(type_goal_id):
+    return dao.get_type_goal_name_by_type_goal_id(type_goal_id)
+
+
+@app.template_filter()
+def get_normal_goals_by_club_id(club_id):
+    return dao.get_normal_goals_by_club_id(club_id)
+
+
+@app.template_filter()
+def get_own_goals_by_club_id(club_id):
+    return dao.get_own_goals_by_club_id(club_id)
+
+
+@app.template_filter()
+def get_free_kick_goals_by_club_id(club_id):
+    return dao.get_free_kick_goals_by_club_id(club_id)
+
+
+@app.template_filter()
+def get_penalty_goals_by_club_id(club_id):
+    return dao.get_penalty_goals_by_club_id(club_id)
 
 
 if __name__ == "__main__":

@@ -94,7 +94,6 @@
                                             <th scope="col">Giờ thi đấu</th>
                                             {% if current_user.id == league.user_id  %}
                                             <th scope="col">Ngày giờ</th>
-                                            <th scope="col">Tỉ số</th>
                                             {% endif %}
                                         </tr>
                                     </thead>
@@ -102,32 +101,26 @@
                                         {% for round in league.rounds %}
                                             {% for match in round.matches %}
                                             <tr onclick="matchDetail({{ match.id }})">
+                                                <!-- Tên đội -->
                                                 <td>{{ round.name }}</td>
+
+                                                <!-- Đội 1 -->
                                                 <td id="match-home-{{ match.home }}">{{ match.home|get_club_name_by_club_id }}</td>
-                                                {% if current_user.id == league.user_id %}
-                                                <td>
-                                                    <div class="match-score">
-                                                        <div class="match-home-score">
-                                                            <input class="form-control"
-                                                                   id="input-score-match-home-{{ match.id }}"
-                                                                   value="{{ match.id|get_score_league_club_match(league.id, match.home) }}" min="0" type="number" />
-                                                        </div>
-                                                        <div>
-                                                            <h5>:</h5>
-                                                        </div>
-                                                        <div class="match-away-score">
-                                                            <input class="form-control"
-                                                                   id="input-score-match-away-{{ match.id }}"
-                                                                   value="{{ match.id|get_score_league_club_match(league.id, match.away) }}" min="0" type="number" />
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                {% else %}
+
+                                                <!-- Tỉ số -->
+                                                {% if match.is_ended %}
                                                 <td>
                                                     {{ match.id|get_score_league_club_match(league.id, match.home) }} - {{ match.id|get_score_league_club_match(league.id, match.away) }}
                                                 </td>
+                                                {% else %}
+                                                <td>0 - 0</td>
                                                 {% endif %}
+
+
+                                                <!-- Đội 2 -->
                                                 <td id="match-away-{{ match.away }}">{{ match.away|get_club_name_by_club_id }}</td>
+
+                                                <!-- Ngày thi đấu -->
                                                 {% if match.date  %}
                                                     {% if current_user.id == league.user_id %}
                                                     <td>
@@ -155,6 +148,7 @@
                                                     {% endif %}
                                                 {% endif %}
 
+                                                <!-- Giờ thi đáu -->
                                                 {% if match.time and match.time != "None" %}
                                                     {% if current_user.id == league.user_id  %}
                                                     <td>
@@ -180,6 +174,7 @@
                                                     {% endif %}
                                                 {% endif %}
 
+                                                <!-- Thao tác của người tổ chức giải  -->
                                                 {% if current_user.id == league.user_id  %}
                                                 <td>
                                                     <input
@@ -188,14 +183,6 @@
                                                         class="btn btn-success btn-date-match"
                                                         id="btn-date-match-{{ match.id }}"
                                                         onclick="updateDateTimeMatch({{ match.id }})">
-                                                </td>
-                                                <td>
-                                                    <input
-                                                        type="button"
-                                                        value="Cập nhật tỉ số"
-                                                        class="btn btn-success btn-date-match"
-                                                        id="btn-score-match-{{ match.id }}"
-                                                        onclick="updateScoreMatch({{ match.id }}, {{ match.home }}, {{ match.away }})">
                                                 </td>
                                                 {% endif %}
                                             </tr>
@@ -247,25 +234,24 @@
                 var str = "";
                 for (var m = 0; m < data.matches.length; m++) {
                     str += "<tr onclick='matchDetail(" + data.matches[m].match_id + ")'>";
+
+                    /* Tên đội */
                     str += "<td>" + data.round + "</td>";
+
+                    /* Đội 1 */
                     str += "<td>" + data.matches[m].home + "</td>";
 
-                    /* Score */
-                    if (user_id == league_user_id) {
-                        str += "<td>";
-                        str += '<div class="match-score">';
-                        str += '<input class="form-control match-home-score" id="input-score-match-home-' + data.matches[m].match_id + '" value="' + data.matches[m].home_score + '" min="0" type="number" />';
-                        str += '<h5>:</h5>';
-                        str += '<input class="form-control match-away-score" id="input-score-match-away-' + data.matches[m].match_id + '" value="' + data.matches[m].away_score + '" min="" type="number" />';
-                        str += '</div>';
-                        str += "</td>";
-                    } else {
+                    /* Tỉ số */
+                    if (data.matches[m].is_ended) {
                         str += '<td>' + data.matches[m].home_score + ' - ' + data.matches[m].away_score + '</td>';
+                    } else {
+                        str += '<td>0 - 0</td>';
                     }
 
+                    /* Đội 2 */
                     str += "<td>" + data.matches[m].away + "</td>";
 
-                    /* Date */
+                    /* Ngày thi đấu */
                     if (data.matches[m].date) {
                         var date_format = formatDate(data.matches[m].date);
                         if (user_id == league_user_id) {
@@ -282,7 +268,7 @@
                         }
                     }
 
-                    /* Time */
+                    /* Giờ thi đấu */
                     if (data.matches[m].time && data.matches[m].time != "None") {
                         if (user_id == league_user_id) {
                             time_format = data.matches[m].time;
@@ -298,10 +284,11 @@
                         }
                     }
 
+                    /* Thao tác người tổ chức giải đấu */
                     if (user_id == league_user_id) {
                         str += '<td><button class="btn btn-success" id="btn-date-match-' + data.matches[m].match_id + '" onclick="updateDateTimeMatch(' + data.matches[m].match_id + ')">Cập nhật ngày giờ</button></td>';
-                        str += '<td><button class="btn btn-success" id="btn-score-match-' + data.matches[m].match_id + '" onclick="updateScoreMatch(' + data.matches[m].match_id + ',' + data.matches[m].home_id + ',' + data.matches[m].away_id + ')">Cập nhật tỉ số</button></td>';
                     }
+
                     str += "</tr>";
                 }
                 $("#rounds").html(str);
@@ -320,7 +307,11 @@
                 if ($("#input-date-match-" + match_id).is(":focus") || $("#input-time-match-" + match_id).is(":focus") || $("#btn-date-match-" + match_id).is(":focus") || $("#input-score-match-home-" + match_id).is(":focus") || $("#input-score-match-away-" + match_id).is(":focus") || $("#btn-score-match-" + match_id).is(":focus")) {
                     return;
                 } else {
-                    window.location.href = data.url;
+                    // window.location.href = data.url;
+                    window.open(
+                        data.url,
+                        '_blank'
+                    );
                 }
             }
         })
@@ -370,23 +361,6 @@
         } else {
             $("#input-date-match-" + match_id).css("border", "2px solid red");
         }
-    }
-
-    function updateScoreMatch(match_id, home_id, away_id) {
-        scoreHome = $("#input-score-match-home-" + match_id).val();
-        scoreAway = $("#input-score-match-away-" + match_id).val();
-
-         $.ajax({
-            accepts: {
-                mycustomtype: 'application/json'
-            },
-            dataType: 'json',
-            url: '/api/update-result-score-match/' + {{ league.id }} + '/' + match_id + '/' + home_id + '/' + scoreHome + '/' + away_id + '/' + scoreAway,
-            success: (data) => {
-                $("#input-score-match-home-" + match_id).css("border", "2px solid green");
-                $("#input-score-match-away-" + match_id).css("border", "2px solid green");
-            }
-        })
     }
 </script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

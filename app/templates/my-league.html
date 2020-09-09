@@ -44,7 +44,7 @@
 								<div class="mu-leagues-card-body">
 									<h4 class="text-center">{{ l.name }}</h4>
 									<p class="text-center">{{ l.address }}</p>
-									<p class="text-center"><i class="icon-people"></i> 00 Đội</p>
+									<p class="text-center"><i class="icon-people"></i> {{ l.id|get_total_club_of_league }} Đội</p>
 								</div>
 							</a>
 							{% endif %}

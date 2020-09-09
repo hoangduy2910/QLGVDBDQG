@@ -181,14 +181,18 @@ class Match(db.Model):
     time = Column(Time, nullable=True)
     round_id = Column(Integer, ForeignKey(Round.id), nullable=False)
     league_id = Column(Integer, ForeignKey(League.id), nullable=False)
+    is_ended = Column(Boolean, default=False)
+    goals = relationship('Goal', backref='match', lazy=True)
 
 
 class Goal(db.Model):
     __tablename__ = "goal"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    time = Column(Time, nullable=True)
     type_goal_id = Column(Integer, ForeignKey(TypeGoal.id), nullable=False)
     player_id = Column(Integer, ForeignKey(Player.id), nullable=False)
+    club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
     match_id = Column(Integer, ForeignKey(Match.id), nullable=False)
 
 
@@ -201,6 +205,7 @@ class Result(db.Model):
     club_id = Column(Integer, ForeignKey(Club.id), nullable=False)
     type_result_id = Column(Integer, ForeignKey(TypeResult.id))
     score = Column(Integer, default=0)
+    is_updated = Column(Boolean, default=False)
 
 
 class Rule(db.Model):

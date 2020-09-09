@@ -1692,6 +1692,7 @@ section > div.container {
 .mu-match-detail-content-goal-body {
     display: flex;
     justify-content: center;
+    align-items: flex-end;
     margin-bottom: 20px;
     padding: 10px;
 }
@@ -1753,7 +1754,117 @@ section > div.container {
 .mu-match-detail-content-player {
     display: flex;
     flex-direction: column;
-    margin: 20px;
+    width: 96.5%;
+    margin: 0 auto;
+}
+
+#conference-timeline {
+    position: relative;
+    max-width: 920px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+/*--------------------*/
+/* TIMELINE */
+/*--------------------*/
+.timeline {
+    position: relative;
+    margin: 0 auto;
+    width: 90%;
+
+}
+
+.timeline ul li {
+    margin-bottom: 50px;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.point {
+    min-width: 20px;
+    height: 20px;
+    background-color: #3fc35f;
+    border-radius: 100%;
+    z-index: 2;
+    border: 3px #333333 solid;
+    position: relative;
+    left: 1px;
+}
+
+.timeline ul li .content {
+    width: 50%;
+    padding: 0 20px;
+}
+
+.timeline-left .content {
+    padding-left: 0;
+}
+
+.timeline-left .date {
+    padding-right: 0;
+}
+
+.timeline-right .content {
+    padding-right: 0;
+}
+
+.timeline-right .date {
+    padding-left: 0;
+}
+
+.timeline ul li .date {
+    width: 50%;
+    padding: 0 20px;
+    font-weight: normal;
+}
+
+.timeline ul li .date h4 {
+    background-color: #3fc35f;
+    width: 100px;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: #eee;
+}
+
+.timeline ul li .content h5 {
+    padding: 10px 20px;
+    background-color: #cccccc;
+    margin-bottom: 0;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: black;
+}
+
+.timeline ul li .content p {
+    padding: 10px 20px;
+    background-color: #eeeeee;
+    margin-top: 0;
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.timeline-right {
+    flex-direction: row-reverse !important;
+}
+
+.timeline-right .date h4 {
+    float: right
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 3px;
+    left: 50%;
+    background-color: #333333;
 }
 
 
@@ -2184,6 +2295,38 @@ section > div.container {
         flex-basis: 30%;
     }
 
+    .timeline ul li .content h5 {
+        font-size: 16px;
+    }
+
+    .mu-match-detail-content-goal-home-name h3, .mu-match-detail-content-goal-away-name h3 {
+        font-size: 16px !important;
+    }
+
+    .timeline:before {
+        left: 40%;
+    }
+
+    .timeline-right, .timeline-left {
+        flex-direction: row-reverse !important;
+    }
+
+    .timeline ul li .content {
+        padding: 0;
+    }
+
+    .timeline ul li .point {
+        left: -10%;
+    }
+
+    .timeline ul li .date {
+        float: left;
+        padding: 0 !important;
+    }
+
+    .timeline-right .date h4, .timeline-left .date h4 {
+        float: left;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2265,8 +2408,24 @@ section > div.container {
     .mu-match-detail-content-goal-home-away p {
         font-size: 35px;
     }
-}
 
+    .timeline ul li .content h5 {
+        font-size: 12px;
+    }
+
+    .timeline .date h4 {
+        width: 70px !important;
+        font-size: 18px !important;
+    }
+
+    .timeline ul li .content p {
+        display: none;
+    }
+
+    .timeline ul li .content h5 {
+        border-radius: 10px;
+    }
+}
 
 @media (max-width: 360px){
 
@@ -2306,5 +2465,13 @@ section > div.container {
         margin: 5px 0;
     }
 
+    .timeline:before {
+        left: 39%;
+    }
+
+    .mu-match-detail-content-goal-header h5 {
+        font-size: 15px;
+        text-align: center;
+    }
 }
 

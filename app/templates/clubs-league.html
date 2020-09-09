@@ -48,7 +48,7 @@
                                 <div id="clubs-league">
                                     {% for lc in league_club %}
                                         {% if lc.status_id == 2  %}
-                                        <a href="{{ url_for('club_detail', club_id=lc.club_id) }}" class="mu-clubs-league-card">
+                                        <a href="{{ url_for('club_detail', club_id=lc.club_id) }}" class="mu-clubs-league-card" target="_blank">
                                             <div class="mu-clubs-league-card-image">
                                                 <img src="{{ url_for('static', filename='images/default_football_club.png') }}" />
                                             </div>
