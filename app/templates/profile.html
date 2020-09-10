@@ -23,11 +23,6 @@
 						<div class="text-center">{{ msg }}</div>
 					</div>
 					{% endif %}
-					{% if err_msg %}
-					<div class="alert alert-warning" role="alert">
-						<div class="text-center">{{ err_msg }}</div>
-					</div>
-					{% endif %}
 					<div class="mu-profile-content">
 						<div class="mu-profile-image">
 							<img src="{{ url_for('static', filename='images/default_user.png') }}">

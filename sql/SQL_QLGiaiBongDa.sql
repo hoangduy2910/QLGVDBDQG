@@ -94,6 +94,11 @@ insert into db_qlgiaibongda.league (name, address, image, gender_id, city_id, da
 ('Giải Bóng Đá Nam OU Khóa 2017 (KHMT)', 'Sân Phú Thọ 221 Lý Thường Kiệt, Phường 9, Quận 11', '', 1, 31, NOW(), NOW() + INTERVAL 1 DAY, 2, False, 3, 1, 0),
 ('Giải Bóng Đá Nam OU Khóa 2017 (HTTT)', 'Sân Phú Thọ 221 Lý Thường Kiệt, Phường 9, Quận 11', '', 1, 31, NOW(), NOW() + INTERVAL 1 DAY, 2, False, 3, 1, 0);
 
+/* Quy định */
+insert into db_qlgiaibongda.rule (min_age, max_age, min_player, max_player, max_foreign_player, league_id) values
+(18, 22, 5, 7, 0, 1),
+(18, 22, 5, 7, 0, 2);
+
 /* Đội bóng*/
 insert into db_qlgiaibongda.club (name, phone, address, image, gender_id, level_id, user_id) values
 ('DH17TH01', '1231231231', 'HCM', '', 1, 4, 3), 

@@ -48,8 +48,8 @@
                             <div class="mu-league-detail-body">
                                 <div class="mu-register-league">
                                     {% if msg %}
-                                    <div class="alert alert-warning">
-                                        <p class="text-center">{{ msg }}</p>
+                                    <div class="alert alert-{{ msg.alert_type }}">
+                                        <p class="text-center">{{ msg.content }}</p>
                                     </div>
                                     {% endif %}
                                     <div class="mu-register-league-text">

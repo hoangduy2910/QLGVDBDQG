@@ -119,22 +119,17 @@ def logout():
 @login_required
 def profile(user_id):
     user = User.query.get(user_id)
-    err_msg = ""
+    msg = ""
 
     if request.method == "POST":
-        if request.form.get("name") and request.form.get("phone") and request.form.get("birthday"):
-            name = request.form.get("name")
-            phone = request.form.get("phone")
-            birthday = request.form.get("birthday")
+        name = request.form.get("name")
+        phone = request.form.get("phone")
+        birthday = request.form.get("birthday")
 
-            dao.update_profile(user_id=user_id, name=name, phone=phone, birthday=birthday)
-            msg = "Cập nhật thành công !"
+        dao.update_profile(user_id=user_id, name=name, phone=phone, birthday=birthday)
+        msg = "Cập nhật thành công !"
 
-            return render_template('profile.html', user=user, msg=msg)
-        else:
-            err_msg = "Bạn phải nhập đủ thông tin !"
-
-    return render_template('profile.html', user=user, err_msg=err_msg)
+    return render_template('profile.html', user=user, msg=msg)
 
 
 @app.route("/quan-ly-giai-dau")
@@ -325,11 +320,31 @@ def player_detail(player_id):
 
 @app.route("/dang-ky-thi-dau/<int:league_id>", methods=["get", "post"])
 def register_league(league_id):
+    rule = dao.get_rules_by_league_id(league_id)
     cities = dao.read_city()
+    msg = ""
+
+    if request.method == "POST":
+        league_id = league_id
+        club_id = request.form.get("club_id")
+        status_id = 1
+
+        total_player = dao.get_total_player_by_club_id(int(club_id))
+        if rule.min_player <= total_player <= rule.max_player:
+            dao.create_league_club(league_id=league_id, club_id=int(club_id), status_id=status_id)
+            msg = {
+                "alert_type": "success",
+                "content": "Đăng ký đội bóng thành công !!!"
+            }
+        else:
+            msg = {
+                "alert_type": "warning",
+                "content": "Số lượng cầu thủ tối thiểu của đội là "
+                           + str(rule.min_player) + " và tối đa là " + str(rule.max_player)
+            }
+
     league = dao.read_league_by_id(league_id)
     league_club = dao.get_club_id_in_league_club_by_league_id(league_id)
-    rule = dao.get_rules_by_league_id(league_id)
-    msg = ""
 
     check_date = False
     date_now = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
@@ -337,15 +352,6 @@ def register_league(league_id):
 
     if date_now <= date_end:
         check_date = True
-
-    if request.method == "POST":
-        league_id = league_id
-        club_id = request.form.get("club_id")
-        status_id = 1
-
-        dao.create_league_club(league_id=league_id, club_id=int(club_id), status_id=status_id)
-
-        return redirect(url_for('register_league', league_id=league_id))
 
     return render_template('register-league.html', league=league, rule=rule, cities=cities, date_now=date_now,
                            date_end=date_end, check_date=check_date, league_club=league_club, msg=msg)
