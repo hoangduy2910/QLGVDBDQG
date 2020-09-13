@@ -450,9 +450,9 @@ def settings(league_id):
             gender_id = request.form.get("gender_id")
             city_id = request.form.get("city_id")
             date_begin = league.date_begin
-            date_end = request.form.get("date_end")
+            date_end = league.date_end
             user_id = current_user.id
-            has_scheduled = False
+            has_scheduled = True
             win_point = request.form.get("win_point")
             draw_point = request.form.get("draw_point")
             lose_point = request.form.get("lose_point")
@@ -465,9 +465,6 @@ def settings(league_id):
                                   win_point=int(win_point), draw_point=int(draw_point), lose_point=int(lose_point))
 
             msg = "Cập nhật thông tin của giải đấu thành công !"
-
-        else:
-            err_msg = "Bạn phải nhập đầy đủ thông tin của giải đấu !"
 
     return render_template('settings.html', league=league, cities=cities, genders=genders,
                            msg=msg, err_msg=err_msg, date_now=date_now, check_date=check_date)
