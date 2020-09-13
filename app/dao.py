@@ -349,6 +349,7 @@ def end_match_league_club(match_id):
         results[1].type_result_id = 1
 
     for r in results:
+        r.is_updated = True
         db.session.add(r)
         db.session.commit()
 
@@ -397,15 +398,19 @@ def get_goal_difference_by_league_club(league_id, club_id):
 
 
 def get_point_league_club(league_id, club_id):
+    league = read_league_by_id(league_id)
     results = Result.query.filter(Result.league_id == league_id,
                                   Result.club_id == club_id).all()
 
     point = 0
     for result in results:
-        if result.type_result_id == 1:
-            point = point + 3
-        elif result.type_result_id == 2:
-            point = point + 1
+        if result.is_updated:
+            if result.type_result_id == 1:
+                point = point + league.win_point
+            elif result.type_result_id == 2:
+                point = point + league.draw_point
+            else:
+                point = point + league.lose_point
 
     return point
 
@@ -441,8 +446,7 @@ def update_score_league_club(league_id, match_id, club_id):
     result = Result.query.filter(Result.league_id == league_id,
                                  Result.match_id == match_id,
                                  Result.club_id == club_id).first()
-    if not result.is_updated:
-        result.is_updated = True
+
     result.score = result.score + 1
 
     db.session.add(result)

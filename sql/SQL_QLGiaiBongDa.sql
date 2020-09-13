@@ -91,13 +91,11 @@ insert into db_qlgiaibongda.user (name, username, password, phone, birthday, act
 
 /* Giải đấu */
 insert into db_qlgiaibongda.league (name, address, image, gender_id, city_id, date_begin, date_end, user_id, has_scheduled, win_point, draw_point, lose_point) values
-('Giải Bóng Đá Nam OU Khóa 2017 (KHMT)', 'Sân Phú Thọ 221 Lý Thường Kiệt, Phường 9, Quận 11', '', 1, 31, NOW(), NOW() + INTERVAL 1 DAY, 2, False, 3, 1, 0),
-('Giải Bóng Đá Nam OU Khóa 2017 (HTTT)', 'Sân Phú Thọ 221 Lý Thường Kiệt, Phường 9, Quận 11', '', 1, 31, NOW(), NOW() + INTERVAL 1 DAY, 2, False, 3, 1, 0);
+('Giải Bóng Đá Nam OU Khóa 2017 (KHMT)', 'Sân Phú Thọ 221 Lý Thường Kiệt, Phường 9, Quận 11', '', 1, 31, NOW(), NOW() + INTERVAL 1 DAY, 2, False, 3, 1, 0);
 
 /* Quy định */
 insert into db_qlgiaibongda.rule (min_age, max_age, min_player, max_player, max_foreign_player, league_id) values
-(18, 22, 5, 7, 0, 1),
-(18, 22, 5, 7, 0, 2);
+(18, 22, 5, 7, 0, 1);
 
 /* Đội bóng*/
 insert into db_qlgiaibongda.club (name, phone, address, image, gender_id, level_id, user_id) values
@@ -140,16 +138,10 @@ insert into db_qlgiaibongda.player (name, birthday, phone, image, type_player_id
 ('Ngô Tiểu Long', '1999-01-01', '1231231231', '', 1, 5),
 ('Vũ Lại Quang Minh', '1999-01-01', '1231231231', '', 1, 5);
 
-/* Đội bóng tham gia giải đấu
+
 insert into db_qlgiaibongda.league_club (league_id, club_id, status_id) values 
 (1, 1, 1), 
 (1, 2, 1),
 (1, 3, 1),
 (1, 4, 1),
-(1, 5, 1),
-(2, 6, 1),
-(2, 7, 1),
-(2, 8, 1),
-(2, 9, 1),
-(2, 10, 1);
- */
+(1, 5, 1);
