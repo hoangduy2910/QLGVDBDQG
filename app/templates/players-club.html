@@ -39,7 +39,9 @@
                                         <th scope="col">Số điện thoại</th>
                                         <th scope="col">Loại cầu thủ</th>
                                         <th scope="col">Tổng số bàn thắng</th>
+                                        {% if club.user_id == current_user.id %}
                                         <th scope="col">Hành động</th>
+                                        {% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,13 +52,16 @@
                                         <td>{{ player.phone }}</td>
                                         <td>{{ player.type_player_id|get_type_player_name_by_type_player_id }}</td>
                                         <td>{{ player.id|get_total_goal_by_player_id }}</td>
+                                        {% if club.user_id == current_user.id %}
                                         <td>
                                             <a style="margin: 0;"
                                                class="btn btn-success"
-                                               href="{{ url_for('player_detail', player_id=player.id) }}"><i class="icon-note"></i></a>
+                                               href="{{ url_for('player_detail', player_id=player.id) }}"
+                                               target="_blank"><i class="icon-note"></i></a>
                                             <button class="btn btn-danger"
                                                     onclick="deletePlayer({{ player.id }})"><i class="icon-trash"></i></button>
                                         </td>
+                                        {% endif %}
                                     </tr>
                                     {% endfor %}
                                 </tbody>
