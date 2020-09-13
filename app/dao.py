@@ -498,6 +498,13 @@ def create_player(name, birthday, phone, image, type_player_id, club_id):
     db.session.commit()
 
 
+def delete_player(player_id):
+    player = Player.query.get(player_id)
+
+    db.session.delete(player)
+    db.session.commit()
+
+
 def update_player(player_id, name, birthday, phone, image, type_player_id, club_id):
     player = Player.query.get(player_id)
 

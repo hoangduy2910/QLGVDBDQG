@@ -39,16 +39,24 @@
                                         <th scope="col">Số điện thoại</th>
                                         <th scope="col">Loại cầu thủ</th>
                                         <th scope="col">Tổng số bàn thắng</th>
+                                        <th scope="col">Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for player in club.players %}
-                                    <tr id="player-{{ player.id }}" onclick="playerDetail({{ player.id }})">
+                                    <tr>
                                         <td>{{ player.name }}</td>
                                         <td>{{ player.birthday.strftime('%d-%m-%Y') }}</td>
                                         <td>{{ player.phone }}</td>
                                         <td>{{ player.type_player_id|get_type_player_name_by_type_player_id }}</td>
                                         <td>{{ player.id|get_total_goal_by_player_id }}</td>
+                                        <td>
+                                            <a style="margin: 0;"
+                                               class="btn btn-success"
+                                               href="{{ url_for('player_detail', player_id=player.id) }}"><i class="icon-note"></i></a>
+                                            <button class="btn btn-danger"
+                                                    onclick="deletePlayer({{ player.id }})"><i class="icon-trash"></i></button>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -74,17 +82,23 @@
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
-    function playerDetail(player_id) {
-        $.ajax({
+    function deletePlayer(player_id) {
+        var result = confirm("Bạn có muốn xóa cầu thủ này không ?");
+        if (result == true) {
+            console.log("DELETE");
+            $.ajax({
             accepts: {
                 mycustomtype: 'application/json'
-            },
-            dataType: 'json',
-            url: '/api/player-detail/' + player_id,
-            success: (data) => {
-                window.location.href = data.url;
-            }
-        })
+                },
+                dataType: 'json',
+                url: '/api/detele-player/' + player_id,
+                success: (data) => {
+                   window.location.href = window.location.href;
+                }
+            })
+        } else {
+          console.log("CANCEL");
+        }
     }
 </script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -565,10 +565,10 @@ def match_detail_by_match_id(match_id):
     return jsonify({'url': url})
 
 
-@app.route("/api/player-detail/<int:player_id>")
+@app.route("/api/detele-player/<int:player_id>")
 def player_detail_by_player_id(player_id):
-    url = url_for('player_detail', player_id=player_id)
-    return jsonify({'url': url})
+    dao.delete_player(player_id=player_id)
+    return jsonify({'status': 'success'})
 
 
 @app.route("/api/get-players-of-club/<int:club_id>")
